@@ -1,0 +1,17 @@
+export const theme = {
+  primary: "var(--primary)",
+  primaryStrong: "var(--primary-strong)",
+  primaryContrast: "var(--primary-contrast)",
+  primaryEdge: "var(--primary-edge)",
+  secondary: "var(--secondary)",
+  secondaryStrong: "var(--secondary-strong)",
+  text: "var(--text)",
+  textSoft: "var(--text-soft)",
+  textTint: "var(--text-tint)",
+  panel: "var(--panel)",
+  panelStrong: "var(--panel-strong)",
+  panelSoft: "var(--panel-soft)",
+  panelDeep: "var(--panel-deep)",
+  panelHighlight: "var(--panel-highlight)",
+  line: "var(--line)",
+};

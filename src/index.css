@@ -1,11 +1,70 @@
-@import url("https://fonts.googleapis.com/css2?family=SUIT:wght@400;500;700;800;900&display=swap");
+@font-face {
+  font-family: "NanumSquareRound";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/NanumSquareRoundR.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "NanumSquareRound";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/NanumSquareRoundB.woff")
+    format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "NanumSquareRound";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/NanumSquareRoundEB.woff")
+    format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
 @import "tailwindcss";
 @import "@heroui/styles";
 
 :root {
-  font-family: "SUIT", sans-serif;
-  color: #0f172a;
-  background: #fbf8f3;
+  font-family: "NanumSquareRound", "Pretendard", sans-serif;
+  color-scheme: light;
+  --bg-top: #fffdff;
+  --bg-mid: #fff5fb;
+  --bg-bottom: #ffedf6;
+  --text: #26131f;
+  --text-soft: #6c445a;
+  --text-tint: #d24f95;
+  --primary: #ff82be;
+  --primary-strong: #ff62af;
+  --primary-contrast: #2f1022;
+  --primary-edge: #eb4a9d;
+  --secondary: #ffd7ea;
+  --secondary-strong: #ffc2df;
+  --panel: #fff4fa;
+  --panel-strong: #fff9fd;
+  --panel-soft: #ffedf6;
+  --panel-deep: #ffe5f1;
+  --panel-highlight: #ffd6e8;
+  --line: #efbfd8;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-top: #1a1016;
+  --bg-mid: #1e1219;
+  --bg-bottom: #160e14;
+  --text: #f5eef2;
+  --text-soft: #b8a0ae;
+  --text-tint: #ff82be;
+  --primary: #ff82be;
+  --primary-strong: #ff6ab2;
+  --primary-contrast: #2f1022;
+  --primary-edge: #ff9fcb;
+  --secondary: #2a1d24;
+  --secondary-strong: #3d2a34;
+  --panel-deep: #201620;
+  --panel: #261a22;
+  --panel-strong: #32242c;
+  --panel-soft: #221820;
+  --panel-highlight: #3e2a36;
+  --line: #6d5060;
 }
 
 html,
@@ -16,4 +75,29 @@ body,
 
 body {
   margin: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-top) 82%, transparent) 0%,
+      color-mix(in srgb, var(--bg-mid) 72%, transparent) 42%,
+      color-mix(in srgb, var(--bg-bottom) 80%, transparent) 100%
+    ),
+    url("./assets/blossom.png");
+  background-size: cover, cover;
+  background-position: center, center top;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
+  color: var(--text);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.font-title {
+  font-family: "NanumSquareRound", "Pretendard", sans-serif;
+  letter-spacing: -0.03em;
 }
