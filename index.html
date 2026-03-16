@@ -1,80 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MBTI + 애착유형 종합 분석</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=SUIT:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css" />
+    <title>MBTI + 애착유형 분석</title>
+    <script type="module" src="/src/main.jsx"></script>
   </head>
   <body>
-    <div class="page-shell">
-      <header class="hero">
-        <p class="eyebrow">Self Mapping Lab</p>
-        <h1>MBTI와 애착유형을 한 번에 분석합니다</h1>
-        <p class="hero-copy">
-          성향만 따로 보지 않고, 관계에서의 불안/회피 경향까지 같이 읽어
-          해석하는 간단한 진단 도구입니다.
-        </p>
-      </header>
-
-      <main class="layout">
-        <section class="panel">
-          <div class="section-head">
-            <h2>1. MBTI 테스트</h2>
-            <p>각 문항에서 더 가까운 쪽을 선택하세요.</p>
-          </div>
-          <form id="mbti-form" class="question-list"></form>
-        </section>
-
-        <section class="panel">
-          <div class="section-head">
-            <h2>2. 애착유형 테스트</h2>
-            <p>현재 관계 패턴에 얼마나 가까운지 1~5점으로 체크하세요.</p>
-          </div>
-          <form id="attachment-form" class="question-list"></form>
-        </section>
-
-        <section class="panel result-panel">
-          <div class="section-head">
-            <h2>3. 종합 결과</h2>
-            <p>두 테스트를 합쳐 성향과 관계 반응을 같이 해석합니다.</p>
-          </div>
-          <button id="analyze-button" class="analyze-button" type="button">
-            결과 분석하기
-          </button>
-
-          <div id="result" class="result hidden" aria-live="polite">
-            <div class="result-grid">
-              <article class="result-card accent-card">
-                <p class="result-label">MBTI</p>
-                <h3 id="mbti-result"></h3>
-                <p id="mbti-summary"></p>
-              </article>
-
-              <article class="result-card warm-card">
-                <p class="result-label">애착유형</p>
-                <h3 id="attachment-result"></h3>
-                <p id="attachment-summary"></p>
-              </article>
-            </div>
-
-            <article class="analysis-card">
-              <p class="result-label">종합 해석</p>
-              <h3 id="combined-title"></h3>
-              <p id="combined-summary"></p>
-              <ul id="combined-points" class="insight-list"></ul>
-            </article>
-          </div>
-        </section>
-      </main>
-    </div>
-
-    <script src="./app.js"></script>
+    <div id="root"></div>
   </body>
 </html>

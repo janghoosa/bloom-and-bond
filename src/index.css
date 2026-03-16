@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=SUIT:wght@400;500;700;800;900&display=swap");
+@import "tailwindcss";
+@import "@heroui/styles";
+
+:root {
+  font-family: "SUIT", sans-serif;
+  color: #0f172a;
+  background: #fbf8f3;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
