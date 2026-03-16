@@ -1,0 +1,289 @@
+import { Card, Radio, RadioGroup } from "@heroui/react";
+import { theme } from "../lib/theme";
+
+function SunIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current stroke-2">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v3" />
+      <path d="M12 19v3" />
+      <path d="M4.93 4.93l2.12 2.12" />
+      <path d="M16.95 16.95l2.12 2.12" />
+      <path d="M2 12h3" />
+      <path d="M19 12h3" />
+      <path d="M4.93 19.07l2.12-2.12" />
+      <path d="M16.95 7.05l2.12-2.12" />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+      <path d="M20.2 14.4A8.5 8.5 0 0 1 9.6 3.8a9 9 0 1 0 10.6 10.6Z" />
+    </svg>
+  );
+}
+
+export function ThemeToggle({ themeMode, onToggle }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="inline-flex min-h-[52px] min-w-[52px] items-center justify-center rounded-full border px-4 py-3"
+      style={{
+        backgroundColor: theme.panel,
+        borderColor: theme.line,
+        color: theme.text,
+      }}
+      aria-label={themeMode === "dark" ? "라이트 모드로 변경" : "다크 모드로 변경"}
+      title={themeMode === "dark" ? "라이트 모드" : "다크 모드"}
+    >
+      {themeMode === "dark" ? <SunIcon /> : <MoonIcon />}
+    </button>
+  );
+}
+
+export function PrimaryActionButton({ children, onPress, fullWidth = true, disabled = false }) {
+  return (
+    <button
+      type="button"
+      onClick={onPress}
+      aria-disabled={disabled}
+      className={`${fullWidth ? "w-full" : ""} inline-flex min-h-[44px] items-center justify-center rounded-[20px] px-7 py-1.5 text-[15px] font-bold tracking-[0.01em] transition-opacity sm:px-8 ${
+        disabled ? "opacity-55" : ""
+      }`}
+      style={{
+        backgroundColor: disabled ? theme.panelHighlight : theme.primaryStrong,
+        color: disabled ? theme.textSoft : theme.primaryContrast,
+        border: `1px solid ${disabled ? theme.line : theme.primaryEdge}`,
+      }}
+    >
+      <span className="inline-flex w-full items-center justify-center gap-2 font-bold">
+        <span className="text-[18px] leading-none font-bold sm:text-[19px]">{children}</span>
+        <span aria-hidden="true" className="text-[20px] leading-none sm:text-[21px]">→</span>
+      </span>
+    </button>
+  );
+}
+
+export function ResultMeter({ label, valueText, progress, accent = theme.primaryStrong, detail }) {
+  return (
+    <div className="rounded-2xl px-4 py-3" style={{ backgroundColor: theme.panelHighlight }}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-sm font-bold" style={{ color: theme.text }}>{label}</div>
+        <div className="text-sm font-bold" style={{ color: accent }}>{valueText}</div>
+      </div>
+      <div className="mt-2 h-2.5 overflow-hidden rounded-full" style={{ backgroundColor: theme.panelStrong }}>
+        <div
+          className="h-full rounded-full transition-[width] duration-300"
+          style={{ width: `${progress}%`, backgroundColor: accent }}
+        />
+      </div>
+      {detail ? <div className="mt-2 text-sm leading-6" style={{ color: theme.textSoft }}>{detail}</div> : null}
+    </div>
+  );
+}
+
+export function ModeChoiceCard({ title, description, meta, selected, onSelect }) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className="w-full rounded-[24px] border px-4 py-4 text-left transition-colors"
+      style={{
+        backgroundColor: selected ? theme.panelHighlight : theme.panelStrong,
+        borderColor: selected ? theme.primaryStrong : theme.line,
+        boxShadow: selected ? `inset 0 0 0 1px ${theme.primaryStrong}` : "none",
+      }}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="font-title text-xl font-bold" style={{ color: theme.text }}>{title}</div>
+        <div
+          className="rounded-full px-3 py-1 text-xs font-bold"
+          style={{ backgroundColor: selected ? theme.primaryStrong : theme.panel, color: selected ? theme.primaryContrast : theme.text }}
+        >
+          {meta}
+        </div>
+      </div>
+      <div className="mt-2 text-sm leading-6" style={{ color: theme.textSoft }}>{description}</div>
+    </button>
+  );
+}
+
+export function Shell({ children, themeMode, onToggleTheme }) {
+  return (
+    <div className="min-h-screen" style={{ color: theme.text }}>
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-3 py-3 sm:gap-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+        <div className="flex justify-end">
+          <ThemeToggle themeMode={themeMode} onToggle={onToggleTheme} />
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+export function Hero({ progress, totalQuestions }) {
+  return (
+    <section
+      className="relative overflow-hidden rounded-[28px] border px-4 py-4 sm:rounded-[36px] sm:px-8 sm:py-10"
+      style={{
+        color: theme.text,
+        borderColor: theme.line,
+        backgroundColor: theme.secondary,
+      }}
+    >
+      <div className="relative flex flex-col gap-4 sm:gap-6">
+        <div className="space-y-3 sm:space-y-4">
+          <p className="text-xs font-bold uppercase tracking-[0.26em]" style={{ color: theme.textTint }}>
+            Self Mapping Lab
+          </p>
+          <h1 className="font-title max-w-3xl text-3xl font-extrabold leading-[1.02] sm:text-5xl lg:text-6xl" style={{ color: theme.text }}>
+            <span className="block">답변은 자연스럽게,</span>
+            <span className="mt-1 block sm:mt-2">결과는 분리해서 읽습니다</span>
+          </h1>
+          <p className="max-w-2xl text-sm leading-6 sm:text-base sm:leading-7" style={{ color: theme.textSoft }}>
+            너무 깊게 고민하지 않아도 됩니다. 평소에 더 가까운 쪽을 고르다 보면,
+            마지막에 성향과 관계 반응을 한 번에 정리해서 볼 수 있어요.
+          </p>
+          <div className="inline-flex rounded-full px-4 py-2 text-sm font-semibold" style={{ backgroundColor: theme.panel }}>
+            총 {totalQuestions}문항
+          </div>
+        </div>
+
+        <Card className="border shadow-none backdrop-blur-sm" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
+          <Card.Header className="flex flex-col items-start gap-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
+              Progress
+            </p>
+            <Card.Title className="font-title text-2xl font-bold" style={{ color: theme.text }}>{progress}% 완료</Card.Title>
+            <Card.Description className="text-sm leading-6" style={{ color: theme.textSoft }}>
+              모든 문항을 답하면 별도 결과 페이지로 이동합니다.
+            </Card.Description>
+          </Card.Header>
+          <Card.Content className="flex flex-col gap-4">
+            <div className="h-3 overflow-hidden rounded-full" style={{ backgroundColor: theme.panelStrong }}>
+              <div
+                className="h-full rounded-full transition-[width] duration-300"
+                style={{
+                  width: `${progress}%`,
+                  background: `linear-gradient(90deg, ${theme.primaryStrong} 0%, ${theme.secondaryStrong} 100%)`,
+                }}
+              />
+            </div>
+          </Card.Content>
+        </Card>
+      </div>
+    </section>
+  );
+}
+
+export function StepCard({ step, children }) {
+  return (
+    <div className="rounded-[24px] border p-3 sm:rounded-[32px] sm:p-5" style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}>
+      <div className="mb-3 flex flex-col gap-1.5 px-2 sm:mb-4 sm:gap-2 sm:px-3">
+        <div className="inline-flex w-fit rounded-full px-3 py-1 text-xs font-bold tracking-[0.16em]" style={{ backgroundColor: theme.primaryStrong, color: "#2b1522" }}>
+          STEP {step.stepNumber}
+        </div>
+        <h3 className="font-title text-xl font-bold" style={{ color: theme.text }}>{step.title}</h3>
+        <p className="text-sm leading-6" style={{ color: theme.textSoft }}>{step.description}</p>
+      </div>
+      <div className="space-y-1">{children}</div>
+    </div>
+  );
+}
+
+export function BinaryQuestion({ number, question, value, onChange }) {
+  const radioBaseStyle = {
+    paddingTop: "0.5rem",
+    paddingBottom: "0.5rem",
+    minHeight: "auto",
+    margin: "0",
+    rowGap: "0.25rem",
+  };
+
+  return (
+    <div className="rounded-[20px] border px-3.5 pb-3.5 pt-2.5 sm:rounded-[28px] sm:p-5" style={{ borderColor: theme.line, backgroundColor: theme.panel }}>
+      <p className="mb-1.5 text-sm font-semibold leading-6 tracking-[0.02em] sm:mb-3" style={{ color: theme.text }}>
+        {number}. {question.prompt}
+      </p>
+      <RadioGroup name={question.id} value={value ?? null} onChange={onChange} className="gap-2">
+        {question.options.map((option) => (
+          <Radio
+            key={option.value}
+            value={option.value}
+            className="rounded-2xl border px-4 py-1 min-h-[44px] data-[selected=true]:border-transparent sm:py-3 sm:min-h-[76px]"
+            style={
+              value === option.value
+                ? {
+                    ...radioBaseStyle,
+                    backgroundColor: theme.panelHighlight,
+                    boxShadow: `inset 0 0 0 2px ${theme.primaryStrong}`,
+                    borderColor: "transparent",
+                  }
+                : { ...radioBaseStyle, borderColor: theme.line, backgroundColor: theme.panelStrong }
+            }
+          >
+            <Radio.Content className="gap-1" style={{ margin: 0, padding: "0.125rem 0" }}>
+              <span className="text-sm font-bold" style={{ color: theme.text }}>{option.title}</span>
+              <span className="text-sm" style={{ color: theme.textSoft }}>{option.description}</span>
+            </Radio.Content>
+          </Radio>
+        ))}
+      </RadioGroup>
+    </div>
+  );
+}
+
+export function ScaleQuestion({ number, question, value, onChange }) {
+  const radioBaseStyle = {
+    paddingTop: "0.5rem",
+    paddingBottom: "0.5rem",
+    minHeight: "auto",
+    margin: "0",
+    rowGap: "0.25rem",
+  };
+
+  const labels = [
+    { score: "1", text: "전혀 아니다" },
+    { score: "2", text: "조금 아니다" },
+    { score: "3", text: "보통이다" },
+    { score: "4", text: "그렇다" },
+    { score: "5", text: "매우 그렇다" },
+  ];
+
+  return (
+    <div className="rounded-[20px] border px-3.5 pb-3.5 pt-2.5 sm:rounded-[28px] sm:p-5" style={{ borderColor: theme.line, backgroundColor: theme.panel }}>
+      <p className="mb-1.5 text-sm font-semibold leading-6 tracking-[0.02em] sm:mb-3" style={{ color: theme.text }}>
+        {number}. {question.prompt}
+      </p>
+      <RadioGroup name={question.id} value={value ?? null} onChange={onChange} className="grid grid-cols-5 gap-2">
+        {labels.map((label) => (
+          <Radio
+            key={label.score}
+            value={label.score}
+            className="rounded-2xl border px-2 py-1 min-h-[40px] text-center data-[selected=true]:border-transparent sm:px-3 sm:py-3 sm:min-h-[64px]"
+            style={
+              value === label.score
+                ? {
+                    ...radioBaseStyle,
+                    backgroundColor: theme.panelHighlight,
+                    boxShadow: `inset 0 0 0 2px ${theme.primaryStrong}`,
+                    borderColor: "transparent",
+                  }
+                : { ...radioBaseStyle, borderColor: theme.line, backgroundColor: theme.panelStrong }
+            }
+          >
+            <Radio.Content className="w-full items-center justify-center gap-0.5 text-center whitespace-nowrap" style={{ margin: 0, padding: "0.125rem 0" }}>
+              <span className="inline-block min-w-[0.95rem] text-center text-xs font-bold sm:text-sm" style={{ color: theme.text }}>
+                {label.score}
+              </span>
+              <span className="text-[10px] sm:text-xs" style={{ color: theme.textSoft }}>{label.text}</span>
+            </Radio.Content>
+          </Radio>
+        ))}
+      </RadioGroup>
+    </div>
+  );
+}
