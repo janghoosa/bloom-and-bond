@@ -14,26 +14,26 @@ import { PrimaryActionButton, Shell } from "./common";
 
 const shareProfiles = {
   secure: {
-    label: "자연스럽게 흐르는 타입",
-    quote: "편안하게 마음을 나누고\n자연스럽게 가까워지는 사람",
+    label: "편안하게 스며드는 타입",
+    quote: "가까워지는 속도가 과하지 않아\n함께 있으면 마음이 놓이는 사람",
     publicAttachmentLabel: "안정적으로 연결되는 타입",
     gradient: ["#fff7fb", "#ffe3ee", "#ff9fc2"],
   },
   anxious: {
-    label: "연결을 소중히 여기는 타입",
-    quote: "작은 신호도 놓치지 않고\n마음을 읽으려는 사람",
+    label: "마음을 오래 들여다보는 타입",
+    quote: "작은 온도 차이도 그냥 넘기지 않고\n관계를 세심하게 살피는 사람",
     publicAttachmentLabel: "마음을 세심하게 읽는 타입",
     gradient: ["#fff1f8", "#ffcde4", "#ff6fb2"],
   },
   avoidant: {
-    label: "나만의 속도가 있는 타입",
-    quote: "충분히 안전하다고 느낄 때\n깊이 열리는 사람",
+    label: "천천히 가까워지는 타입",
+    quote: "마음이 열리는 순간은 느릴 수 있지만\n한 번 닿으면 깊게 이어지는 사람",
     publicAttachmentLabel: "천천히 가까워지는 타입",
     gradient: ["#fff8fc", "#f5deeb", "#d48ab2"],
   },
   fearful: {
-    label: "신중하게 마음을 여는 타입",
-    quote: "진심을 나누기까지 조심스럽지만\n그만큼 깊은 사람",
+    label: "조심스럽게 마음을 여는 타입",
+    quote: "가까워지는 일에 신중하지만\n그래서 더 진심이 오래 남는 사람",
     publicAttachmentLabel: "신중하게 마음을 여는 타입",
     gradient: ["#fff0f7", "#ffcadf", "#ff5ea6"],
   },
