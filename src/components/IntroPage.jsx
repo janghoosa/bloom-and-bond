@@ -1,39 +1,46 @@
 import { useState } from "react";
 import { Card } from "@heroui/react";
-import { ASSESSMENT_MODES } from "../lib/assessment";
 import { theme } from "../lib/theme";
-import { ModeChoiceCard, PrimaryActionButton, Shell } from "./common";
+import { PrimaryActionButton, Shell } from "./common";
 
 export function IntroPage({
   onStart,
-  quickTotalQuestions,
-  deepTotalQuestions,
+  onCompareWithCodes,
+  totalQuestions,
   totalResults,
-  themeMode,
-  onToggleTheme,
+  hasPartner,
 }) {
-  const [selectedMode, setSelectedMode] = useState(ASSESSMENT_MODES.quick);
+  const [showCompareInputs, setShowCompareInputs] = useState(false);
+  const [myCode, setMyCode] = useState("");
+  const [partnerCode, setPartnerCode] = useState("");
 
   const overviewPanelStyle = {
     background: "var(--panel-deep)",
     border: "1px solid color-mix(in srgb, var(--line) 88%, white)",
   };
 
-  const overviewCardStyle =
-    themeMode === "dark"
-      ? {
-          background: "var(--panel-strong)",
-          border: "1px solid color-mix(in srgb, var(--line) 70%, transparent)",
-        }
-      : {
-          background: "var(--panel-highlight)",
-          border: "1px solid color-mix(in srgb, var(--line) 78%, white)",
-        };
+  const overviewCardStyle = {
+    background: "var(--panel-highlight)",
+    border: "1px solid color-mix(in srgb, var(--line) 78%, white)",
+  };
 
-  const overviewAccentColor = themeMode === "dark" ? "var(--text)" : theme.primaryStrong;
+  const overviewAccentColor = theme.primaryStrong;
 
   return (
-    <Shell themeMode={themeMode} onToggleTheme={onToggleTheme}>
+    <Shell>
+      {hasPartner && (
+        <div
+          className="rounded-2xl border px-4 py-3 text-center"
+          style={{ borderColor: theme.primaryEdge, backgroundColor: theme.panelHighlight }}
+        >
+          <div className="text-sm font-bold" style={{ color: theme.text }}>
+            상대방이 검사를 보냈어요
+          </div>
+          <div className="mt-1 text-xs" style={{ color: theme.textSoft }}>
+            검사를 완료하면 내 상대랑 맞춰보는 화면으로 이어져요.
+          </div>
+        </div>
+      )}
       <section
         className="relative overflow-hidden rounded-[28px] border px-4 py-5 sm:rounded-[40px] sm:px-8 sm:py-12"
         style={{
@@ -45,7 +52,7 @@ export function IntroPage({
         <div className="relative space-y-4 sm:space-y-6">
           <div className="space-y-4 sm:space-y-5">
             <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: theme.textTint }}>
-              Cherry Blossom Edition
+              Bloom & Bond - Cherry Blossom Edition
             </p>
             <h1 className="font-title max-w-3xl text-4xl font-extrabold leading-snug sm:text-5xl lg:text-6xl" style={{ color: theme.text }}>
               나를 읽고 관계를
@@ -68,14 +75,14 @@ export function IntroPage({
                 검사 구성
               </Card.Title>
               <Card.Description className="text-sm leading-6" style={{ color: theme.textSoft }}>
-                모바일 기준으로 한 파트씩 넘기며 진행합니다.
+                모바일에서는 한 파트씩 넘기며 진행해요.
               </Card.Description>
             </Card.Header>
             <Card.Content className="grid gap-3">
               <div className="rounded-[22px] px-4 py-4" style={overviewCardStyle}>
                 <div className="text-sm font-bold" style={{ color: theme.text }}>총 문항</div>
                 <div className="font-title mt-1 text-2xl font-bold" style={{ color: overviewAccentColor }}>
-                  간단 {quickTotalQuestions}개 / 자세히 {deepTotalQuestions}개
+                  {totalQuestions}개
                 </div>
               </div>
               <div className="rounded-[22px] px-4 py-4" style={overviewCardStyle}>
@@ -83,9 +90,13 @@ export function IntroPage({
                 <div className="font-title mt-1 text-2xl font-bold" style={{ color: overviewAccentColor }}>{totalResults}개</div>
               </div>
               <div className="rounded-[22px] px-4 py-4" style={overviewCardStyle}>
+                <div className="text-sm font-bold" style={{ color: theme.text }}>예상 소요 시간</div>
+                <div className="font-title mt-1 text-2xl font-bold" style={{ color: overviewAccentColor }}>약 5분</div>
+              </div>
+              <div className="rounded-[22px] px-4 py-4" style={overviewCardStyle}>
                 <div className="text-sm font-bold" style={{ color: theme.text }}>진행 방식</div>
                 <div className="mt-1 text-sm leading-6" style={{ color: theme.text }}>
-                  먼저 검사 길이를 고른 뒤, 질문 스텝으로 이동하고 마지막에 결과 전용 페이지로 넘어갑니다.
+                  문항은 순서대로 이어지고, 결과는 마지막에 한 번에 정리돼요.
                 </div>
               </div>
             </Card.Content>
@@ -94,30 +105,51 @@ export function IntroPage({
           <Card className="border-0" style={overviewPanelStyle}>
             <Card.Header className="flex flex-col items-start gap-2">
               <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
-                Mode
+                Match
               </p>
               <Card.Title className="font-title text-2xl font-bold" style={{ color: theme.text }}>
-                검사 길이 선택
+                이미 감정코드가 있다면 바로 비교하기
               </Card.Title>
               <Card.Description className="text-sm leading-6" style={{ color: theme.textSoft }}>
-                먼저 가볍게 볼지, 조금 더 자세히 볼지 선택할 수 있습니다.
+                두 사람의 감정코드를 붙여넣으면 바로 맞춰보는 화면으로 넘어가요.
               </Card.Description>
             </Card.Header>
             <Card.Content className="grid gap-3">
-              <ModeChoiceCard
-                title="간단 보기"
-                description="핵심 문항만 빠르게 보고 결과를 확인합니다."
-                meta={`${quickTotalQuestions}문항`}
-                selected={selectedMode === ASSESSMENT_MODES.quick}
-                onSelect={() => setSelectedMode(ASSESSMENT_MODES.quick)}
-              />
-              <ModeChoiceCard
-                title="자세히 보기"
-                description="문항을 더 넓게 확인해서 결과를 조금 더 세밀하게 읽습니다."
-                meta={`${deepTotalQuestions}문항`}
-                selected={selectedMode === ASSESSMENT_MODES.deep}
-                onSelect={() => setSelectedMode(ASSESSMENT_MODES.deep)}
-              />
+              {!showCompareInputs ? (
+                <PrimaryActionButton onPress={() => setShowCompareInputs(true)} fullWidth={false}>
+                  감정코드 입력하기
+                </PrimaryActionButton>
+              ) : (
+                <>
+                  <textarea
+                    value={myCode}
+                    onChange={(event) => setMyCode(event.target.value)}
+                    placeholder="내 감정코드"
+                    className="min-h-[84px] w-full rounded-[22px] border px-4 py-3 text-sm outline-none"
+                    style={{ backgroundColor: theme.panelStrong, borderColor: theme.line, color: theme.text }}
+                  />
+                  <textarea
+                    value={partnerCode}
+                    onChange={(event) => setPartnerCode(event.target.value)}
+                    placeholder="상대 감정코드"
+                    className="min-h-[84px] w-full rounded-[22px] border px-4 py-3 text-sm outline-none"
+                    style={{ backgroundColor: theme.panelStrong, borderColor: theme.line, color: theme.text }}
+                  />
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <PrimaryActionButton onPress={() => onCompareWithCodes(myCode, partnerCode)} fullWidth={false}>
+                      바로 비교하기
+                    </PrimaryActionButton>
+                    <button
+                      type="button"
+                      onClick={() => setShowCompareInputs(false)}
+                      className="rounded-[20px] border px-4 py-3 text-sm font-bold"
+                      style={{ borderColor: theme.line, color: theme.text, backgroundColor: theme.panelHighlight }}
+                    >
+                      닫기
+                    </button>
+                  </div>
+                </>
+              )}
             </Card.Content>
           </Card>
         </div>
@@ -126,15 +158,15 @@ export function IntroPage({
       <div className="sticky bottom-2 z-10">
         <div className="rounded-[28px] border px-3 py-3 sm:px-4" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
           <div className="mb-2 px-2 text-center sm:mb-3">
-            <div className="text-sm font-bold" style={{ color: theme.text }}>
-              준비되면 원하는 길이로 시작하면 된다
+            <div className="text-base font-bold sm:text-lg" style={{ color: theme.text }}>
+              준비되면 시작해보세요
             </div>
-            <div className="mt-1 text-xs leading-5" style={{ color: theme.textSoft }}>
-              선택한 길이에 맞춰 한 파트씩 진행하고, 마지막에 결과 페이지로 이동합니다.
+            <div className="mt-1 text-sm leading-6 sm:text-[15px]" style={{ color: theme.textSoft }}>
+              한 파트씩 진행하고, 마지막에 결과 페이지로 이동해요.
             </div>
           </div>
-          <PrimaryActionButton onPress={() => onStart(selectedMode)}>
-            {selectedMode === ASSESSMENT_MODES.deep ? "자세히 시작하기" : "간단히 시작하기"}
+          <PrimaryActionButton onPress={onStart}>
+            검사 시작하기
           </PrimaryActionButton>
         </div>
       </div>
