@@ -105,6 +105,7 @@ export function AssessmentPage({
         <Hero progress={progress} totalQuestions={totalQuestions} />
       </div>
 
+      <div className="space-y-3 sm:space-y-4">
       <Card className="border" style={{ backgroundColor: theme.secondary, borderColor: theme.line }}>
         <Card.Header className="px-4 pt-4 sm:px-5 sm:pt-6 lg:px-5">
           <Card.Title className="font-title text-xl font-bold sm:text-2xl" style={{ color: theme.text }}>
@@ -163,25 +164,24 @@ export function AssessmentPage({
               );
             })}
           </StepCard>
-
-          <div className="my-3 h-px sm:my-6" style={{ backgroundColor: theme.line }} />
-
-          <div
-            ref={footerRef}
-            className="sticky bottom-2 z-10 -mx-1 rounded-[22px] border px-3 py-3.5 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:px-0 sm:py-2 sm:shadow-none md:rounded-[24px] md:border md:px-5 md:py-4"
-            style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}
-          >
-            <div className="mb-2 text-center text-xs font-bold uppercase tracking-[0.18em] sm:mb-4" style={{ color: theme.textSoft }}>
-              Step {activeStep.stepNumber} / {totalSteps}
-            </div>
-            {currentStep === totalSteps - 1 ? (
-              <PrimaryActionButton onPress={onAnalyze} disabled={!isCurrentStepComplete}>결과 보기</PrimaryActionButton>
-            ) : (
-              <PrimaryActionButton onPress={onNextStep} disabled={!isCurrentStepComplete}>다음 스텝</PrimaryActionButton>
-            )}
-          </div>
         </Card.Content>
       </Card>
+
+      <div
+        ref={footerRef}
+        className="sticky bottom-2 z-10 rounded-[22px] border px-3 py-3.5 backdrop-blur sm:static sm:px-4 sm:py-4 md:rounded-[24px] md:px-5 md:py-4"
+        style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}
+      >
+        <div className="mb-2 text-center text-xs font-bold uppercase tracking-[0.18em] sm:mb-4" style={{ color: theme.textSoft }}>
+          Step {activeStep.stepNumber} / {totalSteps}
+        </div>
+        {currentStep === totalSteps - 1 ? (
+          <PrimaryActionButton onPress={onAnalyze} disabled={!isCurrentStepComplete}>결과 보기</PrimaryActionButton>
+        ) : (
+          <PrimaryActionButton onPress={onNextStep} disabled={!isCurrentStepComplete}>다음 스텝</PrimaryActionButton>
+        )}
+      </div>
+      </div>
     </Shell>
   );
 }
