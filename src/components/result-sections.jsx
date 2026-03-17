@@ -167,7 +167,7 @@ export function DetailInsightsCard({ sections }) {
 }
 
 function splitSentences(text) {
-  return text.split(/(?<=\.\s)/).map((s) => s.trim()).filter(Boolean);
+  return text.split(/\.\s+/).map((s, i, arr) => (i < arr.length - 1 ? `${s}.` : s).trim()).filter(Boolean);
 }
 
 function CompatibilityList({ items }) {
