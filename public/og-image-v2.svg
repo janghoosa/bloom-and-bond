@@ -1,0 +1,63 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="112" y1="72" x2="1088" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7FB"/>
+      <stop offset="0.56" stop-color="#FFE5F1"/>
+      <stop offset="1" stop-color="#FFB0D1"/>
+    </linearGradient>
+    <linearGradient id="petal" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFF5FA"/>
+      <stop offset="1" stop-color="#FF6FB2"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" rx="36" fill="url(#bg)"/>
+
+  <circle cx="1002" cy="122" r="54" fill="#FFD9EA" opacity="0.72" filter="url(#soft)"/>
+  <circle cx="928" cy="528" r="76" fill="#FFC2DD" opacity="0.55" filter="url(#soft)"/>
+
+  <g transform="translate(878 120)">
+    <g transform="translate(118 118)">
+      <ellipse rx="74" ry="46" transform="rotate(-8)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(64)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(136)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(208)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(280)" fill="url(#petal)"/>
+      <circle r="28" fill="#FFDD69"/>
+      <circle r="7" cx="-11" cy="-8" fill="#FFB238"/>
+      <circle r="7" cx="13" cy="-3" fill="#FFB238"/>
+      <circle r="7" cx="-3" cy="13" fill="#FFB238"/>
+    </g>
+    <g transform="translate(18 246) scale(0.62)">
+      <ellipse rx="74" ry="46" transform="rotate(-8)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(64)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(136)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(208)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(280)" fill="url(#petal)"/>
+      <circle r="28" fill="#FFDD69"/>
+      <circle r="7" cx="-11" cy="-8" fill="#FFB238"/>
+      <circle r="7" cx="13" cy="-3" fill="#FFB238"/>
+      <circle r="7" cx="-3" cy="13" fill="#FFB238"/>
+    </g>
+    <g transform="translate(220 310) scale(0.42)">
+      <ellipse rx="74" ry="46" transform="rotate(-8)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(64)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(136)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(208)" fill="url(#petal)"/>
+      <ellipse rx="74" ry="46" transform="rotate(280)" fill="url(#petal)"/>
+      <circle r="28" fill="#FFDD69"/>
+      <circle r="7" cx="-11" cy="-8" fill="#FFB238"/>
+      <circle r="7" cx="13" cy="-3" fill="#FFB238"/>
+      <circle r="7" cx="-3" cy="13" fill="#FFB238"/>
+    </g>
+  </g>
+
+  <text x="84" y="88" fill="#D44E97" font-size="34" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">BLOOM &amp; BOND</text>
+  <text x="84" y="196" fill="#251822" font-size="90" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">벚꽃 아래서,</text>
+  <text x="84" y="304" fill="#251822" font-size="90" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">서로를 읽는 법</text>
+  <text x="84" y="426" fill="#705562" font-size="34" font-weight="500" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">MBTI와 애착유형을 함께 읽는 관계 해석 검사</text>
+  <text x="84" y="540" fill="#D44E97" font-size="25" font-weight="600" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">bloom-and-bond.pages.dev</text>
+</svg>
