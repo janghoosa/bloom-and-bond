@@ -88,7 +88,7 @@ async function drawResultCard(result) {
   const visual = getMbtiVisual(result.mbti.type);
   const displayHost = typeof window !== "undefined" ? window.location.host : "bloom-and-bond.pages.dev";
   const W = 1080;
-  const H = 1920;
+  const H = 1440;
   const PAD = 84;
 
   await document.fonts.ready;
@@ -122,28 +122,25 @@ async function drawResultCard(result) {
   ctx.fillText(profile.label, PAD, PAD + 332);
 
   ctx.fillStyle = "#6f5564";
-  ctx.font = "400 50px Pretendard";
+  ctx.font = "400 44px Pretendard";
   const lines = profile.quote.split("\n");
-  ctx.fillText(`\u201C${lines[0]}`, PAD, 620);
+  ctx.fillText(`\u201C${lines[0]}`, PAD, 560);
   if (lines[1]) {
-    ctx.fillText(`${lines[1]}\u201D`, PAD, 688);
+    ctx.fillText(`${lines[1]}\u201D`, PAD, 618);
   }
-
-  ctx.fillStyle = "#251822";
-  ctx.font = "700 42px Pretendard";
 
   ctx.fillStyle = visual.accent;
   ctx.font = "700 28px Pretendard";
-  ctx.fillText("핵심 포인트", PAD, 1010);
+  ctx.fillText("핵심 포인트", PAD, 760);
 
   ctx.fillStyle = "#251822";
-  ctx.font = "700 40px Pretendard";
+  ctx.font = "700 36px Pretendard";
   highlightPoints.forEach((point, index) => {
-    const y = 1120 + index * 168;
+    const y = 840 + index * 148;
     ctx.fillStyle = visual.accent;
     ctx.fillText(`${index + 1}.`, PAD, y);
     ctx.fillStyle = "#251822";
-    wrapText(ctx, point, PAD + 64, y, W - PAD * 2 - 64, 56);
+    wrapText(ctx, point, PAD + 56, y, W - PAD * 2 - 56, 50);
   });
 
   ctx.fillStyle = visual.accent;
@@ -286,7 +283,7 @@ function ShareSection({ result, onCompareWithCode }) {
     <>
       {cardImageUrl && (
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center overflow-y-auto px-6 py-12"
+          className="fixed inset-0 z-50 flex flex-col items-center overflow-y-auto px-4 py-6"
           style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
           onClick={closeModal}
         >
@@ -300,11 +297,11 @@ function ShareSection({ result, onCompareWithCode }) {
               className="w-full rounded-2xl shadow-2xl"
               style={{ maxWidth: 360 }}
             />
-            <div className="flex w-full gap-2" style={{ maxWidth: 360 }}>
+            <div className="flex w-full gap-2" style={{ maxWidth: 300 }}>
               <button
                 type="button"
                 onClick={handleDownload}
-                className="flex-1 rounded-[20px] px-4 py-3 text-sm font-bold"
+                className="flex-1 rounded-[20px] px-4 py-3 text-sm"
                 style={{
                   backgroundColor: theme.panelHighlight,
                   color: theme.text,
@@ -316,7 +313,7 @@ function ShareSection({ result, onCompareWithCode }) {
               <button
                 type="button"
                 onClick={handleShareFromModal}
-                className="flex-1 rounded-[20px] px-4 py-3 text-sm font-bold"
+                className="flex-1 rounded-[20px] px-4 py-3 text-sm"
                 style={{
                   backgroundColor: theme.primaryStrong,
                   color: theme.primaryContrast,

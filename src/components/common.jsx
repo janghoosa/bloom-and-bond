@@ -8,7 +8,7 @@ export function PrimaryActionButton({ children, onPress, fullWidth = true, disab
       onClick={disabled ? undefined : onPress}
       disabled={disabled}
       aria-disabled={disabled}
-      className={`${fullWidth ? "w-full" : ""} inline-flex min-h-[44px] items-center justify-center rounded-[20px] px-7 py-1.5 text-[15px] font-bold tracking-[0.01em] transition-opacity sm:px-8 ${
+      className={`${fullWidth ? "w-full" : ""} inline-flex min-h-[44px] items-center justify-center rounded-[20px] px-7 py-1.5 text-[15px] tracking-[0.01em] transition-opacity sm:px-8 ${
         disabled ? "opacity-55" : ""
       }`}
       style={{
@@ -17,8 +17,8 @@ export function PrimaryActionButton({ children, onPress, fullWidth = true, disab
         border: `1px solid ${disabled ? theme.line : theme.primaryEdge}`,
       }}
     >
-      <span className="inline-flex w-full items-center justify-center gap-2 font-bold">
-        <span className="text-[18px] leading-none font-bold sm:text-[19px]">{children}</span>
+      <span className="inline-flex w-full items-center justify-center gap-2">
+        <span className="text-[18px] leading-none sm:text-[19px]">{children}</span>
         <span aria-hidden="true" className="text-[20px] leading-none sm:text-[21px]">→</span>
       </span>
     </button>
