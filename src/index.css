@@ -39,7 +39,7 @@ body {
       color-mix(in srgb, var(--bg-mid) 72%, transparent) 42%,
       color-mix(in srgb, var(--bg-bottom) 80%, transparent) 100%
     ),
-    url("./assets/blossom.png");
+    url("./assets/blossom.webp");
   background-size: cover, cover;
   background-position: center, center top;
   background-repeat: no-repeat, no-repeat;
