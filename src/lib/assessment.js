@@ -1,10 +1,12 @@
 const RESULT_STORAGE_KEY = "mbti-chat-result";
+const PARTNER_RESULT_STORAGE_KEY = "mbti-chat-partner-result";
 export const THEME_STORAGE_KEY = "mbti-chat-theme";
 
 export const ROUTES = {
   intro: "/",
   assessment: "/test",
   result: "/result",
+  compare: "/compare",
 };
 
 export const ASSESSMENT_MODES = {
@@ -286,20 +288,20 @@ export const mbtiCopy = {
 
 const attachmentProfiles = {
   secure: {
-    title: "비교적 안정형",
-    summary: "친밀감과 자율성 사이 균형이 비교적 안정적입니다.",
+    title: "안정 애착 경향",
+    summary: "친밀감과 자율성 사이 균형을 비교적 잘 잡는 편이에요.",
   },
   anxious: {
     title: "불안 애착 경향",
-    summary: "관계 신호에 민감하고 확인 욕구가 높아질 가능성이 있습니다.",
+    summary: "관계 신호에 민감하고 확인 욕구가 높아질 수 있는 편이에요.",
   },
   avoidant: {
     title: "회피 애착 경향",
-    summary: "가까워질수록 거리 조절 욕구와 자기 통제가 커질 수 있습니다.",
+    summary: "가까워질수록 거리 조절 욕구와 자기 통제가 커질 수 있는 편이에요.",
   },
   fearful: {
     title: "불안-회피 혼합 경향",
-    summary: "가까워지고 싶지만 상처 가능성도 크게 경계하는 패턴입니다.",
+    summary: "가까워지고 싶지만 상처 가능성도 크게 경계하는 흐름이 함께 나타날 수 있어요.",
   },
 };
 
@@ -536,23 +538,23 @@ function buildAttachmentWhy(attachment) {
 
   if (attachment.key === "avoidant") {
     if (avoidanceLevel === "높음") {
-      return "가까워질수록 마음을 열기보다 혼자 정리하는 쪽으로 빠르게 기울 수 있습니다. 기대고 싶지 않아서라기보다, 기대는 순간 부담과 실망 가능성이 같이 커질 수 있다고 느끼기 때문입니다.";
+      return "가까워질수록 마음을 열기보다 혼자 정리하는 쪽으로 빠르게 기울 수 있어요. 기대고 싶지 않아서라기보다, 기대는 순간 부담과 실망 가능성이 같이 커질 수 있다고 느껴질 때가 있기 때문이에요.";
     }
-    return "기본적으로는 거리를 조절하면서 안정감을 찾는 편입니다. 감정이 커질수록 바로 공유하기보다 스스로 정리한 뒤 돌아오려는 반응이 먼저 나올 가능성이 있습니다.";
+    return "기본적으로는 거리를 조절하면서 안정감을 찾는 편이에요. 감정이 커질수록 바로 공유하기보다 스스로 정리한 뒤 돌아오려는 반응이 먼저 나올 수 있어요.";
   }
 
   if (attachment.key === "anxious") {
     if (anxietyLevel === "높음") {
-      return "관계의 작은 변화도 크게 읽을 수 있고, 확인받고 싶은 마음이 빠르게 올라올 수 있습니다. 사랑이 부족해서라기보다 신호가 불분명할 때 불안이 먼저 작동하는 구조에 가깝습니다.";
+      return "관계의 작은 변화도 크게 읽힐 수 있고, 확인받고 싶은 마음이 빠르게 올라올 수 있어요. 사랑이 부족해서라기보다 신호가 불분명할 때 불안이 먼저 작동하는 구조에 가까워요.";
     }
-    return "확인 욕구와 관계 신호에 대한 민감도가 약간 높은 편입니다. 애정 표현이 줄어들거나 반응이 늦어지면 의미를 더 크게 해석할 수 있습니다.";
+    return "확인 욕구와 관계 신호에 대한 민감도가 약간 높은 편이에요. 애정 표현이 줄어들거나 반응이 늦어지면 의미를 더 크게 해석하게 될 수 있어요.";
   }
 
   if (attachment.key === "fearful") {
-    return "가까워지고 싶은 마음과 다칠까 경계하는 마음이 동시에 강하게 작동할 수 있습니다. 그래서 붙고 싶다가도 갑자기 닫히는 식의 양가 반응이 나타날 가능성이 있습니다.";
+    return "가까워지고 싶은 마음과 다칠까 경계하는 마음이 동시에 강하게 작동할 수 있어요. 그래서 붙고 싶다가도 갑자기 닫히는 식의 양가 반응이 나타날 수 있어요.";
   }
 
-  return "친밀감과 거리감 사이에서 비교적 균형을 잡는 편입니다. 다만 피로하거나 안전감이 흔들릴 때는 누구나 불안이나 회피 반응이 잠깐 올라올 수 있습니다.";
+  return "친밀감과 거리감 사이에서 균형을 잘 잡는 편이에요. 다만 피로하거나 안전감이 흔들릴 때는 누구나 불안이나 회피 반응이 잠깐 올라올 수 있어요.";
 }
 
 function buildRomanceInsight(mbti, attachment) {
@@ -560,30 +562,30 @@ function buildRomanceInsight(mbti, attachment) {
 
   if (attachment.key === "avoidant") {
     if (style.isThinking && style.isJudging) {
-      return "연애에서는 마음이 없어 보인다기보다, 감정을 표현하기 전에 먼저 정리하고 통제하려는 쪽에 가깝습니다. 특히 TJ 성향이 강하면 행동으로 책임지는 건 자연스럽지만, '보고 싶다', '서운했다', '힘들다' 같은 약한 문장을 바로 꺼내는 속도는 늦을 수 있습니다.";
+      return "연애에서는 마음이 없어 보인다기보다, 감정을 표현하기 전에 먼저 정리하고 통제하려는 편이에요. 특히 TJ 성향이 강하면 행동으로 책임지는 건 자연스럽지만, '보고 싶다', '서운했다', '힘들다' 같은 약한 문장을 바로 꺼내는 속도는 늦을 수 있어요.";
     }
     if (style.isIntrovert) {
-      return "마음이 생겨도 바로 표현하기보다 안전하다고 느낄 때까지 안쪽에서 오래 정리할 가능성이 있습니다. 가까워질수록 말수가 줄거나 혼자만의 시간이 더 필요해질 수 있습니다.";
+      return "마음이 생겨도 바로 표현하기보다 안전하다고 느낄 때까지 안쪽에서 오래 정리하게 될 수 있어요. 가까워질수록 말수가 줄거나 혼자만의 시간이 더 필요해질 수 있어요.";
     }
-    return "호감이 있어도 감정 표현이 천천히 나오는 편일 수 있습니다. 관계를 소홀히 해서라기보다 가까워질수록 자기 통제와 거리 조절 욕구가 커질 수 있기 때문입니다.";
+    return "호감이 있어도 감정 표현이 천천히 나오는 편일 수 있어요. 관계를 소홀히 해서라기보다 가까워질수록 자기 통제와 거리 조절 욕구가 커질 수 있기 때문이에요.";
   }
 
   if (attachment.key === "anxious") {
     if (style.isFeeling) {
-      return "좋아하는 사람에게 정서적으로 깊이 연결되고 싶어 하는 욕구가 큰 편입니다. 다만 애정 표현의 온도나 반응 속도가 달라질 때 관계 의미를 빠르게 확대 해석할 수 있습니다.";
+      return "좋아하는 사람에게 정서적으로 깊이 연결되고 싶어 하는 욕구가 큰 편이에요. 다만 애정 표현의 온도나 반응 속도가 달라질 때 관계 의미를 빠르게 확대 해석할 수 있어요.";
     }
-    return "상대와의 연결이 흔들린다고 느끼면 생각보다 빨리 확인 욕구가 올라올 수 있습니다. 평소에는 이성적으로 보이더라도 연애 안에서는 답장, 말투, 거리감 같은 신호에 예민해질 수 있습니다.";
+    return "상대와의 연결이 흔들린다고 느끼면 생각보다 빨리 확인 욕구가 올라올 수 있어요. 평소에는 이성적으로 보여도 연애 안에서는 답장, 말투, 거리감 같은 신호에 예민해질 수 있어요.";
   }
 
   if (attachment.key === "fearful") {
-    return "끌림과 경계가 같이 커서 관계 초반에는 더 흔들릴 수 있습니다. 가까워지고 싶지만 상처 가능성도 크게 느껴서, 다정함을 원하면서도 동시에 한 발 물러서는 반응이 반복될 수 있습니다.";
+    return "끌림과 경계가 같이 커서 관계 초반에는 더 흔들릴 수 있어요. 가까워지고 싶지만 상처 가능성도 크게 느껴져서, 다정함을 원하면서도 동시에 한 발 물러서는 반응이 반복될 수 있어요.";
   }
 
   if (style.isThinking && style.isJudging) {
-    return "연애에서도 책임감과 일관성을 중요하게 보는 편입니다. 표현은 담백할 수 있지만 약속, 행동, 구조를 통해 관계를 지키려는 경향이 비교적 뚜렷합니다.";
+    return "연애에서도 책임감과 일관성을 중요하게 보는 편이에요. 표현은 담백할 수 있지만 약속, 행동, 구조를 통해 관계를 지키려는 경향이 분명한 편이에요.";
   }
 
-  return "관계 안에서 비교적 유연하게 연결을 만들어가는 편입니다. 표현 방식이 화려하지 않아도 안정적으로 마음을 주고받을 기반은 있는 쪽에 가깝습니다.";
+  return "관계 안에서 유연하게 연결을 만들어가는 편이에요. 표현 방식이 화려하지 않아도 안정적으로 마음을 주고받을 기반은 있는 편이에요.";
 }
 
 function buildConflictInsight(mbti, attachment) {
@@ -591,56 +593,56 @@ function buildConflictInsight(mbti, attachment) {
 
   if (attachment.key === "avoidant" || attachment.key === "fearful") {
     if (style.isThinking) {
-      return "갈등이 생기면 감정 교류보다 문제 구조를 먼저 정리하려 할 수 있습니다. 이때 상대는 '공감이 없다'고 느끼고, 본인은 '정리도 못 하고 더 커진다'고 느끼면서 서로 엇갈릴 가능성이 큽니다.";
+      return "갈등이 생기면 감정 교류보다 문제 구조를 먼저 정리하려 할 수 있어요. 이때 상대는 '공감이 없다'고 느끼고, 본인은 '정리도 못 하고 더 커진다'고 느끼면서 서로 엇갈릴 수 있어요.";
     }
-    return "갈등이 올라올수록 바로 마주하기보다 잠깐 거리를 두고 정리하려는 반응이 나올 수 있습니다. 하지만 설명 없이 물러나면 상대는 거절이나 단절로 느낄 수 있어, 잠깐 멈추더라도 언제 다시 대화할지 같이 말해주는 것이 중요합니다.";
+    return "갈등이 올라올수록 바로 마주하기보다 잠깐 거리를 두고 정리하려는 반응이 나올 수 있어요. 하지만 설명 없이 물러나면 상대는 거절이나 단절처럼 느낄 수 있어서, 잠깐 멈추더라도 언제 다시 대화할지 같이 말해주는 편이 중요해요.";
   }
 
   if (attachment.key === "anxious") {
-    return "갈등 상황에서 핵심 쟁점보다 '나를 밀어내는 건가'가 먼저 크게 느껴질 수 있습니다. 그래서 설명을 듣기 전에 마음을 확인받고 싶어질 수 있고, 상대가 차갑게 반응하면 갈등 강도가 빠르게 올라갈 가능성이 있습니다.";
+    return "갈등 상황에서 핵심 쟁점보다 '나를 밀어내는 건가'가 먼저 크게 느껴질 수 있어요. 그래서 설명을 듣기 전에 마음을 확인받고 싶어질 수 있고, 상대가 차갑게 반응하면 갈등 강도가 빠르게 올라갈 수 있어요.";
   }
 
   if (style.isFeeling) {
-    return "갈등에서도 감정 결을 놓치지 않으려는 편입니다. 다만 분위기를 지나치게 읽으면 실제 문제보다 정서 신호에 더 크게 흔들릴 수 있습니다.";
+    return "갈등에서도 감정 결을 놓치지 않으려는 편이에요. 다만 분위기를 지나치게 읽으면 실제 문제보다 정서 신호에 더 크게 흔들릴 수 있어요.";
   }
 
-  return "갈등에서는 감정보다 기준과 해결 순서를 먼저 세우려는 편입니다. 이 강점은 문제 해결에는 유리하지만, 초반 공감이 빠지면 관계 대화에서는 차갑게 들릴 수 있습니다.";
+  return "갈등에서는 감정보다 기준과 해결 순서를 먼저 세우려는 편이에요. 이 강점은 문제 해결에는 유리하지만, 초반 공감이 빠지면 관계 대화에서는 차갑게 들릴 수 있어요.";
 }
 
 function buildDistanceInsight(mbti, attachment) {
   const style = getThinkingStyle(mbti.type);
 
   if (attachment.key === "avoidant") {
-    return "거리감이 필요한 순간이 비교적 분명한 편입니다. 문제는 혼자 정리하는 시간이 필요할 때 그 이유를 말하지 않으면, 상대는 '밀어낸다'고 해석하고 본인은 더 숨 막히게 느끼는 악순환이 생길 수 있다는 점입니다.";
+    return "거리감이 필요한 순간이 분명한 편이에요. 문제는 혼자 정리하는 시간이 필요할 때 그 이유를 말하지 않으면, 상대는 '밀어낸다'고 해석하고 본인은 더 숨 막히게 느끼는 악순환이 생길 수 있다는 점이에요.";
   }
 
   if (attachment.key === "fearful") {
-    return "가까워지고 싶은 욕구와 거리 두고 싶은 욕구가 번갈아 올라올 수 있습니다. 그래서 어느 날은 깊게 연결되고 싶다가도, 바로 다음 순간에는 선을 긋고 싶어지는 식의 흔들림이 나타날 가능성이 있습니다.";
+    return "가까워지고 싶은 욕구와 거리 두고 싶은 욕구가 번갈아 올라올 수 있어요. 그래서 어느 날은 깊게 연결되고 싶다가도, 바로 다음 순간에는 선을 긋고 싶어지는 식의 흔들림이 나타날 수 있어요.";
   }
 
   if (attachment.key === "anxious") {
-    return `조금만 멀어져도 실제 거리보다 더 크게 느낄 수 있습니다. 특히 ${style.isIntuitive ? "의미를 빠르게 읽는 성향" : "디테일 신호를 세게 읽는 성향"}이 더해지면 답장 텀, 표정, 말투 변화가 관계 전체의 신호처럼 해석될 수 있습니다.`;
+    return `조금만 멀어져도 실제 거리보다 더 크게 느껴질 수 있어요. 특히 ${style.isIntuitive ? "의미를 빠르게 읽는 성향" : "디테일 신호를 세게 읽는 성향"}이 더해지면 답장 텀, 표정, 말투 변화가 관계 전체의 신호처럼 해석될 수 있어요.`;
   }
 
-  return "거리감 조절이 비교적 안정적인 편입니다. 다만 피로하거나 관계가 불명확할 때는 누구나 잠깐 더 붙고 싶거나, 반대로 혼자 정리하고 싶어질 수 있습니다.";
+  return "거리감 조절이 안정적인 편이에요. 다만 피로하거나 관계가 불명확할 때는 누구나 잠깐 더 붙고 싶거나, 반대로 혼자 정리하고 싶어질 수 있어요.";
 }
 
 function buildReassuranceInsight(mbti, attachment) {
   const style = getThinkingStyle(mbti.type);
 
   if (attachment.key === "anxious") {
-    return `확인 욕구가 올라올 때 필요한 건 거창한 답보다 일관된 신호입니다. 특히 ${style.isFeeling ? "정서적 톤" : "명확한 표현과 반복 가능한 약속"}이 안정감을 크게 좌우할 수 있습니다.`;
+    return `확인 욕구가 올라올 때 필요한 건 거창한 답보다 일관된 신호에 가까워요. 특히 ${style.isFeeling ? "정서적 톤" : "명확한 표현과 반복 가능한 약속"}이 안정감을 크게 좌우할 수 있어요.`;
   }
 
   if (attachment.key === "avoidant") {
-    return "확인을 덜 원한다기보다, 확인이 깊어질수록 부담이 같이 커질 수 있습니다. 그래서 안심이 필요해도 먼저 말하지 못하고 닫는 식으로 반응할 가능성이 있습니다.";
+    return "확인을 덜 원한다기보다, 확인이 깊어질수록 부담이 같이 커질 수 있어요. 그래서 안심이 필요해도 먼저 말하지 못하고 닫는 식으로 반응할 수 있어요.";
   }
 
   if (attachment.key === "fearful") {
-    return "확인받고 싶은 마음과 확인받는 순간 생기는 부담이 동시에 움직일 수 있습니다. 그래서 안심을 주는 말이 들어와도 바로 믿기보다 한 번 더 물러나는 반응이 나타날 수 있습니다.";
+    return "확인받고 싶은 마음과 확인받는 순간 생기는 부담이 동시에 움직일 수 있어요. 그래서 안심을 주는 말이 들어와도 바로 믿기보다 한 번 더 물러나는 반응이 나타날 수 있어요.";
   }
 
-  return "확인 욕구는 비교적 안정적이지만, 관계가 흐려질 때는 명확한 말 한마디가 여전히 중요합니다. 안정형도 모호함이 길어지면 흔들릴 수 있습니다.";
+  return "확인 욕구는 대체로 안정적인 편이지만, 관계가 흐려질 때는 명확한 말 한마디가 여전히 중요할 수 있어요. 안정형도 모호함이 길어지면 흔들릴 수 있어요.";
 }
 
 function buildPracticeTips(mbti, attachment) {
@@ -648,27 +650,133 @@ function buildPracticeTips(mbti, attachment) {
   const tips = [];
 
   if (attachment.key === "avoidant" || attachment.key === "fearful") {
-    tips.push("감정이 올라왔을 때 바로 해명하거나 닫기 전에, '잠깐 정리하고 다시 말할게' 같은 브레이크 문장을 먼저 꺼내는 연습이 필요합니다.");
-    tips.push("행동으로만 챙기는 방식이 익숙하다면, 하루 한 번은 상태를 말로 전달하는 연습이 도움이 됩니다. 예: '오늘 좀 지쳤어', '지금은 혼자 정리할 시간이 조금 필요해'.");
+    tips.push({
+      label: "가장 먼저",
+      title: "브레이크 문장 만들기",
+      example: "\"잠깐 정리하고 다시 말할게\"",
+      description: "감정이 올라왔을 때 바로 해명하거나 닫히기 전에 시간을 버는 문장을 먼저 꺼내는 연습이 도움이 될 수 있어요.",
+    });
+    tips.push({
+      label: "지금 바로",
+      title: "상태를 말로 전달하기",
+      example: "\"오늘 좀 지쳤어\" / \"지금은 혼자 정리할 시간이 조금 필요해\"",
+      description: "행동으로만 챙기는 방식이 익숙하다면, 하루 한 번은 상태를 말로 전달하는 연습이 도움이 될 수 있어요.",
+    });
   }
 
   if (attachment.key === "anxious" || attachment.key === "fearful") {
-    tips.push("불안이 올라올 때 추측을 확정하지 말고, 사실 확인 문장을 한 단계 두는 편이 좋습니다. 예: '내가 이렇게 느꼈는데 맞아?'");
+    tips.push({
+      label: "중요",
+      title: "추측 대신 사실 확인하기",
+      example: "\"내가 이렇게 느꼈는데 맞아?\"",
+      description: "불안이 올라올 때 추측을 확정하지 말고, 사실 확인 문장을 한 단계 두는 편이 도움이 될 수 있어요.",
+    });
   }
 
   if (style.isThinking) {
-    tips.push("갈등 초반에는 해결책보다 감정 번역을 먼저 두는 게 효과적입니다. '그래서 속상했구나'를 먼저 말하고, 정리는 그 다음에 가는 흐름이 좋습니다.");
+    tips.push({
+      label: "익숙해지면",
+      title: "감정 번역 먼저 하기",
+      example: "\"그래서 속상했구나\"",
+      description: "갈등 초반에는 해결책보다 감정 번역을 먼저 두는 쪽이 더 효과적일 수 있어요. 정리는 그 다음에 가는 흐름이 좋아요.",
+    });
   }
 
   if (style.isJudging) {
-    tips.push("관계를 안정시키는 강점은 분명합니다. 다만 계획과 책임만으로는 정서적 안전감이 충분하지 않을 수 있어, 의도와 감정을 짧게라도 같이 말해주는 쪽이 좋습니다.");
+    tips.push({
+      label: "기억해두기",
+      title: "의도와 감정을 함께 말하기",
+      example: "\"내가 피한 건 아니고, 지금 정리할 시간이 조금 필요했어\"",
+      description: "계획과 책임만으로는 정서적 안전감이 충분하지 않을 수 있어서, 의도와 감정을 짧게라도 같이 말해주는 쪽이 좋아요.",
+    });
   }
 
   if (!tips.length) {
-    tips.push("지금의 강점을 유지하면서도, 애매한 순간에 감정과 의도를 한 문장 더 설명하는 연습이 결과를 더 안정적으로 만들어줄 가능성이 큽니다.");
+    tips.push({
+      label: "지금 바로",
+      title: "한 문장 더 설명하기",
+      example: "\"괜찮아\" 대신 \"괜찮긴 한데 조금 더 생각할 시간이 필요해\"",
+      description: "지금의 강점을 유지하면서도, 애매한 순간에 감정과 의도를 한 문장 더 설명하는 연습이 결과를 더 안정적으로 만들어줄 수 있어요.",
+    });
   }
 
-  return tips;
+  return tips.map((tip, index) => ({
+    ...tip,
+    priority: `${index + 1}. ${tip.label}`,
+  }));
+}
+
+function pushUnique(items, value) {
+  if (value && !items.includes(value)) {
+    items.push(value);
+  }
+}
+
+function buildCompatibilityInsight(mbti, attachment) {
+  const style = getThinkingStyle(mbti.type);
+  const goodMatchTraits = [];
+  const hardMatchTraits = [];
+  const reasons = [];
+
+  if (attachment.key === "anxious") {
+    pushUnique(goodMatchTraits, "안정형 애착에 가깝고, 반응과 애정 표현이 꾸준한 사람");
+    pushUnique(hardMatchTraits, "회피 애착 경향이 강해서 거리 두기로 갈등을 넘기기 쉬운 사람");
+    pushUnique(reasons, "확인 욕구가 올라올 때는 모호함보다 일관된 신호가 훨씬 큰 안정감을 줄 수 있어요.");
+  } else if (attachment.key === "avoidant") {
+    pushUnique(goodMatchTraits, "안정형 애착에 가깝고, 속도를 재촉하기보다 경계를 존중해주는 사람");
+    pushUnique(hardMatchTraits, "불안 애착 경향이 강해서 즉각적인 확인과 밀착을 자주 요구하는 사람");
+    pushUnique(reasons, "가까워질수록 혼자 정리할 시간이 필요할 수 있어서, 그 시간을 거절로 해석하지 않는 상대와 더 편해질 수 있어요.");
+  } else if (attachment.key === "fearful") {
+    pushUnique(goodMatchTraits, "안정형 애착에 가깝고, 급하게 몰아붙이지 않으면서도 꾸준히 신호를 주는 사람");
+    pushUnique(hardMatchTraits, "불안과 회피 반응이 모두 높아서 관계 온도가 크게 출렁이기 쉬운 사람");
+    pushUnique(reasons, "가까워지고 싶은 마음과 경계하는 마음이 같이 올라올 수 있어서, 속도는 느긋하지만 반응은 한결같은 사람이 더 안전하게 느껴질 수 있어요.");
+  } else {
+    pushUnique(goodMatchTraits, "애착 반응이 안정적이고, 감정 표현이 예측 가능한 사람");
+    pushUnique(hardMatchTraits, "애정 표현과 거리 조절이 들쑥날쑥해서 관계 리듬이 자주 흔들리는 사람");
+    pushUnique(reasons, "기본 균형은 있는 편이라도, 관계 리듬이 반복해서 흔들리면 원래 성향보다 피로가 더 크게 느껴질 수 있어요.");
+  }
+
+  if (style.isThinking) {
+    pushUnique(goodMatchTraits, "감정만 던지기보다 맥락과 이유를 함께 말해주는 F 성향 또는 균형 잡힌 사람");
+    pushUnique(hardMatchTraits, "감정 강도는 높지만 무엇이 필요한지는 설명하지 않는 사람");
+    pushUnique(reasons, "문제를 이해하고 풀어가는 흐름이 보여야 마음이 덜 막힐 수 있어서, 감정과 맥락을 같이 말해주는 상대가 더 편할 수 있어요.");
+  } else {
+    pushUnique(goodMatchTraits, "감정을 숨기지 않고 따뜻하게 확인해주는 F 성향의 사람");
+    pushUnique(hardMatchTraits, "정리와 해결만 먼저 내세워서 감정 확인이 늦어지는 T 성향의 사람");
+    pushUnique(reasons, "정서적 톤과 반응의 결을 크게 읽는 편이라, 내용이 맞아도 차갑게 들리면 관계 피로가 더 빠르게 쌓일 수 있어요.");
+  }
+
+  if (style.isJudging) {
+    pushUnique(goodMatchTraits, "약속과 관계 흐름이 일정한 J 성향의 사람");
+    pushUnique(hardMatchTraits, "관계 정의와 계획을 계속 미루는 P 성향의 사람");
+    pushUnique(reasons, "예측 가능한 흐름이 있어야 안정감이 커질 수 있어서, 애매함이 길어지는 관계에서는 불필요한 소모가 생길 수 있어요.");
+  } else {
+    pushUnique(goodMatchTraits, "대화를 열어두고 상황에 따라 유연하게 맞춰주는 P 성향의 사람");
+    pushUnique(hardMatchTraits, "모든 감정 반응을 바로 정의하고 확정하려는 J 성향의 사람");
+    pushUnique(reasons, "여지를 남겨두는 관계 방식이 익숙한 편이라, 속도를 너무 빨리 고정하려는 흐름은 부담으로 느껴질 수 있어요.");
+  }
+
+  if (style.isIntrovert) {
+    pushUnique(goodMatchTraits, "혼자 정리할 시간도 관계의 일부로 이해해주는 사람");
+    pushUnique(hardMatchTraits, "침묵이나 답장 텀을 바로 거절 신호로 읽는 사람");
+  } else {
+    pushUnique(goodMatchTraits, "대화를 통해 풀되 상대 속도도 함께 맞춰주는 사람");
+    pushUnique(hardMatchTraits, "문제가 생기면 같이 닫혀서 대화 창구가 빠르게 사라지는 사람");
+  }
+
+  if (style.isIntuitive) {
+    pushUnique(goodMatchTraits, "표면보다 의도와 맥락을 함께 읽어주는 N 성향의 사람");
+    pushUnique(hardMatchTraits, "말의 표면만 보면서 숨은 불편함을 오래 놓치는 사람");
+  } else {
+    pushUnique(goodMatchTraits, "행동, 빈도, 약속처럼 눈에 보이는 신호를 꾸준히 보여주는 사람");
+    pushUnique(hardMatchTraits, "분위기만 남기고 실제 행동 신호는 부족한 사람");
+  }
+
+  return {
+    goodMatch: `${goodMatchTraits.slice(0, 3).join(", ")}와 더 잘 맞을 수 있어요.`,
+    hardMatch: `${hardMatchTraits.slice(0, 3).join(", ")}와는 부딪히는 지점이 더 자주 생길 수 있어요.`,
+    reason: `${reasons.slice(0, 3).join(" ")} 그래서 MBTI 궁합보다도, 애착 안정감과 소통 속도가 함께 맞는지가 더 중요할 수 있어요.`,
+  };
 }
 
 export function buildCombinedInsight(mbti, attachment) {
@@ -676,15 +784,15 @@ export function buildCombinedInsight(mbti, attachment) {
   const avoidanceLevel = getAttachmentIntensity(attachment.avoidanceValue ?? Number(attachment.avoidance));
   const points = [
     ...mbti.type.split("").map((letter) => mbtiCopy[letter]),
-    `애착 점수는 5점 만점 기준이며, 높을수록 해당 반응이 더 자주 강하게 올라온다는 뜻입니다. 현재는 불안 ${attachment.anxiety}, 회피 ${attachment.avoidance}입니다.`,
+    `애착 점수는 5점 만점 기준이며, 높을수록 해당 반응이 더 자주 강하게 올라온다는 뜻이에요. 현재는 불안 ${attachment.anxiety}, 회피 ${attachment.avoidance}예요.`,
   ];
 
   return {
     title: `${mbti.type} · ${attachment.title}`,
     summary:
       attachment.key === "secure"
-        ? "기본 성향과 관계 패턴이 크게 충돌하지 않는 편입니다. 다만 성향의 표현 방식과 관계 안에서의 안심 방식은 분리해서 보는 편이 더 정확합니다."
-        : `성격 선호 위에 애착 반응이 덧씌워지는 구조라, 평소의 MBTI 특징보다 관계 안에서의 안전감 문제가 더 크게 드러날 수 있습니다. 현재 강도는 불안 ${anxietyLevel}, 회피 ${avoidanceLevel} 쪽에 더 가깝습니다.`,
+        ? "기본 성향과 관계 패턴이 크게 충돌하지 않는 편이에요. 다만 성향의 표현 방식과 관계 안에서의 안심 방식은 분리해서 보는 편이 더 정확할 수 있어요."
+        : `성격 선호 위에 애착 반응이 덧씌워지는 구조라, 평소의 MBTI 특징보다 관계 안에서의 안전감 문제가 더 크게 드러날 수 있어요. 현재는 불안 반응과 회피 반응이 각각 ${anxietyLevel}, ${avoidanceLevel} 정도로 나타나는 편이에요.`,
     points,
     sections: [
       { id: "why", title: "왜 이렇게 반응할 수 있나", body: buildAttachmentWhy(attachment) },
@@ -693,7 +801,120 @@ export function buildCombinedInsight(mbti, attachment) {
       { id: "distance", title: "거리감이 생길 때", body: buildDistanceInsight(mbti, attachment) },
       { id: "reassurance", title: "확인 욕구와 안심 방식", body: buildReassuranceInsight(mbti, attachment) },
     ],
+    compatibility: buildCompatibilityInsight(mbti, attachment),
     practice: buildPracticeTips(mbti, attachment),
+  };
+}
+
+function getAxisWord(letter) {
+  return {
+    E: "대화하며 풀어가기",
+    I: "혼자 생각을 정리하기",
+    S: "구체적인 신호 보기",
+    N: "숨은 의미 읽기",
+    T: "문제를 정리하고 해결하기",
+    F: "감정과 분위기 살피기",
+    J: "예측 가능한 흐름을 선호하기",
+    P: "여지를 두고 유연하게 가기",
+  }[letter];
+}
+
+export function buildCompareInsight(myResult, partnerResult) {
+  const myType = myResult.mbti.type;
+  const partnerType = partnerResult.mbti.type;
+  const sameCode = myResult.code && partnerResult.code && myResult.code === partnerResult.code;
+  const sameLetters = myType.split("").filter((letter, index) => partnerType[index] === letter);
+  const differentLetters = myType
+    .split("")
+    .map((letter, index) => [letter, partnerType[index]])
+    .filter(([left, right]) => left !== right);
+
+  const myAttachment = myResult.attachment.key;
+  const partnerAttachment = partnerResult.attachment.key;
+  const sameAttachment = myAttachment === partnerAttachment;
+  const anxiousAvoidantPair =
+    (myAttachment === "anxious" && partnerAttachment === "avoidant") ||
+    (myAttachment === "avoidant" && partnerAttachment === "anxious");
+  const fearfulIncluded = myAttachment === "fearful" || partnerAttachment === "fearful";
+  const secureIncluded = myAttachment === "secure" || partnerAttachment === "secure";
+
+  const summary = sameAttachment
+    ? `두 사람 모두 ${myResult.attachment.title} 반응이 비슷해서, 편한 부분도 닮아 있고 예민해지는 지점도 함께 겹칠 수 있어요.`
+    : anxiousAvoidantPair
+      ? "두 사람 중 한 사람은 더 확인하고 싶고, 다른 한 사람은 더 정리할 시간이 필요해서 가까워질수록 속도 차이가 크게 느껴질 수 있어요."
+      : secureIncluded
+        ? "두 사람 중 한 사람이 관계 리듬을 더 안정적으로 잡아줄 수 있어요. 다만 그 사람이 계속 맞춰주는 구조가 되지 않게 보는 게 중요해요."
+        : "두 사람의 관계 반응 속도가 조금 달라서, 같은 상황도 전혀 다르게 받아들일 수 있어요.";
+
+  const strengths = [];
+  if (sameLetters.length >= 2) {
+    strengths.push(`MBTI 기준으로 ${sameLetters.map(getAxisWord).join(", ")} 방식이 닮아 있어서 기본 리듬이 잘 맞을 수 있어요.`);
+  }
+  if (secureIncluded) {
+    strengths.push("둘 중 한 사람이 관계의 중심을 조금 더 단단하게 잡아주면, 감정이 올라오는 순간에도 관계가 덜 흔들릴 수 있어요.");
+  }
+  if (myType[2] === partnerType[2]) {
+    strengths.push(myType[2] === "T" ? "두 사람 모두 대화에서 핵심을 빨리 잡는 편이라, 문제를 정리하는 속도도 빠를 수 있어요." : "두 사람 모두 감정 결을 중요하게 봐서, 서로의 서운함을 눈치채는 힘은 좋은 편이에요.");
+  }
+  if (!strengths.length) {
+    strengths.push("두 사람의 기본 성향이 다르더라도, 서로의 차이를 빨리 말로 설명해주면 오히려 부족한 부분을 보완하는 관계가 될 수 있어요.");
+  }
+
+  const friction = [];
+  if (anxiousAvoidantPair) {
+    friction.push("확인받고 싶은 마음과 혼자 정리하고 싶은 마음이 부딪히면, 한 사람은 더 다가가고 다른 사람은 더 물러나는 악순환이 생길 수 있어요.");
+  }
+  if (fearfulIncluded) {
+    friction.push("가까워지고 싶은 마음과 경계하는 마음이 같이 움직이면, 어느 날은 다정하고 어느 날은 갑자기 닫히는 식의 온도 차가 크게 느껴질 수 있어요.");
+  }
+  if (differentLetters.some(([left, right]) => (left === "T" && right === "F") || (left === "F" && right === "T"))) {
+    friction.push("한 사람은 정리와 해결을 먼저 원하고, 다른 사람은 감정 확인을 먼저 원해서 같은 갈등도 순서가 엇갈릴 수 있어요.");
+  }
+  if (differentLetters.some(([left, right]) => (left === "J" && right === "P") || (left === "P" && right === "J"))) {
+    friction.push("관계를 확실히 정리하고 싶은 마음과 조금 더 열어두고 싶은 마음이 부딪히면 약속, 답장, 계획에서 서운함이 쌓일 수 있어요.");
+  }
+  if (!friction.length) {
+    friction.push("두 사람이 닮은 점이 많을수록 갈등 방식도 비슷해져서, 한 번 꼬이면 대화가 같은 방향으로 굳어버릴 수 있어요.");
+  }
+
+  const tips = [];
+  tips.push(anxiousAvoidantPair ? "감정이 올라왔을 때는 바로 결론을 내리기보다, 언제 다시 이야기할지 시간을 먼저 합의해두는 편이 좋아요." : "갈등이 생기면 누가 맞는지보다 지금 필요한 게 공감인지 정리인지 먼저 확인해보세요.");
+  tips.push(sameLetters.length >= 2 ? "닮은 점은 편안함으로 가져가고, 다른 점이 보이는 순간에는 왜 그렇게 반응하는지 한 문장 더 설명해보면 좋아요." : "다른 점이 보일수록 해석하지 말고 번역해주는 말이 중요해요. '나는 이렇게 느꼈어'를 자주 써보는 편이 좋아요.");
+  tips.push("관계가 흔들리는 순간에만 대화하지 말고, 평소 편한 순간에 서로 안심되는 방식과 부담되는 방식을 미리 말해두면 두 사람 모두 덜 지치고 갈등도 덜 커질 수 있어요.");
+
+  const betterWays = [];
+  if (sameCode) {
+    betterWays.push("두 사람의 반응 구조가 거의 같다면, 서운함을 느끼는 지점도 비슷할 가능성이 커요. 그래서 '나는 이럴 때 이렇게 받아들여'를 먼저 말해두면 오해를 많이 줄일 수 있어요.");
+    betterWays.push("서로 닮았다는 이유로 설명을 생략하면 오히려 같이 조용해질 수 있어요. 편하다고 느끼는 순간일수록 상태를 짧게라도 말로 확인해보는 편이 좋아요.");
+    betterWays.push("같은 방식으로 닫히거나 같은 방식으로 불안해질 수 있으니, 갈등이 생기면 둘 중 한 사람은 반드시 대화 브레이크 문장을 먼저 꺼내는 약속을 정해두면 좋아요.");
+  } else {
+    betterWays.push("서로 다른 반응이 보일수록 누가 예민한지가 아니라, 반응 순서가 다르다고 보는 편이 좋아요. 한 사람은 먼저 공감을, 다른 사람은 먼저 정리를 원할 수 있어요.");
+    betterWays.push("상대가 왜 저렇게까지 느끼는지 이해가 안 될 때는 해석보다 질문이 먼저예요. '이럴 때 어떤 말이 제일 안심돼?'처럼 구체적으로 묻는 편이 도움이 돼요.");
+    betterWays.push("차이를 줄이려 하기보다 역할을 나눠보는 것도 좋아요. 한 사람은 분위기를 열고, 다른 사람은 흐름을 정리하는 식으로 각자의 강점을 쓰면 관계가 더 안정될 수 있어요.");
+  }
+
+  if (anxiousAvoidantPair) {
+    betterWays.push("확인하고 싶은 사람은 필요한 말을 짧게 요청하고, 정리 시간이 필요한 사람은 돌아올 시간을 같이 말해주는 방식으로 속도 차이를 다루는 연습이 중요해요.");
+  }
+
+  if (fearfulIncluded) {
+    betterWays.push("마음이 가까워졌다가 갑자기 멀어지는 순간이 반복될 수 있으니, 그 변화 자체를 이상하게 보지 말고 '지금은 조금 천천히 가고 싶어' 같은 중간 문장을 자주 써보는 편이 좋아요.");
+  }
+
+  return {
+    title: `${myType} · ${partnerType}`,
+    summary,
+    sections: [
+      { id: "strength", title: "잘 맞는 점", body: strengths[0] },
+      { id: "friction", title: "엇갈리기 쉬운 점", body: friction[0] },
+      { id: "tip", title: "대화 팁", body: tips[0] },
+    ],
+    bullets: {
+      strengths,
+      friction,
+      tips,
+      betterWays,
+    },
   };
 }
 
@@ -714,6 +935,23 @@ export function clearStoredResult() {
   window.sessionStorage.removeItem(RESULT_STORAGE_KEY);
 }
 
+export function loadStoredPartnerResult() {
+  try {
+    const raw = window.sessionStorage.getItem(PARTNER_RESULT_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function persistPartnerResult(result) {
+  window.sessionStorage.setItem(PARTNER_RESULT_STORAGE_KEY, JSON.stringify(result));
+}
+
+export function clearStoredPartnerResult() {
+  window.sessionStorage.removeItem(PARTNER_RESULT_STORAGE_KEY);
+}
+
 export function navigateTo(pathname) {
   window.history.pushState({}, "", pathname);
 }
@@ -728,4 +966,180 @@ export function getInitialTheme() {
     return storedTheme;
   }
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+const PARTNER_STORAGE_KEY = "mbti-chat-partner";
+const CODE_PREFIX = "bb3_";
+const CODE_SECRET = "BloomBondCherry";
+const MBTI_TYPES = [
+  "ISTJ", "ISFJ", "INFJ", "INTJ",
+  "ISTP", "ISFP", "INFP", "INTP",
+  "ESTP", "ESFP", "ENFP", "ENTP",
+  "ESTJ", "ESFJ", "ENFJ", "ENTJ",
+];
+const ATTACHMENT_KEYS = ["secure", "anxious", "avoidant", "fearful"];
+const MBTI_SECTION_META = [
+  { id: "energy", pair: ["E", "I"], index: 0 },
+  { id: "perception", pair: ["S", "N"], index: 1 },
+  { id: "judgment", pair: ["T", "F"], index: 2 },
+  { id: "lifestyle", pair: ["J", "P"], index: 3 },
+];
+
+function bytesToBase64Url(bytes) {
+  const binary = String.fromCharCode(...bytes);
+  return window.btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+function base64UrlToBytes(value) {
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized + "=".repeat((4 - (normalized.length % 4 || 4)) % 4);
+  const binary = window.atob(padded);
+  return Uint8Array.from(binary, (char) => char.charCodeAt(0));
+}
+
+function obfuscatePayload(payload) {
+  const encoder = new TextEncoder();
+  const payloadBytes = encoder.encode(payload);
+  const secretBytes = encoder.encode(CODE_SECRET);
+  const obfuscated = payloadBytes.map((byte, index) => byte ^ secretBytes[index % secretBytes.length]);
+  return bytesToBase64Url(obfuscated);
+}
+
+function deobfuscatePayload(payload) {
+  const decoder = new TextDecoder();
+  const payloadBytes = base64UrlToBytes(payload);
+  const secretBytes = new TextEncoder().encode(CODE_SECRET);
+  const restored = payloadBytes.map((byte, index) => byte ^ secretBytes[index % secretBytes.length]);
+  return decoder.decode(restored);
+}
+
+export function encodeAnswers(mode, mbtiAnswers, attachmentAnswers) {
+  const config = buildAssessmentConfig(mode);
+  const mbti = evaluateMbti(mbtiAnswers, config.mbtiSections, config.mbtiQuestions);
+  const attachment = evaluateAttachment(attachmentAnswers, config.attachmentSections, config.attachmentQuestions);
+
+  if (!mbti || !attachment) {
+    return "";
+  }
+
+  return encodeResult(mode, mbti, attachment);
+}
+
+export function decodeAnswers(code) {
+  if (!code?.startsWith(CODE_PREFIX)) {
+    return null;
+  }
+
+  try {
+    const raw = deobfuscatePayload(code.slice(CODE_PREFIX.length));
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+export function evaluateFromCode(code) {
+  const decoded = decodeAnswers(code);
+  if (!decoded) return null;
+  const mode = decoded.m === "d" ? ASSESSMENT_MODES.deep : ASSESSMENT_MODES.quick;
+  const mbtiType = MBTI_TYPES[decoded.t];
+  const attachmentKey = ATTACHMENT_KEYS[decoded.k];
+  const anxietyValue = (decoded.a ?? 0) / 10;
+  const avoidanceValue = (decoded.v ?? 0) / 10;
+
+  if (!mbtiType || !attachmentKey) return null;
+
+  const mbti = rebuildMbtiFromCompact(mode, mbtiType, decoded.s ?? []);
+  const attachment = {
+    key: attachmentKey,
+    anxiety: anxietyValue.toFixed(1),
+    anxietyValue,
+    avoidance: avoidanceValue.toFixed(1),
+    avoidanceValue,
+    sectionScores: [],
+    ...attachmentProfiles[attachmentKey],
+  };
+
+  return { mode, mbti, attachment, combined: buildCombinedInsight(mbti, attachment), code };
+}
+
+function quantizeStrength(section) {
+  const dominantCount = Math.max(section.leftCount ?? 0, section.rightCount ?? 0);
+  const ratio = section.total ? dominantCount / section.total : 0.5;
+  if (ratio >= 0.95) return 3;
+  if (ratio >= 0.8) return 2;
+  if (ratio >= 0.65) return 1;
+  return 0;
+}
+
+function dequantizeCounts(total, strengthLevel) {
+  const dominantCount = [
+    Math.ceil(total / 2),
+    Math.ceil(total * 0.65),
+    Math.ceil(total * 0.8),
+    total,
+  ][strengthLevel] ?? Math.ceil(total / 2);
+  return [dominantCount, total - dominantCount];
+}
+
+export function encodeResult(mode, mbti, attachment) {
+  const payload = {
+    m: mode === ASSESSMENT_MODES.deep ? "d" : "q",
+    t: MBTI_TYPES.indexOf(mbti.type),
+    k: ATTACHMENT_KEYS.indexOf(attachment.key),
+    a: Math.round((attachment.anxietyValue ?? Number(attachment.anxiety)) * 10),
+    v: Math.round((attachment.avoidanceValue ?? Number(attachment.avoidance)) * 10),
+    s: (mbti.sectionScores ?? []).map(quantizeStrength),
+  };
+
+  return `${CODE_PREFIX}${obfuscatePayload(JSON.stringify(payload))}`;
+}
+
+function rebuildMbtiFromCompact(mode, type, strengths) {
+  const config = buildAssessmentConfig(mode);
+  const summary = type
+    .split("")
+    .map((letter) => mbtiCopy[letter])
+    .join(" / ");
+
+  const sectionScores = config.mbtiSections.map((section, index) => {
+    const meta = MBTI_SECTION_META[index];
+    const dominant = type[meta.index];
+    const [left, right] = meta.pair;
+    const total = section.questions.length;
+    const [dominantCount, weakCount] = dequantizeCounts(total, strengths[index] ?? 1);
+    const isLeftDominant = dominant === left;
+
+    return {
+      id: meta.id,
+      title: section.title,
+      left,
+      right,
+      leftCount: isLeftDominant ? dominantCount : weakCount,
+      rightCount: isLeftDominant ? weakCount : dominantCount,
+      total,
+      dominant,
+      scoreText: `${left} ${isLeftDominant ? dominantCount : weakCount} : ${right} ${isLeftDominant ? weakCount : dominantCount}`,
+    };
+  });
+
+  return { type, summary, sectionScores };
+}
+
+export function trackEvent(name, params = {}) {
+  if (typeof window.gtag === "function") {
+    window.gtag("event", name, params);
+  }
+}
+
+export function storePartnerCode(code) {
+  window.sessionStorage.setItem(PARTNER_STORAGE_KEY, code);
+}
+
+export function loadPartnerCode() {
+  return window.sessionStorage.getItem(PARTNER_STORAGE_KEY);
+}
+
+export function clearPartnerCode() {
+  window.sessionStorage.removeItem(PARTNER_STORAGE_KEY);
 }
