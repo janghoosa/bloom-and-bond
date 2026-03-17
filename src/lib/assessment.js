@@ -461,10 +461,10 @@ export function evaluateAttachment(answers, activeAttachmentSections, activeAtta
   let avoidance = 0;
 
   for (const question of activeAttachmentQuestions) {
-    const value = Number(answers[question.id]);
-    if (!value) {
-      return null;
-    }
+    const raw = answers[question.id];
+    if (raw === undefined || raw === null || raw === "") return null;
+    const value = Number(raw);
+    if (Number.isNaN(value)) return null;
     if (question.axis === "anxiety") {
       anxiety += value;
     } else {
@@ -474,6 +474,7 @@ export function evaluateAttachment(answers, activeAttachmentSections, activeAtta
 
   const anxietyQuestions = activeAttachmentQuestions.filter((question) => question.axis === "anxiety").length;
   const avoidanceQuestions = activeAttachmentQuestions.filter((question) => question.axis === "avoidance").length;
+  if (!anxietyQuestions || !avoidanceQuestions) return null;
   const averageAnxiety = anxiety / anxietyQuestions;
   const averageAvoidance = avoidance / avoidanceQuestions;
   const highAnxiety = averageAnxiety >= 3.4;
