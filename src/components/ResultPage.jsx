@@ -361,11 +361,19 @@ function ShareSection({ result, onCompareWithCode }) {
             className="w-full rounded-2xl border px-4 py-4 text-left"
             style={itemStyle}
           >
-            <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
-              {saving ? "카드 만드는 중..." : "결과 카드 만들기"}
+            <div className="flex items-center justify-between gap-3">
+              <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
+                {saving ? "카드 만드는 중..." : "결과 카드 만들기"}
+              </div>
+              <div className="rounded-full px-3 py-1 text-xs font-bold" style={{ backgroundColor: theme.primaryStrong, color: theme.primaryContrast }}>
+                Story
+              </div>
             </div>
             <div className="mt-1 text-sm leading-6" style={{ color: theme.textSoft }}>
               인스타 스토리나 피드에 올릴 수 있는 카드를 만들어요.
+            </div>
+            <div className="mt-3 text-xs font-semibold" style={{ color: theme.textTint }}>
+              큰 미리보기 이미지로 저장할 수 있어요
             </div>
           </button>
           <button
@@ -374,11 +382,19 @@ function ShareSection({ result, onCompareWithCode }) {
             className="w-full rounded-2xl border px-4 py-4 text-left"
             style={itemStyle}
           >
-            <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
-              {linkCopied ? "복사됨!" : "결과 링크 복사"}
+            <div className="flex items-center justify-between gap-3">
+              <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
+                {linkCopied ? "복사됨!" : "결과 링크 복사"}
+              </div>
+              <div className="rounded-full px-3 py-1 text-xs font-bold" style={{ backgroundColor: theme.panelStrong, color: theme.text }}>
+                Link
+              </div>
             </div>
             <div className="mt-1 text-sm leading-6" style={{ color: theme.textSoft }}>
               내 결과를 볼 수 있는 링크를 복사해요.
+            </div>
+            <div className="mt-3 text-xs font-semibold" style={{ color: theme.textTint }}>
+              바로 열어볼 수 있는 주소를 보낼 수 있어요
             </div>
           </button>
           <button
@@ -398,10 +414,18 @@ function ShareSection({ result, onCompareWithCode }) {
             <div className="mt-1 text-sm leading-6" style={{ color: theme.textSoft }}>
               내 결과 코드를 복사해서 상대에게 보낼 수 있어요.
             </div>
+            <div className="mt-3 text-xs font-semibold" style={{ color: theme.textTint }}>
+              비교 화면에서 바로 붙여넣을 수 있어요
+            </div>
           </button>
           <div className="rounded-2xl border px-4 py-4" style={itemStyle}>
-            <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
-              내 상대랑 맞춰보기
+            <div className="flex items-center justify-between gap-3">
+              <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
+                내 상대랑 맞춰보기
+              </div>
+              <div className="rounded-full px-3 py-1 text-xs font-bold" style={{ backgroundColor: theme.panelStrong, color: theme.text }}>
+                Match
+              </div>
             </div>
             <div className="mt-1 text-sm leading-6" style={{ color: theme.textSoft }}>
               상대의 감정코드를 붙여넣으면 두 사람의 결과를 같이 볼 수 있어요.
