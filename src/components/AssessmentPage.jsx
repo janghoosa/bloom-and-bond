@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "@heroui/react";
 import { theme } from "../lib/theme";
 import {
@@ -25,11 +25,46 @@ export function AssessmentPage({
   attachmentAnswers,
   setMbtiAnswers,
   setAttachmentAnswers,
-  themeMode,
-  onToggleTheme,
 }) {
   const questionRefs = useRef([]);
   const footerRef = useRef(null);
+  const heroRef = useRef(null);
+  const [showStickyProgress, setShowStickyProgress] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth >= 640) {
+      return undefined;
+    }
+
+    const target = heroRef.current;
+    if (!target) {
+      return undefined;
+    }
+
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        setShowStickyProgress(!entry.isIntersecting);
+      },
+      { threshold: 0.08 },
+    );
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth >= 640) {
+      return;
+    }
+
+    window.setTimeout(() => {
+      questionRefs.current[0]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 120);
+  }, [currentStep]);
 
   const scrollToNextTarget = (questionIndex) => {
     if (typeof window === "undefined" || window.innerWidth >= 640) {
@@ -47,8 +82,28 @@ export function AssessmentPage({
   };
 
   return (
-    <Shell themeMode={themeMode} onToggleTheme={onToggleTheme}>
-      <Hero progress={progress} totalQuestions={totalQuestions} />
+    <Shell>
+      <div className={`sticky top-2 z-20 pb-2 sm:hidden ${showStickyProgress ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"} transition-all duration-200`}>
+        <div className="mx-4">
+          <div className="card__content flex flex-col gap-4">
+            <div className="px-4">
+              <div className="h-3 overflow-hidden rounded-full" style={{ backgroundColor: theme.panelStrong }}>
+                <div
+                  className="h-full rounded-full transition-[width] duration-300"
+                  style={{
+                    width: `${progress}%`,
+                    background: `linear-gradient(90deg, ${theme.primaryStrong} 0%, ${theme.secondaryStrong} 100%)`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div ref={heroRef}>
+        <Hero progress={progress} totalQuestions={totalQuestions} />
+      </div>
 
       <Card className="border" style={{ backgroundColor: theme.secondary, borderColor: theme.line }}>
         <Card.Header className="px-4 pt-4 sm:px-5 sm:pt-6 lg:px-5">
@@ -56,7 +111,7 @@ export function AssessmentPage({
             현재 질문
           </Card.Title>
           <Card.Description className="text-sm leading-6" style={{ color: theme.textSoft }}>
-            현재 파트 문항을 모두 선택하면 다음으로 넘어갑니다.
+            현재 파트 문항을 모두 선택하면 다음으로 넘어갈 수 있어요.
           </Card.Description>
         </Card.Header>
         <Card.Content className="px-0 pb-3 sm:px-0 sm:pb-6 md:px-5 md:pb-7 lg:px-6">
@@ -124,9 +179,6 @@ export function AssessmentPage({
             ) : (
               <PrimaryActionButton onPress={onNextStep} disabled={!isCurrentStepComplete}>다음 스텝</PrimaryActionButton>
             )}
-            <p className="mt-2 px-1 text-center text-sm leading-6 sm:mt-4" style={{ color: theme.textSoft }}>
-              현재 파트 응답: {activeAnsweredCount} / {activeStep.questions.length}
-            </p>
           </div>
         </Card.Content>
       </Card>
