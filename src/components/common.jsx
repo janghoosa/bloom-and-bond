@@ -75,7 +75,16 @@ export function Shell({ children }) {
         <div className="h-[52px] sm:h-[56px]" aria-hidden="true" />
         {children}
         <div className="pt-2 text-center text-xs sm:pt-4" style={{ color: theme.textSoft }}>
-          Bloom & Bond by hoosa
+          <div>Bloom & Bond by hoosa</div>
+          <a
+            href="https://forms.gle/QvNuwmnSLQZDcF67A"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-1 inline-block underline underline-offset-4"
+            style={{ color: theme.textSoft }}
+          >
+            의견 보내기
+          </a>
         </div>
       </div>
     </div>
