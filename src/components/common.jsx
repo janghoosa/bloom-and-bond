@@ -77,7 +77,7 @@ export function Shell({ children }) {
         <div className="pt-2 text-center text-xs sm:pt-4" style={{ color: theme.textSoft }}>
           <div>Bloom & Bond by hoosa</div>
           <a
-            href="https://forms.gle/QvNuwmnSLQZDcF67A"
+            href="https://forms.gle/7vFUs9qPqbgN1thq5"
             target="_blank"
             rel="noreferrer"
             className="mt-1 inline-block underline underline-offset-4"
