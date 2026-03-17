@@ -74,6 +74,7 @@ export default function App() {
     if (resultCode && window.location.pathname === ROUTES.result) {
       const shared = evaluateFromCode(resultCode);
       if (shared) {
+        persistResult(shared);
         setResult(shared);
         setRoute(ROUTES.result);
         window.history.replaceState({}, "", ROUTES.result);
@@ -164,11 +165,12 @@ export default function App() {
     });
 
     const partnerCode = loadPartnerCode();
+    let partnerDecoded = null;
     if (partnerCode) {
-      const partner = evaluateFromCode(partnerCode);
-      if (partner) {
-        setPartnerResult(partner);
-        persistPartnerResult(partner);
+      partnerDecoded = evaluateFromCode(partnerCode);
+      if (partnerDecoded) {
+        setPartnerResult(partnerDecoded);
+        persistPartnerResult(partnerDecoded);
       }
       clearPartnerCode();
       setHasPartner(false);
@@ -176,7 +178,7 @@ export default function App() {
 
     persistResult(nextResult);
     setResult(nextResult);
-    if (partnerCode) {
+    if (partnerDecoded) {
       navigateTo(ROUTES.compare);
       setRoute(ROUTES.compare);
     } else {
