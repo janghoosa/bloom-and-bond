@@ -415,10 +415,12 @@ function ShareSection({ result, onCompareWithCode }) {
 }
 
 export function ResultPage({ result, partnerResult, onRestart, onOpenCompare, onCompareWithCode }) {
+  const [activeTab, setActiveTab] = useState("me");
+  const activeResult = activeTab === "partner" && partnerResult ? partnerResult : result;
   const combined =
-    result.combined?.sections && result.combined?.practice && result.combined?.compatibility
-      ? result.combined
-      : buildCombinedInsight(result.mbti, result.attachment);
+    activeResult.combined?.sections && activeResult.combined?.practice && activeResult.combined?.compatibility
+      ? activeResult.combined
+      : buildCombinedInsight(activeResult.mbti, activeResult.attachment);
 
   const mbtiAxisLabels = {
     energy: { label: "E / I", subtitle: "외향형 / 내향형", order: ["E", "I"] },
@@ -427,7 +429,7 @@ export function ResultPage({ result, partnerResult, onRestart, onOpenCompare, on
     lifestyle: { label: "J / P", subtitle: "판단형 / 인식형", order: ["J", "P"] },
   };
 
-  const mbtiSectionBars = result.mbti.sectionScores.map((section) => {
+  const mbtiSectionBars = activeResult.mbti.sectionScores.map((section) => {
     const leftCount = section.leftCount ?? Number(section.scoreText.match(/\b([A-Z]) (\d+)/)?.[2] ?? 0);
     const rightCount = section.rightCount ?? Number(section.scoreText.match(/: [A-Z] (\d+)/)?.[1] ?? 0);
     const total = section.total ?? leftCount + rightCount;
@@ -451,14 +453,14 @@ export function ResultPage({ result, partnerResult, onRestart, onOpenCompare, on
     {
       id: "anxiety",
       label: "불안 반응",
-      valueText: `${result.attachment.anxiety} / 5.0`,
-      progress: ((result.attachment.anxietyValue ?? Number(result.attachment.anxiety)) / 5) * 100,
+      valueText: `${activeResult.attachment.anxiety} / 5.0`,
+      progress: ((activeResult.attachment.anxietyValue ?? Number(activeResult.attachment.anxiety)) / 5) * 100,
     },
     {
       id: "avoidance",
       label: "회피 반응",
-      valueText: `${result.attachment.avoidance} / 5.0`,
-      progress: ((result.attachment.avoidanceValue ?? Number(result.attachment.avoidance)) / 5) * 100,
+      valueText: `${activeResult.attachment.avoidance} / 5.0`,
+      progress: ((activeResult.attachment.avoidanceValue ?? Number(activeResult.attachment.avoidance)) / 5) * 100,
     },
   ];
 
@@ -470,38 +472,54 @@ export function ResultPage({ result, partnerResult, onRestart, onOpenCompare, on
           <Card.Header className="flex flex-col items-start gap-2">
             <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>Match</p>
             <Card.Title className="font-title text-2xl font-bold" style={{ color: theme.text }}>
-              내 상대랑 맞춰볼 준비가 됐어요
+              두 사람 결과를 같이 볼 수 있어요
             </Card.Title>
             <Card.Description className="text-sm leading-6" style={{ color: theme.textSoft }}>
-              두 사람의 성향과 관계 반응을 전용 화면에서 함께 볼 수 있어요.
+              여기서는 내 결과와 상대 결과를 번갈아 보고, 자세한 해석은 비교 화면에서 함께 볼 수 있어요.
             </Card.Description>
           </Card.Header>
           <Card.Content className="space-y-3">
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl border px-4 py-4" style={{ backgroundColor: theme.panelHighlight, borderColor: theme.line }}>
-                <div className="text-sm font-bold" style={{ color: theme.text }}>내 상대의 성향</div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => setActiveTab("me")}
+                className="rounded-2xl border px-4 py-4 text-left transition-colors"
+                style={{
+                  backgroundColor: activeTab === "me" ? theme.panelHighlight : theme.panel,
+                  borderColor: activeTab === "me" ? theme.primaryStrong : theme.line,
+                }}
+              >
+                <div className="text-sm font-bold" style={{ color: theme.text }}>내 결과</div>
                 <div className="font-title mt-1 text-2xl font-bold" style={{ color: theme.text }}>
-                  {partnerResult.mbti.type}
+                  {result.attachment.title}
                 </div>
                 <div className="mt-2 text-sm leading-6" style={{ color: theme.textSoft }}>
-                  {partnerResult.mbti.summary}
+                  {result.mbti.type} · 불안 {result.attachment.anxiety} / 회피 {result.attachment.avoidance}
                 </div>
-              </div>
-              <div className="rounded-2xl border px-4 py-4" style={{ backgroundColor: theme.panelHighlight, borderColor: theme.line }}>
-                <div className="text-sm font-bold" style={{ color: theme.text }}>내 상대의 관계 반응</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("partner")}
+                className="rounded-2xl border px-4 py-4 text-left transition-colors"
+                style={{
+                  backgroundColor: activeTab === "partner" ? theme.panelHighlight : theme.panel,
+                  borderColor: activeTab === "partner" ? theme.primaryStrong : theme.line,
+                }}
+              >
+                <div className="text-sm font-bold" style={{ color: theme.text }}>상대 결과</div>
                 <div className="font-title mt-1 text-2xl font-bold" style={{ color: theme.text }}>
                   {partnerResult.attachment.title}
                 </div>
                 <div className="mt-2 text-sm leading-6" style={{ color: theme.textSoft }}>
-                  불안 {partnerResult.attachment.anxiety} / 회피 {partnerResult.attachment.avoidance}
+                  {partnerResult.mbti.type} · 불안 {partnerResult.attachment.anxiety} / 회피 {partnerResult.attachment.avoidance}
                 </div>
-              </div>
+              </button>
             </div>
             <PrimaryActionButton onPress={onOpenCompare} fullWidth={false}>내 상대랑 맞춰보기</PrimaryActionButton>
           </Card.Content>
         </Card>
       )}
-      <ResultOverview result={result} mbtiSectionBars={mbtiSectionBars} attachmentOverviewBars={attachmentOverviewBars} />
+      <ResultOverview result={activeResult} mbtiSectionBars={mbtiSectionBars} attachmentOverviewBars={attachmentOverviewBars} />
       <KeyPointsCard points={combined.points} />
       <CompatibilityCard compatibility={combined.compatibility} />
       <DetailInsightsCard sections={combined.sections} />
