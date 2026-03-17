@@ -1,49 +1,6 @@
 import { Card, Radio, RadioGroup } from "@heroui/react";
 import { theme } from "../lib/theme";
 
-function SunIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current stroke-2">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v3" />
-      <path d="M12 19v3" />
-      <path d="M4.93 4.93l2.12 2.12" />
-      <path d="M16.95 16.95l2.12 2.12" />
-      <path d="M2 12h3" />
-      <path d="M19 12h3" />
-      <path d="M4.93 19.07l2.12-2.12" />
-      <path d="M16.95 7.05l2.12-2.12" />
-    </svg>
-  );
-}
-
-function MoonIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
-      <path d="M20.2 14.4A8.5 8.5 0 0 1 9.6 3.8a9 9 0 1 0 10.6 10.6Z" />
-    </svg>
-  );
-}
-
-export function ThemeToggle({ themeMode, onToggle }) {
-  return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className="inline-flex min-h-[52px] min-w-[52px] items-center justify-center rounded-full border px-4 py-3"
-      style={{
-        backgroundColor: theme.panel,
-        borderColor: theme.line,
-        color: theme.text,
-      }}
-      aria-label={themeMode === "dark" ? "라이트 모드로 변경" : "다크 모드로 변경"}
-      title={themeMode === "dark" ? "라이트 모드" : "다크 모드"}
-    >
-      {themeMode === "dark" ? <SunIcon /> : <MoonIcon />}
-    </button>
-  );
-}
-
 export function PrimaryActionButton({ children, onPress, fullWidth = true, disabled = false }) {
   return (
     <button
@@ -111,14 +68,15 @@ export function ModeChoiceCard({ title, description, meta, selected, onSelect })
   );
 }
 
-export function Shell({ children, themeMode, onToggleTheme }) {
+export function Shell({ children }) {
   return (
     <div className="min-h-screen" style={{ color: theme.text }}>
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-3 py-3 sm:gap-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
-        <div className="flex justify-end">
-          <ThemeToggle themeMode={themeMode} onToggle={onToggleTheme} />
-        </div>
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-3 pt-3 pb-3 sm:gap-6 sm:px-6 sm:pt-8 sm:pb-8 lg:px-8 lg:pt-10 lg:pb-10">
+        <div className="h-[52px] sm:h-[56px]" aria-hidden="true" />
         {children}
+        <div className="pt-2 text-center text-xs sm:pt-4" style={{ color: theme.textSoft }}>
+          Bloom & Bond by hoosa
+        </div>
       </div>
     </div>
   );
@@ -137,7 +95,7 @@ export function Hero({ progress, totalQuestions }) {
       <div className="relative flex flex-col gap-4 sm:gap-6">
         <div className="space-y-3 sm:space-y-4">
           <p className="text-xs font-bold uppercase tracking-[0.26em]" style={{ color: theme.textTint }}>
-            Self Mapping Lab
+            Bloom & Bond
           </p>
           <h1 className="font-title max-w-3xl text-3xl font-extrabold leading-[1.02] sm:text-5xl lg:text-6xl" style={{ color: theme.text }}>
             <span className="block">답변은 자연스럽게,</span>
@@ -154,12 +112,12 @@ export function Hero({ progress, totalQuestions }) {
 
         <Card className="border shadow-none backdrop-blur-sm" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
           <Card.Header className="flex flex-col items-start gap-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
               Progress
             </p>
             <Card.Title className="font-title text-2xl font-bold" style={{ color: theme.text }}>{progress}% 완료</Card.Title>
             <Card.Description className="text-sm leading-6" style={{ color: theme.textSoft }}>
-              모든 문항을 답하면 별도 결과 페이지로 이동합니다.
+              모든 문항을 답하면 결과 페이지로 이동해요.
             </Card.Description>
           </Card.Header>
           <Card.Content className="flex flex-col gap-4">
@@ -208,7 +166,7 @@ export function BinaryQuestion({ number, question, value, onChange }) {
       <p className="mb-1.5 text-sm font-semibold leading-6 tracking-[0.02em] sm:mb-3" style={{ color: theme.text }}>
         {number}. {question.prompt}
       </p>
-      <RadioGroup name={question.id} value={value ?? null} onChange={onChange} className="gap-2">
+      <RadioGroup aria-label={question.prompt} name={question.id} value={value ?? null} onChange={onChange} className="gap-2">
         {question.options.map((option) => (
           <Radio
             key={option.value}
@@ -258,7 +216,7 @@ export function ScaleQuestion({ number, question, value, onChange }) {
       <p className="mb-1.5 text-sm font-semibold leading-6 tracking-[0.02em] sm:mb-3" style={{ color: theme.text }}>
         {number}. {question.prompt}
       </p>
-      <RadioGroup name={question.id} value={value ?? null} onChange={onChange} className="grid grid-cols-5 gap-2">
+      <RadioGroup aria-label={question.prompt} name={question.id} value={value ?? null} onChange={onChange} className="grid grid-cols-5 gap-2">
         {labels.map((label) => (
           <Radio
             key={label.score}
