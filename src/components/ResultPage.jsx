@@ -86,6 +86,7 @@ async function drawResultCard(result) {
   const combined = result.combined?.points ? result.combined : buildCombinedInsight(result.mbti, result.attachment);
   const highlightPoints = combined.points.slice(0, 3);
   const visual = getMbtiVisual(result.mbti.type);
+  const displayHost = typeof window !== "undefined" ? window.location.host : "bloom-and-bond.pages.dev";
   const W = 1080;
   const H = 1920;
   const PAD = 84;
@@ -147,7 +148,7 @@ async function drawResultCard(result) {
 
   ctx.fillStyle = visual.accent;
   ctx.font = "600 28px Pretendard";
-  ctx.fillText("example.com", PAD, H - PAD - 8);
+  ctx.fillText(displayHost, PAD, H - PAD - 8);
 
   return new Promise((resolve) => {
     canvas.toBlob((blob) => resolve(blob), "image/png");
