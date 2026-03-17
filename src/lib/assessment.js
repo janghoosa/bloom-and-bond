@@ -773,9 +773,9 @@ function buildCompatibilityInsight(mbti, attachment) {
   }
 
   return {
-    goodMatch: `${goodMatchTraits.slice(0, 3).join(", ")}와 더 잘 맞을 수 있어요.`,
-    hardMatch: `${hardMatchTraits.slice(0, 3).join(", ")}와는 부딪히는 지점이 더 자주 생길 수 있어요.`,
-    reason: `${reasons.slice(0, 3).join(" ")} 그래서 MBTI 궁합보다도, 애착 안정감과 소통 속도가 함께 맞는지가 더 중요할 수 있어요.`,
+    goodMatch: goodMatchTraits.slice(0, 3),
+    hardMatch: hardMatchTraits.slice(0, 3),
+    reason: reasons.slice(0, 3),
   };
 }
 

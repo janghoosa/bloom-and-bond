@@ -163,6 +163,19 @@ export function DetailInsightsCard({ sections }) {
   );
 }
 
+function CompatibilityList({ items }) {
+  const list = Array.isArray(items) ? items : [items];
+  return (
+    <ul className="mt-3 space-y-2">
+      {list.map((item) => (
+        <li key={item} className="text-sm leading-6" style={{ color: theme.text }}>
+          · {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function CompatibilityCard({ compatibility }) {
   return (
     <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
@@ -176,36 +189,24 @@ export function CompatibilityCard({ compatibility }) {
       </Card.Header>
       <Card.Content className="space-y-3">
         <div className="rounded-2xl border px-4 py-4" style={{ backgroundColor: theme.panelHighlight, borderColor: theme.line }}>
-          <div className="font-title text-xl font-bold" style={{ color: theme.text }}>
-            <span aria-hidden="true" className="mr-2">🤝</span>
-            잘 맞을 수 있는 상대
+          <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
+            🤝 잘 맞을 수 있는 상대
           </div>
-          <div className="mt-2.5 h-px" style={{ backgroundColor: theme.line }} />
-          <div className="mt-3 text-sm leading-7" style={{ color: theme.text }}>
-            {compatibility.goodMatch}
-          </div>
+          <CompatibilityList items={compatibility.goodMatch} />
         </div>
 
         <div className="rounded-2xl border px-4 py-4" style={{ backgroundColor: theme.panelHighlight, borderColor: theme.line }}>
-          <div className="font-title text-xl font-bold" style={{ color: theme.text }}>
-            <span aria-hidden="true" className="mr-2">⚠️</span>
-            부딪히기 쉬운 상대
+          <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
+            ⚠️ 부딪히기 쉬운 상대
           </div>
-          <div className="mt-2.5 h-px" style={{ backgroundColor: theme.line }} />
-          <div className="mt-3 text-sm leading-7" style={{ color: theme.text }}>
-            {compatibility.hardMatch}
-          </div>
+          <CompatibilityList items={compatibility.hardMatch} />
         </div>
 
         <div className="rounded-2xl border px-4 py-4" style={{ backgroundColor: theme.panelHighlight, borderColor: theme.line }}>
-          <div className="font-title text-xl font-bold" style={{ color: theme.text }}>
-            <span aria-hidden="true" className="mr-2">🧠</span>
-            왜 그런지
+          <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
+            🧠 왜 그런지
           </div>
-          <div className="mt-2.5 h-px" style={{ backgroundColor: theme.line }} />
-          <div className="mt-3 text-sm leading-7" style={{ color: theme.text }}>
-            {compatibility.reason}
-          </div>
+          <CompatibilityList items={compatibility.reason} />
         </div>
       </Card.Content>
     </Card>
