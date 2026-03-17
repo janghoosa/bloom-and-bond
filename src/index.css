@@ -1,33 +1,12 @@
-@font-face {
-  font-family: "NanumSquareRound";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/NanumSquareRoundR.woff")
-    format("woff");
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: "NanumSquareRound";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/NanumSquareRoundB.woff")
-    format("woff");
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: "NanumSquareRound";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/NanumSquareRoundEB.woff")
-    format("woff");
-  font-weight: 800;
-  font-style: normal;
-}
 @import "tailwindcss";
 @import "@heroui/styles";
 
 :root {
-  font-family: "NanumSquareRound", "Pretendard", sans-serif;
+  font-family: "Pretendard", sans-serif;
   color-scheme: light;
-  --bg-top: #fffdff;
-  --bg-mid: #fff5fb;
-  --bg-bottom: #ffedf6;
+  --bg-top: #fef3f9;
+  --bg-mid: #f8e5f0;
+  --bg-bottom: #f3dce8;
   --text: #26131f;
   --text-soft: #6c445a;
   --text-tint: #d24f95;
@@ -43,28 +22,6 @@
   --panel-deep: #ffe5f1;
   --panel-highlight: #ffd6e8;
   --line: #efbfd8;
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg-top: #1a1016;
-  --bg-mid: #1e1219;
-  --bg-bottom: #160e14;
-  --text: #f5eef2;
-  --text-soft: #b8a0ae;
-  --text-tint: #ff82be;
-  --primary: #ff82be;
-  --primary-strong: #ff6ab2;
-  --primary-contrast: #2f1022;
-  --primary-edge: #ff9fcb;
-  --secondary: #2a1d24;
-  --secondary-strong: #3d2a34;
-  --panel-deep: #201620;
-  --panel: #261a22;
-  --panel-strong: #32242c;
-  --panel-soft: #221820;
-  --panel-highlight: #3e2a36;
-  --line: #6d5060;
 }
 
 html,
@@ -98,6 +55,23 @@ select {
 }
 
 .font-title {
-  font-family: "NanumSquareRound", "Pretendard", sans-serif;
+  font-family: "Pretendard", sans-serif;
   letter-spacing: -0.03em;
+}
+
+.toast .toast__close-button {
+  position: static;
+  flex-shrink: 0;
+  align-self: center;
+  opacity: 1;
+  pointer-events: auto;
+  border: none;
+}
+
+@media (min-width: 640px) {
+  .toast .toast__close-button {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
