@@ -5,7 +5,8 @@ export function PrimaryActionButton({ children, onPress, fullWidth = true, disab
   return (
     <button
       type="button"
-      onClick={onPress}
+      onClick={disabled ? undefined : onPress}
+      disabled={disabled}
       aria-disabled={disabled}
       className={`${fullWidth ? "w-full" : ""} inline-flex min-h-[44px] items-center justify-center rounded-[20px] px-7 py-1.5 text-[15px] font-bold tracking-[0.01em] transition-opacity sm:px-8 ${
         disabled ? "opacity-55" : ""
