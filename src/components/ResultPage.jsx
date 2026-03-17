@@ -17,25 +17,25 @@ const shareProfiles = {
     label: "자연스럽게 흐르는 타입",
     quote: "편안하게 마음을 나누고\n자연스럽게 가까워지는 사람",
     publicAttachmentLabel: "안정적으로 연결되는 타입",
-    gradient: ["#fff7fb", "#ffe3ee", "#ffbfd6"],
+    gradient: ["#fff7fb", "#ffe3ee", "#ff9fc2"],
   },
   anxious: {
     label: "연결을 소중히 여기는 타입",
     quote: "작은 신호도 놓치지 않고\n마음을 읽으려는 사람",
     publicAttachmentLabel: "마음을 세심하게 읽는 타입",
-    gradient: ["#fff1f8", "#ffcde4", "#ff96c6"],
+    gradient: ["#fff1f8", "#ffcde4", "#ff6fb2"],
   },
   avoidant: {
     label: "나만의 속도가 있는 타입",
     quote: "충분히 안전하다고 느낄 때\n깊이 열리는 사람",
     publicAttachmentLabel: "천천히 가까워지는 타입",
-    gradient: ["#fff8fc", "#f5deeb", "#e6b8cf"],
+    gradient: ["#fff8fc", "#f5deeb", "#d48ab2"],
   },
   fearful: {
     label: "신중하게 마음을 여는 타입",
     quote: "진심을 나누기까지 조심스럽지만\n그만큼 깊은 사람",
     publicAttachmentLabel: "신중하게 마음을 여는 타입",
-    gradient: ["#fff0f7", "#ffcadf", "#ff87ba"],
+    gradient: ["#fff0f7", "#ffcadf", "#ff5ea6"],
   },
 };
 
@@ -319,7 +319,10 @@ function ShareSection({ result, onCompareWithCode }) {
                 공유하기
               </button>
             </div>
-            <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.62)" }}>
+              같은 유형이어도 점수와 반응 강도에 따라 카드 배경은 조금씩 달라질 수 있어요.
+            </p>
+            <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.62)" }}>
               모바일에서는 이미지를 길게 눌러 저장할 수도 있어요
             </p>
             <button
