@@ -19,7 +19,7 @@ function CompareHero({ insight, onBack }) {
         {insight.summary}
       </p>
       <div className="mt-6">
-        <PrimaryActionButton onPress={onBack} fullWidth={false}>둘의 결과 다시 보기</PrimaryActionButton>
+        <PrimaryActionButton onPress={onBack} fullWidth={false}>두 사람 세부 결과 보러가기</PrimaryActionButton>
       </div>
     </section>
   );
