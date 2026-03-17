@@ -142,7 +142,7 @@ export function IntroPage({
                     <button
                       type="button"
                       onClick={() => setShowCompareInputs(false)}
-                      className="rounded-[20px] border px-4 py-3 text-sm font-bold"
+                      className="min-h-[44px] rounded-[20px] border px-4 py-1.5 text-sm font-bold"
                       style={{ borderColor: theme.line, color: theme.text, backgroundColor: theme.panelHighlight }}
                     >
                       닫기
