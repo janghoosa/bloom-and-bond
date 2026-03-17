@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#fff6fb"/>
+      <stop offset="55%" stop-color="#ffe6f2"/>
+      <stop offset="100%" stop-color="#ffd0e5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="600" y="150" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="700" fill="#d24f95" letter-spacing="8">BLOOM &amp; BOND</text>
+  <text x="600" y="300" text-anchor="middle" font-family="sans-serif" font-size="108" font-weight="900" fill="#251822">벚꽃 아래서,</text>
+  <text x="600" y="420" text-anchor="middle" font-family="sans-serif" font-size="108" font-weight="900" fill="#251822">서로를 읽는 법</text>
+  <text x="600" y="530" text-anchor="middle" font-family="sans-serif" font-size="36" fill="#6f5564">MBTI + 애착유형 검사</text>
+</svg>
