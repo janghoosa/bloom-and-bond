@@ -155,6 +155,11 @@ export function IntroPage({
         </div>
       </section>
 
+      <p className="text-center text-xs leading-5" style={{ color: theme.textSoft }}>
+        이 검사는 서버에 어떤 데이터도 저장하지 않습니다.<br />
+        모든 응답과 결과는 브라우저에서만 처리되며, 페이지를 닫으면 사라집니다.
+      </p>
+
       <div className="sticky bottom-2 z-10">
         <div className="rounded-[28px] border px-3 py-3 sm:px-4" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
           <div className="mb-2 px-2 text-center sm:mb-3">
