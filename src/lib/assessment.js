@@ -776,6 +776,7 @@ function buildCompatibilityInsight(mbti, attachment) {
     goodMatch: goodMatchTraits.slice(0, 3),
     hardMatch: hardMatchTraits.slice(0, 3),
     reason: reasons.slice(0, 3),
+    reasonSummary: "MBTI 궁합보다도, 애착 안정감과 소통 속도가 함께 맞는지가 더 중요할 수 있어요.",
   };
 }
 

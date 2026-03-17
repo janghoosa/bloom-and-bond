@@ -37,22 +37,25 @@ export function ResultOverview({ result, mbtiSectionBars, attachmentOverviewBars
           <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
             성향 결과
           </p>
-          <Card.Title className="font-title text-3xl font-bold" style={{ color: theme.text }}>{result.mbti.type}</Card.Title>
-          <Card.Description className="text-sm leading-6" style={{ color: theme.textSoft }}>
-            {result.mbti.summary}
-          </Card.Description>
-        </Card.Header>
-        <Card.Content className="space-y-3">
-          {mbtiSectionBars.map((section) => (
-            <ResultMeter
+        <Card.Title className="font-title text-3xl font-bold" style={{ color: theme.text }}>{result.mbti.type}</Card.Title>
+        <Card.Description className="text-sm leading-6" style={{ color: theme.textSoft }}>
+          {result.mbti.summary}
+        </Card.Description>
+      </Card.Header>
+      <Card.Content className="space-y-3">
+        {mbtiSectionBars.map((section) => (
+          <ResultMeter
               key={section.id}
               label={`${section.label} ${section.subtitle ? `· ${section.subtitle}` : ""}`}
               valueText={section.dominant}
               progress={section.progress}
-              detail={section.detail}
-            />
-          ))}
-        </Card.Content>
+            detail={section.detail}
+          />
+        ))}
+        <div className="text-xs leading-5" style={{ color: theme.textSoft }}>
+          MBTI 결과는 간단한 선택형 문항을 바탕으로 하므로, 상황과 컨디션에 따라 달라질 수 있어요!
+        </div>
+      </Card.Content>
       </Card>
 
       <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
@@ -163,8 +166,13 @@ export function DetailInsightsCard({ sections }) {
   );
 }
 
+function splitSentences(text) {
+  return text.split(/(?<=\.\s)/).map((s) => s.trim()).filter(Boolean);
+}
+
 function CompatibilityList({ items }) {
-  const list = Array.isArray(items) ? items : [items];
+  const raw = Array.isArray(items) ? items : [items];
+  const list = raw.flatMap(splitSentences);
   return (
     <ul className="mt-3 space-y-2">
       {list.map((item) => (
@@ -207,6 +215,9 @@ export function CompatibilityCard({ compatibility }) {
             🧠 왜 그런지
           </div>
           <CompatibilityList items={compatibility.reason} />
+          <p className="mt-3 text-sm leading-7 font-medium" style={{ color: theme.textTint }}>
+            {compatibility.reasonSummary}
+          </p>
         </div>
       </Card.Content>
     </Card>
