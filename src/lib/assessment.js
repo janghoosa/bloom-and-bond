@@ -884,28 +884,82 @@ export function buildCompareInsight(myResult, partnerResult) {
   tips.push(sameLetters.length >= 2 ? "닮은 점은 편안함으로 가져가고, 다른 점이 보이는 순간에는 왜 그렇게 반응하는지 한 문장 더 설명해보면 좋아요." : "다른 점이 보일수록 해석하지 말고 번역해주는 말이 중요해요. '나는 이렇게 느꼈어'를 자주 써보는 편이 좋아요.");
   tips.push("관계가 흔들리는 순간에만 대화하지 말고, 평소 편한 순간에 서로 안심되는 방식과 부담되는 방식을 미리 말해두면 두 사람 모두 덜 지치고 갈등도 덜 커질 수 있어요.");
 
-  const betterWays = [];
+  const sharedTips = [];
   if (sameCode) {
-    betterWays.push("두 사람의 반응 구조가 거의 같다면, 서운함을 느끼는 지점도 비슷할 가능성이 커요. 그래서 '나는 이럴 때 이렇게 받아들여'를 먼저 말해두면 오해를 많이 줄일 수 있어요.");
-    betterWays.push("서로 닮았다는 이유로 설명을 생략하면 오히려 같이 조용해질 수 있어요. 편하다고 느끼는 순간일수록 상태를 짧게라도 말로 확인해보는 편이 좋아요.");
-    betterWays.push("같은 방식으로 닫히거나 같은 방식으로 불안해질 수 있으니, 갈등이 생기면 둘 중 한 사람은 반드시 대화 브레이크 문장을 먼저 꺼내는 약속을 정해두면 좋아요.");
+    sharedTips.push("두 사람의 반응 구조가 거의 같다면, 서운함을 느끼는 지점도 비슷할 가능성이 커요. 그래서 '나는 이럴 때 이렇게 받아들여'를 먼저 말해두면 오해를 많이 줄일 수 있어요.");
+    sharedTips.push("서로 닮았다는 이유로 설명을 생략하면 오히려 같이 조용해질 수 있어요. 편하다고 느끼는 순간일수록 상태를 짧게라도 말로 확인해보는 편이 좋아요.");
+    sharedTips.push("같은 방식으로 닫히거나 같은 방식으로 불안해질 수 있으니, 갈등이 생기면 둘 중 한 사람은 반드시 대화 브레이크 문장을 먼저 꺼내는 약속을 정해두면 좋아요.");
   } else {
-    betterWays.push("서로 다른 반응이 보일수록 누가 예민한지가 아니라, 반응 순서가 다르다고 보는 편이 좋아요. 한 사람은 먼저 공감을, 다른 사람은 먼저 정리를 원할 수 있어요.");
-    betterWays.push("상대가 왜 저렇게까지 느끼는지 이해가 안 될 때는 해석보다 질문이 먼저예요. '이럴 때 어떤 말이 제일 안심돼?'처럼 구체적으로 묻는 편이 도움이 돼요.");
-    betterWays.push("차이를 줄이려 하기보다 역할을 나눠보는 것도 좋아요. 한 사람은 분위기를 열고, 다른 사람은 흐름을 정리하는 식으로 각자의 강점을 쓰면 관계가 더 안정될 수 있어요.");
+    sharedTips.push("서로 다른 반응이 보일수록 누가 예민한지가 아니라, 반응 순서가 다르다고 보는 편이 좋아요. 한 사람은 먼저 공감을, 다른 사람은 먼저 정리를 원할 수 있어요.");
+    sharedTips.push("상대가 왜 저렇게까지 느끼는지 이해가 안 될 때는 해석보다 질문이 먼저예요. '이럴 때 어떤 말이 제일 안심돼?'처럼 구체적으로 묻는 편이 도움이 돼요.");
+    sharedTips.push("차이를 줄이려 하기보다 역할을 나눠보는 것도 좋아요. 한 사람은 분위기를 열고, 다른 사람은 흐름을 정리하는 식으로 각자의 강점을 쓰면 관계가 더 안정될 수 있어요.");
   }
 
   if (anxiousAvoidantPair) {
-    betterWays.push("확인하고 싶은 사람은 필요한 말을 짧게 요청하고, 정리 시간이 필요한 사람은 돌아올 시간을 같이 말해주는 방식으로 속도 차이를 다루는 연습이 중요해요.");
+    sharedTips.push("확인하고 싶은 사람은 필요한 말을 짧게 요청하고, 정리 시간이 필요한 사람은 돌아올 시간을 같이 말해주는 방식으로 속도 차이를 다루는 연습이 중요해요.");
   }
 
   if (fearfulIncluded) {
-    betterWays.push("마음이 가까워졌다가 갑자기 멀어지는 순간이 반복될 수 있으니, 그 변화 자체를 이상하게 보지 말고 '지금은 조금 천천히 가고 싶어' 같은 중간 문장을 자주 써보는 편이 좋아요.");
+    sharedTips.push("마음이 가까워졌다가 갑자기 멀어지는 순간이 반복될 수 있으니, 그 변화 자체를 이상하게 보지 말고 '지금은 조금 천천히 가고 싶어' 같은 중간 문장을 자주 써보는 편이 좋아요.");
   }
+
+  const buildPersonFocus = (personResult, otherResult, orderLabel) => {
+    const style = getThinkingStyle(personResult.mbti.type);
+    const points = [];
+
+    if (personResult.attachment.key === "anxious") {
+      points.push(`${orderLabel} 확인이 필요할 때는 마음을 시험하듯 던지기보다, 어떤 말이 필요한지 짧고 분명하게 말해주는 편이 좋아요.`);
+    }
+    if (personResult.attachment.key === "avoidant") {
+      points.push(`${orderLabel} 혼자 정리할 시간이 필요하다면 사라지기보다, 언제 다시 이야기할지 먼저 말해주는 편이 좋아요.`);
+    }
+    if (personResult.attachment.key === "fearful") {
+      points.push(`${orderLabel} 가까워지고 싶다가도 갑자기 물러나고 싶어질 수 있으니, 그 변화가 올라오는 순간을 숨기지 말고 상태로 설명해주는 편이 좋아요.`);
+    }
+    if (style.isThinking) {
+      points.push(`${orderLabel} 설명과 해결이 먼저 떠오르더라도, 갈등 초반에는 상대 감정을 한 문장 먼저 짚어주는 편이 좋아요.`);
+    }
+    if (style.isFeeling) {
+      points.push(`${orderLabel} 마음이 먼저 움직일수록 상대 의도를 단정하기 전에, 사실을 한 번 더 확인해보는 편이 좋아요.`);
+    }
+    if (style.isIntrovert) {
+      points.push(`${orderLabel} 혼자 생각을 정리한 뒤 말하는 편이라면, 침묵이 길어지기 전에 지금 정리 중이라는 신호를 먼저 주는 편이 좋아요.`);
+    }
+    if (style.isJudging && otherResult.mbti.type[3] === "P") {
+      points.push(`${orderLabel} 관계 흐름을 빨리 정리하고 싶더라도, 상대가 아직 생각 중일 수 있으니 결론을 조금만 늦춰보는 편이 좋아요.`);
+    }
+    if (style.isPerceiving && otherResult.mbti.type[3] === "J") {
+      points.push(`${orderLabel} 여지를 두고 싶은 마음이 있어도, 중요한 약속이나 감정 상태는 조금 더 분명하게 말해주는 편이 좋아요.`);
+    }
+
+    return points.slice(0, 3);
+  };
+
+  const firstPersonFocus = buildPersonFocus(myResult, partnerResult, "첫 번째 사람은");
+  const secondPersonFocus = buildPersonFocus(partnerResult, myResult, "두 번째 사람은");
+
+  const matchKeyword = sameAttachment
+    ? "같은 리듬으로 흐르는 관계"
+    : anxiousAvoidantPair
+      ? "속도가 다른 만큼 깊어질 수 있는 관계"
+      : secureIncluded
+        ? "한 사람이 중심을 잡아주는 관계"
+        : fearfulIncluded
+          ? "조심스럽지만 그만큼 진심인 관계"
+          : "서로 다른 색이 만나는 관계";
+
+  const matchDetail = sameLetters.length >= 3
+    ? `4개 중 ${sameLetters.length}개 축이 닮아 있어요`
+    : sameLetters.length >= 1
+      ? `${sameLetters.map(getAxisWord).join(", ")} 방식이 닮아 있어요`
+      : "서로 다른 점이 보완이 될 수 있어요";
 
   return {
     title: `${myType} · ${partnerType}`,
     summary,
+    matchKeyword,
+    matchDetail,
+    sameLetterCount: sameLetters.length,
     sections: [
       { id: "strength", title: "잘 맞는 점", body: strengths[0] },
       { id: "friction", title: "엇갈리기 쉬운 점", body: friction[0] },
@@ -915,7 +969,9 @@ export function buildCompareInsight(myResult, partnerResult) {
       strengths,
       friction,
       tips,
-      betterWays,
+      firstPersonFocus,
+      secondPersonFocus,
+      sharedTips,
     },
   };
 }
