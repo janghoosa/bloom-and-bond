@@ -61,11 +61,12 @@ export function AssessmentPage({
     }
 
     window.setTimeout(() => {
-      questionRefs.current[0]?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }, 120);
+      const el = questionRefs.current[0];
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const targetY = window.scrollY + rect.top - window.innerHeight / 3;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    }, 300);
   }, [currentStep]);
 
   const scrollToNextTarget = (questionIndex) => {
@@ -76,11 +77,11 @@ export function AssessmentPage({
     window.setTimeout(() => {
       const nextQuestion = questionRefs.current[questionIndex + 1];
       const nextTarget = nextQuestion ?? footerRef.current;
-      nextTarget?.scrollIntoView({
-        behavior: "smooth",
-        block: nextQuestion ? "center" : "nearest",
-      });
-    }, 180);
+      if (!nextTarget) return;
+      const rect = nextTarget.getBoundingClientRect();
+      const targetY = window.scrollY + rect.top - window.innerHeight / 3;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    }, 300);
   };
 
   return (
