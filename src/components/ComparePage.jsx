@@ -3,6 +3,19 @@ import { buildCompareInsight } from "../lib/assessment";
 import { theme } from "../lib/theme";
 import { PrimaryActionButton, ResultMeter, Shell } from "./common";
 
+const compareCardEmoji = {
+  "잘 맞는 점": "🤝",
+  "엇갈리기 쉬운 점": "⚠️",
+  "대화 팁": "💬",
+  "더 잘 맞춰가는 법": "🌱",
+};
+
+function formatCompareText(text) {
+  return text
+    .replaceAll(". ", ".\n")
+    .replaceAll("? ", "?\n");
+}
+
 function CompareHero({ insight, onBack }) {
   return (
     <section
@@ -71,14 +84,15 @@ function CompareBulletsCard({ title, items }) {
     <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
       <Card.Header className="flex flex-col items-start gap-2">
         <Card.Title className="font-title text-2xl font-bold" style={{ color: theme.text }}>
+          <span aria-hidden="true" className="mr-2">{compareCardEmoji[title] ?? "•"}</span>
           {title}
         </Card.Title>
       </Card.Header>
       <Card.Content>
         <ul className="space-y-3">
           {items.map((item) => (
-            <li key={item} className="rounded-2xl px-4 py-3 text-sm leading-6" style={{ backgroundColor: theme.panelHighlight, color: theme.text }}>
-              {item}
+            <li key={item} className="rounded-2xl px-4 py-3 text-sm leading-7 whitespace-pre-line" style={{ backgroundColor: theme.panelHighlight, color: theme.text }}>
+              {formatCompareText(item)}
             </li>
           ))}
         </ul>
