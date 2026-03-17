@@ -54,6 +54,8 @@ export function AssessmentPage({
   }, []);
 
   useEffect(() => {
+    questionRefs.current = [];
+
     if (typeof window === "undefined" || window.innerWidth >= 640) {
       return;
     }
