@@ -7,7 +7,7 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <>
-      <Toast.Provider />
+      <Toast.Provider placement="bottom" />
       <App />
     </>
   </React.StrictMode>,
