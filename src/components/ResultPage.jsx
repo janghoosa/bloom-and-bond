@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, toast } from "@heroui/react";
 import { buildCombinedInsight } from "../lib/assessment";
 import { theme } from "../lib/theme";
@@ -198,6 +198,12 @@ function ShareSection({ result, onCompareWithCode }) {
   const [codeCopied, setCodeCopied] = useState(false);
   const [compareCode, setCompareCode] = useState("");
 
+  useEffect(() => {
+    return () => {
+      if (cardImageUrl) URL.revokeObjectURL(cardImageUrl);
+    };
+  }, [cardImageUrl]);
+
   const handleMakeCard = async () => {
     if (saving) return;
     setSaving(true);
@@ -252,7 +258,7 @@ function ShareSection({ result, onCompareWithCode }) {
   const handleDownload = () => {
     if (!cardImageUrl) return;
     const link = document.createElement("a");
-    link.download = `${result.code}.png`;
+    link.download = result.code ? `${result.code}.png` : "result.png";
     link.href = cardImageUrl;
     document.body.appendChild(link);
     link.click();
@@ -262,7 +268,8 @@ function ShareSection({ result, onCompareWithCode }) {
   const handleShareFromModal = async () => {
     if (!cardBlob) return;
     try {
-      const file = new File([cardBlob], `${result.code}.png`, { type: "image/png" });
+      const filename = result.code ? `${result.code}.png` : "result.png";
+      const file = new File([cardBlob], filename, { type: "image/png" });
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
       } else {
