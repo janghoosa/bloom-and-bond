@@ -195,6 +195,9 @@ export default function App() {
     }
     trackEvent("step_complete", { step: currentStep + 1, total_steps: assessmentSteps.length });
     setCurrentStep((current) => Math.min(current + 1, assessmentSteps.length - 1));
+    if (window.innerWidth >= 640) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const handleRestart = () => {
