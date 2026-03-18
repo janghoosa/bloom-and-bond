@@ -2,7 +2,7 @@
 @import "@heroui/styles";
 
 :root {
-  font-family: "Pretendard", sans-serif;
+  font-family: "Jua", "Pretendard", sans-serif;
   color-scheme: light;
   --bg-top: #fef3f9;
   --bg-mid: #f8e5f0;
@@ -59,7 +59,7 @@ button {
 }
 
 .font-title {
-  font-family: "Pretendard", sans-serif;
+  font-family: "Jua", "Pretendard", sans-serif;
   letter-spacing: -0.03em;
 }
 
