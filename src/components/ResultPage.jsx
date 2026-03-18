@@ -109,20 +109,20 @@ async function drawResultCard(result) {
   ctx.fillRect(0, 0, W, H);
 
   ctx.fillStyle = visual.accent;
-  ctx.font = "700 32px Pretendard";
+  ctx.font = "700 32px Jua";
   ctx.textBaseline = "top";
   ctx.fillText("BLOOM & BOND", PAD, PAD);
 
   ctx.fillStyle = "#251822";
-  ctx.font = "900 210px Pretendard";
+  ctx.font = "900 210px Jua";
   ctx.fillText(result.mbti.type, PAD, PAD + 62);
 
   ctx.fillStyle = "#251822";
-  ctx.font = "700 52px Pretendard";
+  ctx.font = "700 52px Jua";
   ctx.fillText(profile.label, PAD, PAD + 332);
 
   ctx.fillStyle = "#6f5564";
-  ctx.font = "400 44px Pretendard";
+  ctx.font = "400 44px Jua";
   const lines = profile.quote.split("\n");
   ctx.fillText(`\u201C${lines[0]}`, PAD, 560);
   if (lines[1]) {
@@ -130,11 +130,11 @@ async function drawResultCard(result) {
   }
 
   ctx.fillStyle = visual.accent;
-  ctx.font = "700 28px Pretendard";
+  ctx.font = "700 28px Jua";
   ctx.fillText("핵심 포인트", PAD, 760);
 
   ctx.fillStyle = "#251822";
-  ctx.font = "700 36px Pretendard";
+  ctx.font = "700 36px Jua";
   highlightPoints.forEach((point, index) => {
     const y = 840 + index * 148;
     ctx.fillStyle = visual.accent;
@@ -144,7 +144,7 @@ async function drawResultCard(result) {
   });
 
   ctx.fillStyle = visual.accent;
-  ctx.font = "600 28px Pretendard";
+  ctx.font = "600 28px Jua";
   ctx.fillText(displayHost, PAD, H - PAD - 8);
 
   return new Promise((resolve) => {

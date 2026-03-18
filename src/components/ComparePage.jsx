@@ -73,63 +73,63 @@ async function drawCoupleCard(result, partnerResult, insight) {
   ctx.shadowOffsetY = 2;
 
   ctx.fillStyle = "#d94f98";
-  ctx.font = "700 32px Pretendard";
+  ctx.font = "700 32px Jua";
   const brandText = "BLOOM & BOND";
   const brandWidth = ctx.measureText(brandText).width;
   ctx.fillText(brandText, PAD, PAD);
 
-  ctx.font = "500 32px Pretendard";
+  ctx.font = "500 32px Jua";
   ctx.fillText("MATCH VIEW", PAD + brandWidth + 20, PAD);
 
   // 두 사람 MBTI
   ctx.fillStyle = "#251822";
-  ctx.font = "900 160px Pretendard";
+  ctx.font = "900 160px Jua";
   ctx.fillText(result.mbti.type, PAD, 160);
 
   ctx.fillStyle = "#d94f98";
-  ctx.font = "700 52px Pretendard";
+  ctx.font = "700 52px Jua";
   const ampWidth = ctx.measureText("&").width;
   ctx.fillText("&", (W - ampWidth) / 2, 280);
 
   ctx.fillStyle = "#251822";
-  ctx.font = "900 160px Pretendard";
+  ctx.font = "900 160px Jua";
   const partnerTypeWidth = ctx.measureText(partnerResult.mbti.type).width;
   ctx.fillText(partnerResult.mbti.type, W - PAD - partnerTypeWidth, 330);
 
   // 키워드
   ctx.fillStyle = "#251822";
-  ctx.font = "700 44px Pretendard";
+  ctx.font = "700 44px Jua";
   ctx.fillText(insight.matchKeyword, PAD, 550);
 
   // 잘 맞는 점
   ctx.fillStyle = "#d94f98";
-  ctx.font = "700 26px Pretendard";
+  ctx.font = "700 26px Jua";
   ctx.fillText("잘 맞는 점", PAD, 640);
 
   ctx.fillStyle = "#251822";
-  ctx.font = "400 32px Pretendard";
+  ctx.font = "400 32px Jua";
   wrapText(ctx, insight.sections[0].body, PAD, 678, W - PAD * 2, 42);
 
   // 엇갈리기 쉬운 점
   ctx.fillStyle = "#d94f98";
-  ctx.font = "700 26px Pretendard";
+  ctx.font = "700 26px Jua";
   ctx.fillText("엇갈리기 쉬운 점", PAD, 860);
 
   ctx.fillStyle = "#251822";
-  ctx.font = "400 32px Pretendard";
+  ctx.font = "400 32px Jua";
   wrapText(ctx, insight.sections[1].body, PAD, 898, W - PAD * 2, 42);
 
   // 대화 팁
   ctx.fillStyle = "#d94f98";
-  ctx.font = "700 26px Pretendard";
+  ctx.font = "700 26px Jua";
   ctx.fillText("대화 팁", PAD, 1080);
 
   ctx.fillStyle = "#251822";
-  ctx.font = "400 32px Pretendard";
+  ctx.font = "400 32px Jua";
   wrapText(ctx, insight.sections[2].body, PAD, 1118, W - PAD * 2, 42);
 
   ctx.fillStyle = "#d94f98";
-  ctx.font = "600 28px Pretendard";
+  ctx.font = "600 28px Jua";
   ctx.fillText(displayHost, PAD, H - PAD - 8);
 
   return new Promise((resolve) => {
@@ -233,6 +233,9 @@ function CoupleCardSection({ result, partnerResult, insight }) {
                 공유하기
               </button>
             </div>
+            <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>
+              두 사람의 애착유형에 따라 카드 배경색이 달라져요.
+            </p>
             <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>
               모바일에서는 이미지를 길게 눌러 저장할 수도 있어요
             </p>
