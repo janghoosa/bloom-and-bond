@@ -72,7 +72,7 @@ export function ModeChoiceCard({ title, description, meta, selected, onSelect })
 export function Shell({ children }) {
   return (
     <div className="min-h-screen" style={{ color: theme.text }}>
-      <div className="mx-auto w-full max-w-[1400px] px-3 pt-3 pb-3 sm:px-6 sm:pt-8 sm:pb-8 lg:px-8 lg:pt-10 lg:pb-10">
+      <div className="mx-auto w-full max-w-[1400px] px-4 pt-3 pb-3 sm:px-6 sm:pt-8 sm:pb-8 lg:px-8 lg:pt-10 lg:pb-10">
         <div className="grid grid-cols-1 xl:grid-cols-[180px_minmax(0,960px)_180px] xl:gap-6">
           <aside className="hidden xl:block" aria-hidden="true" />
           <div className="flex min-w-0 flex-col gap-3 sm:gap-6">
