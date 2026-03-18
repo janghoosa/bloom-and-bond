@@ -54,15 +54,14 @@ export function AssessmentPage({
   }, []);
 
   useEffect(() => {
-    questionRefs.current = [];
-
     if (typeof window === "undefined" || window.innerWidth >= 640) return;
 
-    window.requestAnimationFrame(() => {
+    const id = setTimeout(() => {
       const el = questionRefs.current[0];
       if (!el) return;
       el.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
+    }, 100);
+    return () => clearTimeout(id);
   }, [currentStep]);
 
   const scrollToNextTarget = (questionIndex) => {
