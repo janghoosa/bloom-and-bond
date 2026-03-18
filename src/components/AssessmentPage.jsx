@@ -56,32 +56,24 @@ export function AssessmentPage({
   useEffect(() => {
     questionRefs.current = [];
 
-    if (typeof window === "undefined" || window.innerWidth >= 640) {
-      return;
-    }
+    if (typeof window === "undefined" || window.innerWidth >= 640) return;
 
-    window.setTimeout(() => {
+    window.requestAnimationFrame(() => {
       const el = questionRefs.current[0];
       if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const targetY = window.scrollY + rect.top - window.innerHeight / 3;
-      window.scrollTo({ top: targetY, behavior: "smooth" });
-    }, 300);
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
   }, [currentStep]);
 
   const scrollToNextTarget = (questionIndex) => {
-    if (typeof window === "undefined" || window.innerWidth >= 640) {
-      return;
-    }
+    if (typeof window === "undefined" || window.innerWidth >= 640) return;
 
-    window.setTimeout(() => {
+    window.requestAnimationFrame(() => {
       const nextQuestion = questionRefs.current[questionIndex + 1];
       const nextTarget = nextQuestion ?? footerRef.current;
       if (!nextTarget) return;
-      const rect = nextTarget.getBoundingClientRect();
-      const targetY = window.scrollY + rect.top - window.innerHeight / 3;
-      window.scrollTo({ top: targetY, behavior: "smooth" });
-    }, 300);
+      nextTarget.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
   };
 
   return (
