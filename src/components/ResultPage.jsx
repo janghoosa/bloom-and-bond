@@ -187,6 +187,84 @@ function copyToClipboard(text) {
   return Promise.resolve();
 }
 
+function QuickShareBar({ result }) {
+  const [saving, setSaving] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const handleQuickCard = async () => {
+    if (saving) return;
+    setSaving(true);
+    try {
+      const blob = await drawResultCard(result);
+      if (!blob) { toast.warning("이미지 생성에 실패했습니다."); return; }
+      const filename = result.code ? `${result.code}.png` : "result.png";
+      const file = new File([blob], filename, { type: "image/png" });
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = filename;
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        toast.success("카드가 저장되었습니다.");
+      }
+    } catch (err) {
+      if (err.name !== "AbortError") toast.warning("이미지 생성에 실패했습니다.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleCopyLink = async () => {
+    if (!result.code) return;
+    try {
+      await copyToClipboard(`${window.location.origin}/result?d=${result.code}`);
+      setLinkCopied(true);
+      toast.success("결과 링크가 복사되었습니다.");
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      toast.warning("복사에 실패했습니다.");
+    }
+  };
+
+  return (
+    <div
+      className="flex gap-2 rounded-[22px] border px-3 py-3"
+      style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}
+    >
+      <button
+        type="button"
+        onClick={handleQuickCard}
+        disabled={saving}
+        className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
+        style={{
+          backgroundColor: theme.primaryStrong,
+          color: theme.primaryContrast,
+          border: `1px solid ${theme.primaryEdge}`,
+        }}
+      >
+        {saving ? "만드는 중..." : "카드 만들기"}
+      </button>
+      <button
+        type="button"
+        onClick={handleCopyLink}
+        className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
+        style={{
+          backgroundColor: theme.panelHighlight,
+          color: theme.text,
+          border: `1px solid ${theme.line}`,
+        }}
+      >
+        {linkCopied ? "복사됨!" : "링크 복사"}
+      </button>
+    </div>
+  );
+}
+
 function ShareSection({ result, onCompareWithCode }) {
   const [saving, setSaving] = useState(false);
   const [cardImageUrl, setCardImageUrl] = useState(null);
@@ -499,6 +577,7 @@ export function ResultPage({ result, partnerResult, onRestart, onOpenCompare, on
   return (
     <Shell>
       <ResultHero combined={combined} onRestart={onRestart} />
+      <QuickShareBar result={result} />
       {partnerResult && (
         <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
           <Card.Header className="flex flex-col items-start gap-2">
