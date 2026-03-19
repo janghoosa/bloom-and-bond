@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Card, Radio, RadioGroup } from "@heroui/react";
 import { theme } from "../lib/theme";
 
@@ -258,6 +259,135 @@ export function ScaleQuestion({ number, question, value, onChange }) {
           </Radio>
         ))}
       </RadioGroup>
+    </div>
+  );
+}
+
+const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+export function Modal({ open, onClose, ariaLabel, children }) {
+  const overlayRef = useRef(null);
+  const previousFocusRef = useRef(null);
+
+  useEffect(() => {
+    if (open) {
+      previousFocusRef.current = document.activeElement;
+      requestAnimationFrame(() => {
+        const focusable = overlayRef.current?.querySelectorAll(FOCUSABLE);
+        if (focusable?.length) focusable[0].focus();
+      });
+    }
+    return () => {
+      if (open && previousFocusRef.current) {
+        previousFocusRef.current.focus();
+      }
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key === "Tab") {
+        const focusable = overlayRef.current?.querySelectorAll(FOCUSABLE);
+        if (!focusable?.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      ref={overlayRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={ariaLabel}
+      className="fixed inset-0 z-50 flex flex-col items-center overflow-y-auto px-4 py-6"
+      style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
+      onClick={onClose}
+    >
+      <div
+        className="relative my-auto flex w-full max-w-sm flex-col items-center gap-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+export function EmptyResultPage({ onStart }) {
+  return (
+    <Shell>
+      <section
+        className="relative overflow-hidden rounded-[28px] border px-4 py-10 text-center sm:rounded-[36px] sm:px-8 sm:py-16"
+        style={{ borderColor: theme.line, backgroundColor: theme.secondary }}
+      >
+        <div className="mx-auto max-w-md space-y-5">
+          <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: theme.textTint }}>
+            Bloom & Bond
+          </p>
+          <h1 className="font-title text-3xl font-extrabold leading-snug sm:text-4xl" style={{ color: theme.text }}>
+            이 결과를 볼 수 없어요
+          </h1>
+          <p className="text-sm leading-7 sm:text-base" style={{ color: theme.textSoft }}>
+            링크가 만료되었거나 코드가 올바르지 않을 수 있어요.
+            직접 검사를 해보면 나만의 결과를 받을 수 있어요.
+          </p>
+          <div className="pt-2">
+            <PrimaryActionButton onPress={onStart} fullWidth={false}>
+              나도 검사해보기
+            </PrimaryActionButton>
+          </div>
+        </div>
+      </section>
+    </Shell>
+  );
+}
+
+export function RevealScreen({ title, onSkip }) {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center px-6"
+      onClick={onSkip}
+      style={{
+        background: "linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%)",
+      }}
+    >
+      <div className="text-center">
+        <p className="animate-reveal text-xs font-bold uppercase tracking-[0.28em]" style={{ color: theme.textTint }}>
+          Your Result
+        </p>
+        <h1
+          className="font-title animate-reveal-title mt-4 text-4xl font-extrabold leading-tight sm:text-5xl"
+          style={{ color: theme.text }}
+        >
+          {title}
+        </h1>
+      </div>
+      <p
+        className="animate-reveal-d2 absolute bottom-8 text-xs"
+        style={{ color: theme.textSoft }}
+      >
+        탭하면 바로 넘어가요
+      </p>
     </div>
   );
 }

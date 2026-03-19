@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "@heroui/react";
 import {
   ASSESSMENT_MODES,
@@ -23,6 +23,7 @@ import {
   storePartnerCode,
   trackEvent,
 } from "./lib/assessment";
+import { EmptyResultPage, RevealScreen } from "./components/common";
 import { AssessmentPage } from "./components/AssessmentPage";
 import { ComparePage } from "./components/ComparePage";
 import { IntroPage } from "./components/IntroPage";
@@ -50,6 +51,8 @@ export default function App() {
   });
   const [partnerResult, setPartnerResult] = useState(() => loadStoredPartnerResult());
   const [hasPartner, setHasPartner] = useState(() => !!loadPartnerCode());
+  const [revealData, setRevealData] = useState(null);
+  const revealTimerRef = useRef(null);
   const [route, setRoute] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("d") && window.location.pathname === ROUTES.result) return ROUTES.result;
@@ -142,6 +145,37 @@ export default function App() {
     setAssessmentConfig(buildAssessmentConfig(mode));
     setAssessmentSteps(buildAssessmentSteps(mode));
     setCurrentStep(0);
+    setRevealData(null);
+    if (revealTimerRef.current) {
+      clearTimeout(revealTimerRef.current);
+      revealTimerRef.current = null;
+    }
+  };
+
+  const finalizeAnalysis = (nextResult) => {
+    const partnerCode = loadPartnerCode();
+    let partnerDecoded = null;
+    if (partnerCode) {
+      partnerDecoded = evaluateFromCode(partnerCode);
+      if (partnerDecoded) {
+        setPartnerResult(partnerDecoded);
+        persistPartnerResult(partnerDecoded);
+      }
+      clearPartnerCode();
+      setHasPartner(false);
+    }
+
+    persistResult(nextResult);
+    setResult(nextResult);
+    setRevealData(null);
+    if (partnerDecoded) {
+      navigateTo(ROUTES.compare);
+      setRoute(ROUTES.compare);
+    } else {
+      navigateTo(ROUTES.result);
+      setRoute(ROUTES.result);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleAnalyze = () => {
@@ -164,28 +198,20 @@ export default function App() {
       assessment_mode: assessmentMode,
     });
 
-    const partnerCode = loadPartnerCode();
-    let partnerDecoded = null;
-    if (partnerCode) {
-      partnerDecoded = evaluateFromCode(partnerCode);
-      if (partnerDecoded) {
-        setPartnerResult(partnerDecoded);
-        persistPartnerResult(partnerDecoded);
-      }
-      clearPartnerCode();
-      setHasPartner(false);
-    }
+    setRevealData(nextResult);
+    revealTimerRef.current = setTimeout(() => {
+      finalizeAnalysis(nextResult);
+    }, 1800);
+  };
 
-    persistResult(nextResult);
-    setResult(nextResult);
-    if (partnerDecoded) {
-      navigateTo(ROUTES.compare);
-      setRoute(ROUTES.compare);
-    } else {
-      navigateTo(ROUTES.result);
-      setRoute(ROUTES.result);
+  const handleRevealSkip = () => {
+    if (revealTimerRef.current) {
+      clearTimeout(revealTimerRef.current);
+      revealTimerRef.current = null;
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (revealData) {
+      finalizeAnalysis(revealData);
+    }
   };
 
   const handleNextStep = () => {
@@ -278,6 +304,15 @@ export default function App() {
     setRoute(ROUTES.result);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (revealData) {
+    return (
+      <RevealScreen
+        title={`${revealData.mbti.type} · ${revealData.attachment.title}`}
+        onSkip={handleRevealSkip}
+      />
+    );
+  }
 
   if (route === ROUTES.compare && result && partnerResult) {
     return <ComparePage result={result} partnerResult={partnerResult} onBack={handleBackToResult} />;
