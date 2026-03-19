@@ -82,8 +82,7 @@ export default function App() {
         setRoute(ROUTES.result);
         window.history.replaceState({}, "", ROUTES.result);
       } else {
-        replaceTo(ROUTES.intro);
-        setRoute(ROUTES.intro);
+        window.history.replaceState({}, "", ROUTES.result);
       }
     }
   }, []);
@@ -109,12 +108,6 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  useEffect(() => {
-    if (window.location.pathname === ROUTES.result && !result) {
-      replaceTo(ROUTES.intro);
-      setRoute(ROUTES.intro);
-    }
-  }, [result]);
 
   useEffect(() => {
     if (window.location.pathname === ROUTES.compare && (!result || !partnerResult)) {
@@ -318,7 +311,10 @@ export default function App() {
     return <ComparePage result={result} partnerResult={partnerResult} onBack={handleBackToResult} />;
   }
 
-  if (route === ROUTES.result && result) {
+  if (route === ROUTES.result) {
+    if (!result) {
+      return <EmptyResultPage onStart={handleStart} />;
+    }
     return (
       <ResultPage
         result={result}

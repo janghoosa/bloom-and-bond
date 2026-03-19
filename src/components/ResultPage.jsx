@@ -10,7 +10,7 @@ import {
   ResultHero,
   ResultOverview,
 } from "./result-sections";
-import { PrimaryActionButton, Shell } from "./common";
+import { Modal, PrimaryActionButton, Shell } from "./common";
 
 const shareProfiles = {
   secure: {
@@ -359,66 +359,55 @@ function ShareSection({ result, onCompareWithCode }) {
 
   return (
     <>
-      {cardImageUrl && (
-        <div
-          className="fixed inset-0 z-50 flex flex-col items-center overflow-y-auto px-4 py-6"
-          style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
-          onClick={closeModal}
-        >
-          <div
-            className="relative my-auto flex w-full max-w-sm flex-col items-center gap-4"
-            onClick={(e) => e.stopPropagation()}
+      <Modal open={!!cardImageUrl} onClose={closeModal} ariaLabel="결과 카드 미리보기">
+        <img
+          src={cardImageUrl}
+          alt="결과 카드"
+          className="w-full rounded-2xl shadow-2xl"
+          style={{ maxWidth: 360 }}
+        />
+        <div className="flex w-full gap-2" style={{ maxWidth: 300 }}>
+          <button
+            type="button"
+            onClick={handleDownload}
+            className="flex-1 rounded-[20px] px-4 py-3 text-sm"
+            style={{
+              backgroundColor: theme.panelHighlight,
+              color: theme.text,
+              border: `1px solid ${theme.line}`,
+            }}
           >
-            <img
-              src={cardImageUrl}
-              alt="결과 카드"
-              className="w-full rounded-2xl shadow-2xl"
-              style={{ maxWidth: 360 }}
-            />
-            <div className="flex w-full gap-2" style={{ maxWidth: 300 }}>
-              <button
-                type="button"
-                onClick={handleDownload}
-                className="flex-1 rounded-[20px] px-4 py-3 text-sm"
-                style={{
-                  backgroundColor: theme.panelHighlight,
-                  color: theme.text,
-                  border: `1px solid ${theme.line}`,
-                }}
-              >
-                이미지 저장
-              </button>
-              <button
-                type="button"
-                onClick={handleShareFromModal}
-                className="flex-1 rounded-[20px] px-4 py-3 text-sm"
-                style={{
-                  backgroundColor: theme.primaryStrong,
-                  color: theme.primaryContrast,
-                  border: `1px solid ${theme.primaryEdge}`,
-                }}
-              >
-                공유하기
-              </button>
-            </div>
-            <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.62)" }}>
-              같은 유형이어도 점수와 반응 강도에 따라 카드 배경은 조금씩 달라질 수 있어요.
-            </p>
-            <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.62)" }}>
-              모바일에서는 이미지를 길게 눌러 저장할 수도 있어요
-            </p>
-            <button
-              type="button"
-              onClick={closeModal}
-              className="mt-2 inline-flex h-10 w-10 items-center justify-center rounded-full border text-lg font-bold"
-              style={{ backgroundColor: "rgba(255,255,255,0.88)", borderColor: theme.line, color: theme.text }}
-              aria-label="닫기"
-            >
-              ×
-            </button>
-          </div>
+            이미지 저장
+          </button>
+          <button
+            type="button"
+            onClick={handleShareFromModal}
+            className="flex-1 rounded-[20px] px-4 py-3 text-sm"
+            style={{
+              backgroundColor: theme.primaryStrong,
+              color: theme.primaryContrast,
+              border: `1px solid ${theme.primaryEdge}`,
+            }}
+          >
+            공유하기
+          </button>
         </div>
-      )}
+        <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.62)" }}>
+          같은 유형이어도 점수와 반응 강도에 따라 카드 배경은 조금씩 달라질 수 있어요.
+        </p>
+        <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.62)" }}>
+          모바일에서는 이미지를 길게 눌러 저장할 수도 있어요
+        </p>
+        <button
+          type="button"
+          onClick={closeModal}
+          className="mt-2 inline-flex h-10 w-10 items-center justify-center rounded-full border text-lg font-bold"
+          style={{ backgroundColor: "rgba(255,255,255,0.88)", borderColor: theme.line, color: theme.text }}
+          aria-label="닫기"
+        >
+          ×
+        </button>
+      </Modal>
 
       <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
         <Card.Header className="flex flex-col items-start gap-2">
