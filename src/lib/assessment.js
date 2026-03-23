@@ -379,8 +379,10 @@ function chunkQuestions(questions, stepCount) {
 
 export function buildAssessmentSteps(mode = ASSESSMENT_MODES.quick) {
   const config = buildAssessmentConfig(mode);
-  const mbtiStepQuestions = chunkQuestions(interleaveSectionQuestions(config.mbtiSections), 4);
-  const attachmentStepQuestions = chunkQuestions(interleaveSectionQuestions(config.attachmentSections), 3);
+  const mbtiMixed = interleaveSectionQuestions(config.mbtiSections);
+  const attachmentMixed = interleaveSectionQuestions(config.attachmentSections);
+  const mbtiStepQuestions = mbtiMixed.map((q) => [q]);
+  const attachmentStepQuestions = attachmentMixed.map((q) => [q]);
 
   const mbtiSteps = mbtiStepQuestions.map((questions, index) => ({
     id: `mbti-step-${index + 1}`,

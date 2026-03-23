@@ -207,8 +207,8 @@ export default function App() {
     }
   };
 
-  const handleNextStep = () => {
-    if (!isCurrentStepComplete) {
+  const handleNextStep = (force = false) => {
+    if (!force && !isCurrentStepComplete) {
       toast.warning("아직 선택하지 않은 선택지를 선택해주세요.");
       return;
     }
@@ -345,8 +345,6 @@ export default function App() {
       currentStep={currentStep}
       totalSteps={assessmentSteps.length}
       totalQuestions={assessmentConfig.mbtiQuestions.length + assessmentConfig.attachmentQuestions.length}
-      activeAnsweredCount={activeAnsweredCount}
-      isCurrentStepComplete={isCurrentStepComplete}
       progress={progress}
       onNextStep={handleNextStep}
       onAnalyze={handleAnalyze}
