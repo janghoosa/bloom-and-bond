@@ -180,7 +180,7 @@ export function BinaryQuestion({ number, question, value, onChange }) {
 
   return (
     <div className="rounded-[20px] border px-3.5 pb-3.5 pt-2.5 sm:rounded-[28px] sm:p-5" style={{ borderColor: theme.line, backgroundColor: theme.panel }}>
-      <p className="mb-1.5 text-sm font-semibold leading-6 tracking-[0.02em] sm:mb-3" style={{ color: theme.text }}>
+      <p className="mb-3 text-base font-bold leading-7 tracking-[0.02em] sm:mb-5 sm:text-lg sm:leading-8" style={{ color: theme.text }}>
         {number}. {question.prompt}
       </p>
       <RadioGroup aria-label={question.prompt} name={question.id} value={value ?? null} onChange={onChange} className="gap-2">
@@ -201,8 +201,8 @@ export function BinaryQuestion({ number, question, value, onChange }) {
             }
           >
             <Radio.Content className="gap-1" style={{ margin: 0, padding: "0.125rem 0" }}>
-              <span className="text-sm font-bold" style={{ color: theme.text }}>{option.title}</span>
-              <span className="text-sm" style={{ color: theme.textSoft }}>{option.description}</span>
+              <span className="text-base font-bold" style={{ color: theme.text }}>{option.title}</span>
+              <span className="text-xs" style={{ color: theme.textSoft }}>{option.description}</span>
             </Radio.Content>
           </Radio>
         ))}
@@ -230,7 +230,7 @@ export function ScaleQuestion({ number, question, value, onChange }) {
 
   return (
     <div className="rounded-[20px] border px-3.5 pb-3.5 pt-2.5 sm:rounded-[28px] sm:p-5" style={{ borderColor: theme.line, backgroundColor: theme.panel }}>
-      <p className="mb-1.5 text-sm font-semibold leading-6 tracking-[0.02em] sm:mb-3" style={{ color: theme.text }}>
+      <p className="mb-3 text-base font-bold leading-7 tracking-[0.02em] sm:mb-5 sm:text-lg sm:leading-8" style={{ color: theme.text }}>
         {number}. {question.prompt}
       </p>
       <RadioGroup aria-label={question.prompt} name={question.id} value={value ?? null} onChange={onChange} className="grid grid-cols-5 gap-2">
