@@ -462,7 +462,7 @@ export function ResultPage({ result, partnerResult, onRestart, onOpenCompare, on
   return (
     <Shell>
       <div className="animate-section"><ResultHero combined={combined} onRestart={onRestart} /></div>
-      <div className="animate-section"><QuickShareBar result={result} /></div>
+      <div className="animate-section"><QuickShareBar result={activeResult} /></div>
       {partnerResult && (
         <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
           <Card.Header className="flex flex-col items-start gap-2">
