@@ -31,12 +31,12 @@ function copyToClipboard(text) {
 function QuickShareBar({ result }) {
   const [saving, setSaving] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [previewBlob, setPreviewBlob] = useState(null);
+  const [cardImageUrl, setCardImageUrl] = useState(null);
+  const [cardBlob, setCardBlob] = useState(null);
 
   useEffect(() => {
-    return () => { if (previewUrl) URL.revokeObjectURL(previewUrl); };
-  }, [previewUrl]);
+    return () => { if (cardImageUrl) URL.revokeObjectURL(cardImageUrl); };
+  }, [cardImageUrl]);
 
   const handleQuickCard = async () => {
     if (saving) return;
@@ -45,8 +45,8 @@ function QuickShareBar({ result }) {
       const blob = await drawResultCard(result);
       if (!blob) { toast.warning("이미지 생성에 실패했습니다."); return; }
       trackEvent("card_generated", { type: "result", mbti: result.mbti.type, attachment: result.attachment.key });
-      setPreviewBlob(blob);
-      setPreviewUrl(URL.createObjectURL(blob));
+      setCardBlob(blob);
+      setCardImageUrl(URL.createObjectURL(blob));
     } catch (err) {
       if (err.name !== "AbortError") toast.warning("이미지 생성에 실패했습니다.");
     } finally {
@@ -54,30 +54,35 @@ function QuickShareBar({ result }) {
     }
   };
 
+  const closeModal = () => {
+    if (cardImageUrl) URL.revokeObjectURL(cardImageUrl);
+    setCardImageUrl(null);
+    setCardBlob(null);
+  };
+
   const handleDownload = () => {
-    if (!previewUrl) return;
+    if (!cardImageUrl) return;
     const link = document.createElement("a");
     link.download = result.code ? `${result.code}.png` : "result.png";
-    link.href = previewUrl;
+    link.href = cardImageUrl;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
   const handleShare = async () => {
-    if (!previewBlob) return;
+    if (!cardBlob) return;
     try {
       const filename = result.code ? `${result.code}.png` : "result.png";
-      const file = new File([previewBlob], filename, { type: "image/png" });
+      const file = new File([cardBlob], filename, { type: "image/png" });
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         trackEvent("card_shared", { type: "result", method: "native_share" });
         await navigator.share({ files: [file] });
       } else {
         handleDownload();
-        toast.success("카드가 저장되었습니다.");
       }
     } catch (err) {
-      if (err.name !== "AbortError") toast.warning("공유에 실패했습니다.");
+      if (err.name !== "AbortError") handleDownload();
     }
   };
 
@@ -94,7 +99,34 @@ function QuickShareBar({ result }) {
   };
 
   return (
-    <div className="space-y-3">
+    <>
+      <Modal open={!!cardImageUrl} onClose={closeModal} ariaLabel="결과 카드 미리보기">
+        <img
+          src={cardImageUrl}
+          alt="결과 카드"
+          className="w-full rounded-2xl shadow-2xl"
+          style={{ maxWidth: 360 }}
+        />
+        <div className="flex w-full gap-2" style={{ maxWidth: 300 }}>
+          <button
+            type="button"
+            onClick={handleDownload}
+            className="flex-1 rounded-[20px] px-4 py-3 text-sm"
+            style={{ backgroundColor: theme.panelHighlight, color: theme.text, border: `1px solid ${theme.line}` }}
+          >
+            이미지 저장
+          </button>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="flex-1 rounded-[20px] px-4 py-3 text-sm"
+            style={{ backgroundColor: theme.primaryStrong, color: theme.primaryContrast, border: `1px solid ${theme.primaryEdge}` }}
+          >
+            공유하기
+          </button>
+        </div>
+      </Modal>
+
       <div
         className="flex gap-2 rounded-[22px] border px-3 py-3"
         style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}
@@ -103,7 +135,7 @@ function QuickShareBar({ result }) {
           type="button"
           onClick={handleQuickCard}
           disabled={saving}
-          className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
+          className="btn-spring flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
           style={{
             backgroundColor: theme.primaryStrong,
             color: theme.primaryContrast,
@@ -115,7 +147,7 @@ function QuickShareBar({ result }) {
         <button
           type="button"
           onClick={handleCopyLink}
-          className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
+          className="btn-spring flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
           style={{
             backgroundColor: theme.panelHighlight,
             color: theme.text,
@@ -125,43 +157,7 @@ function QuickShareBar({ result }) {
           {linkCopied ? "복사됨!" : "링크 복사"}
         </button>
       </div>
-
-      {previewUrl && (
-        <div className="space-y-2 rounded-[22px] border p-3" style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}>
-          <img
-            src={previewUrl}
-            alt="공유 카드 미리보기"
-            className="w-full rounded-[16px]"
-          />
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={handleShare}
-              className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
-              style={{
-                backgroundColor: theme.primaryStrong,
-                color: theme.primaryContrast,
-                border: `1px solid ${theme.primaryEdge}`,
-              }}
-            >
-              공유하기
-            </button>
-            <button
-              type="button"
-              onClick={handleDownload}
-              className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
-              style={{
-                backgroundColor: theme.panelHighlight,
-                color: theme.text,
-                border: `1px solid ${theme.line}`,
-              }}
-            >
-              저장하기
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 
