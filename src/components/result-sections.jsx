@@ -32,7 +32,7 @@ export function ResultHero({ combined, onRestart }) {
 export function ResultOverview({ result, mbtiSectionBars, attachmentOverviewBars }) {
   return (
     <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
-      <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
+      <Card className="card-hover border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
         <Card.Header className="flex flex-col items-start gap-2">
           <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
             성향 결과
@@ -58,7 +58,7 @@ export function ResultOverview({ result, mbtiSectionBars, attachmentOverviewBars
       </Card.Content>
       </Card>
 
-      <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
+      <Card className="card-hover border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
         <Card.Header className="flex flex-col items-start gap-2">
           <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
             관계 결과
@@ -91,7 +91,7 @@ export function ResultOverview({ result, mbtiSectionBars, attachmentOverviewBars
 
 export function KeyPointsCard({ points }) {
   return (
-    <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
+    <Card className="card-hover border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
       <Card.Header className="flex flex-col items-start gap-2">
         <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
           종합 해석
@@ -113,7 +113,7 @@ export function KeyPointsCard({ points }) {
 
 export function PrimaryInsightCard({ section }) {
   return (
-    <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
+    <Card className="card-hover border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
       <Card.Header className="flex flex-col items-start gap-2">
         <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
           세부 해석
@@ -139,7 +139,7 @@ export function PrimaryInsightCard({ section }) {
 
 export function DetailInsightsCard({ sections }) {
   return (
-    <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
+    <Card className="card-hover border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
       <Card.Header className="flex flex-col items-start gap-2">
         <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
           세부 해석
@@ -186,7 +186,7 @@ function CompatibilityList({ items }) {
 
 export function CompatibilityCard({ compatibility }) {
   return (
-    <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
+    <Card className="card-hover border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
       <Card.Header className="flex flex-col items-start gap-2">
         <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
           관계 궁합
@@ -226,7 +226,7 @@ export function CompatibilityCard({ compatibility }) {
 
 export function PracticeGuideCard({ practice }) {
   return (
-    <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
+    <Card className="card-hover border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
       <Card.Header className="flex flex-col items-start gap-2">
         <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: theme.textTint }}>
           연습 가이드

@@ -461,8 +461,8 @@ export function ResultPage({ result, partnerResult, onRestart, onOpenCompare, on
 
   return (
     <Shell>
-      <ResultHero combined={combined} onRestart={onRestart} />
-      <QuickShareBar result={result} />
+      <div className="animate-section"><ResultHero combined={combined} onRestart={onRestart} /></div>
+      <div className="animate-section"><QuickShareBar result={result} /></div>
       {partnerResult && (
         <Card className="border" style={{ backgroundColor: theme.panelDeep, borderColor: theme.line }}>
           <Card.Header className="flex flex-col items-start gap-2">
@@ -515,12 +515,12 @@ export function ResultPage({ result, partnerResult, onRestart, onOpenCompare, on
           </Card.Content>
         </Card>
       )}
-      <ResultOverview result={activeResult} mbtiSectionBars={mbtiSectionBars} attachmentOverviewBars={attachmentOverviewBars} />
-      <KeyPointsCard points={combined.points} />
-      <CompatibilityCard compatibility={combined.compatibility} />
-      <DetailInsightsCard sections={combined.sections} />
-      <PracticeGuideCard practice={combined.practice} />
-      <ShareSection result={result} onCompareWithCode={onCompareWithCode} />
+      <div className="animate-section"><ResultOverview result={activeResult} mbtiSectionBars={mbtiSectionBars} attachmentOverviewBars={attachmentOverviewBars} /></div>
+      <div className="animate-section"><KeyPointsCard points={combined.points} /></div>
+      <div className="animate-section"><CompatibilityCard compatibility={combined.compatibility} /></div>
+      <div className="animate-section"><DetailInsightsCard sections={combined.sections} /></div>
+      <div className="animate-section"><PracticeGuideCard practice={combined.practice} /></div>
+      <div className="animate-section"><ShareSection result={result} onCompareWithCode={onCompareWithCode} /></div>
     </Shell>
   );
 }

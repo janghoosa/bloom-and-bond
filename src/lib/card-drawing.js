@@ -178,21 +178,63 @@ function drawGeometricShape(ctx, attachmentKey, mbtiType, cx, cy, size) {
   const temperament = mbtiType ? getTemperament(mbtiType) : "SP";
 
   ctx.save();
-  ctx.fillStyle = colors.fill;
-  ctx.strokeStyle = colors.stroke;
-  ctx.lineWidth = 4;
 
+  // Outer glow
+  ctx.shadowColor = colors.stroke;
+  ctx.shadowBlur = size * 0.4;
+  ctx.fillStyle = colors.fill;
   drawShapePath(ctx, temperament, cx, cy, size);
   ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // Gradient fill overlay
+  const grad = ctx.createRadialGradient(cx, cy - size * 0.3, 0, cx, cy, size);
+  grad.addColorStop(0, colors.stroke.replace(")", ", 0.35)").replace("rgb", "rgba").replace("#", ""));
+  grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+  // Use hex-to-rgba for gradient
+  ctx.globalAlpha = 0.5;
+  drawShapePath(ctx, temperament, cx, cy, size);
+  ctx.fillStyle = colors.fill;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Stroke
+  ctx.strokeStyle = colors.stroke;
+  ctx.lineWidth = 3;
+  drawShapePath(ctx, temperament, cx, cy, size);
   ctx.stroke();
 
-  // inner decorative shape (smaller, same temperament)
-  ctx.globalAlpha = 0.3;
+  // Inner shape (decorative)
+  ctx.globalAlpha = 0.25;
   ctx.lineWidth = 2;
-  drawShapePath(ctx, temperament, cx, cy, size * 0.45);
+  ctx.strokeStyle = colors.stroke;
+  drawShapePath(ctx, temperament, cx, cy, size * 0.5);
   ctx.stroke();
   ctx.globalAlpha = 1;
 
+  // Tiny inner dot/shape
+  ctx.globalAlpha = 0.15;
+  drawShapePath(ctx, temperament, cx, cy, size * 0.2);
+  ctx.fillStyle = colors.stroke;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  ctx.restore();
+}
+
+function drawBlossomPetal(ctx, x, y, size, rotation, opacity) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rotation);
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = "#ffcce0";
+  ctx.beginPath();
+  ctx.moveTo(0, -size);
+  ctx.quadraticCurveTo(size * 0.5, -size * 0.5, size * 0.4, 0);
+  ctx.quadraticCurveTo(size * 0.2, size * 0.3, 0, size * 0.5);
+  ctx.quadraticCurveTo(-size * 0.2, size * 0.3, -size * 0.4, 0);
+  ctx.quadraticCurveTo(-size * 0.5, -size * 0.5, 0, -size);
+  ctx.fill();
   ctx.restore();
 }
 
@@ -229,46 +271,78 @@ export async function drawResultCard(result) {
 
   ctx.textBaseline = "top";
 
+  // Decorative blossom petals (scattered)
+  drawBlossomPetal(ctx, 120, 180, 40, 0.3, 0.15);
+  drawBlossomPetal(ctx, W - 140, 260, 32, -0.5, 0.12);
+  drawBlossomPetal(ctx, 160, H - 280, 28, 0.8, 0.1);
+  drawBlossomPetal(ctx, W - 100, H - 200, 36, -0.2, 0.13);
+  drawBlossomPetal(ctx, W / 2 + 200, 200, 22, 1.2, 0.08);
+
   // Brand
   ctx.fillStyle = visual.accent;
   ctx.font = "400 32px Jua";
   ctx.fillText("BLOOM & BOND", PAD, PAD);
 
-  // Geometric shape (center)
-  drawGeometricShape(ctx, result.attachment.key, result.mbti.type, W / 2, 360, 160);
+  // Thin accent line under brand
+  ctx.strokeStyle = visual.accent;
+  ctx.globalAlpha = 0.3;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(PAD, PAD + 46);
+  ctx.lineTo(PAD + 220, PAD + 46);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+
+  // Geometric shape (center, larger with glow)
+  drawGeometricShape(ctx, result.attachment.key, result.mbti.type, W / 2, 340, 170);
 
   // MBTI type (large, centered)
   ctx.fillStyle = "#251822";
   ctx.font = "400 180px Jua";
   ctx.textAlign = "center";
-  ctx.fillText(result.mbti.type, W / 2, 540);
+  ctx.fillText(result.mbti.type, W / 2, 530);
+
+  // Divider line
+  ctx.strokeStyle = visual.accent;
+  ctx.globalAlpha = 0.25;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(W / 2 - 120, 730);
+  ctx.lineTo(W / 2 + 120, 730);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
 
   // Attachment label
   ctx.font = "400 48px Jua";
   ctx.fillStyle = visual.accent;
-  ctx.fillText(profile.label, W / 2, 740);
+  ctx.fillText(profile.label, W / 2, 760);
 
   // Quote
   ctx.fillStyle = "#6f5564";
   ctx.font = "400 40px Pretendard, sans-serif";
   const lines = profile.quote.split("\n");
-  ctx.fillText(`\u201C${lines[0]}`, W / 2, 840);
+  ctx.fillText(`\u201C${lines[0]}`, W / 2, 870);
   if (lines[1]) {
-    ctx.fillText(`${lines[1]}\u201D`, W / 2, 896);
+    ctx.fillText(`${lines[1]}\u201D`, W / 2, 926);
   }
 
-  // Key point (just one for cleaner look)
+  // Key point (one, for clarity)
   if (combined.points?.[0]) {
-    ctx.fillStyle = "#251822";
+    ctx.fillStyle = "#3d1f30";
+    ctx.globalAlpha = 0.7;
     ctx.font = "400 34px Pretendard, sans-serif";
-    wrapTextCentered(ctx, combined.points[0], W / 2, 1000, W - PAD * 2, 48);
+    wrapTextCentered(ctx, combined.points[0], W / 2, 1040, W - PAD * 2, 48);
+    ctx.globalAlpha = 1;
   }
 
-  // URL footer
-  ctx.textAlign = "left";
+  // URL footer with accent dot
+  ctx.textAlign = "center";
   ctx.fillStyle = visual.accent;
-  ctx.font = "400 28px Jua";
-  ctx.fillText(displayHost, PAD, H - PAD - 8);
+  ctx.beginPath();
+  ctx.arc(W / 2, H - PAD - 40, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.font = "400 26px Jua";
+  ctx.fillText(displayHost, W / 2, H - PAD - 20);
 
   return canvasToBlob(canvas);
 }
