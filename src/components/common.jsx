@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Card, Radio, RadioGroup } from "@heroui/react";
 import { theme } from "../lib/theme";
 
@@ -334,7 +335,7 @@ export function Modal({ open, onClose, ariaLabel, children }) {
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div
       ref={overlayRef}
       role="dialog"
@@ -350,7 +351,8 @@ export function Modal({ open, onClose, ariaLabel, children }) {
       >
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
