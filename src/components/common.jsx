@@ -73,20 +73,20 @@ export function ModeChoiceCard({ title, description, meta, selected, onSelect })
 function BlossomPetals() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <svg className="blossom-petal" style={{ top: "8%", left: "5%", width: 28, height: 28 }} viewBox="0 0 24 24" fill="none">
-        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffb8d9" opacity="0.6"/>
+      <svg className="blossom-petal" style={{ top: "6%", left: "4%", width: 36, height: 36 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffb8d9" opacity="0.8"/>
       </svg>
-      <svg className="blossom-petal" style={{ top: "22%", right: "8%", width: 22, height: 22 }} viewBox="0 0 24 24" fill="none">
-        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffa0cc" opacity="0.5"/>
+      <svg className="blossom-petal" style={{ top: "20%", right: "6%", width: 28, height: 28 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffa0cc" opacity="0.7"/>
       </svg>
-      <svg className="blossom-petal" style={{ bottom: "30%", left: "10%", width: 18, height: 18 }} viewBox="0 0 24 24" fill="none">
-        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffc8e2" opacity="0.45"/>
+      <svg className="blossom-petal" style={{ bottom: "32%", left: "8%", width: 24, height: 24 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffc8e2" opacity="0.65"/>
       </svg>
-      <svg className="blossom-petal" style={{ bottom: "15%", right: "12%", width: 24, height: 24 }} viewBox="0 0 24 24" fill="none">
-        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffb8d9" opacity="0.5"/>
+      <svg className="blossom-petal" style={{ bottom: "12%", right: "10%", width: 32, height: 32 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffb8d9" opacity="0.7"/>
       </svg>
-      <svg className="blossom-petal" style={{ top: "55%", left: "3%", width: 16, height: 16 }} viewBox="0 0 24 24" fill="none">
-        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffd0e8" opacity="0.4"/>
+      <svg className="blossom-petal" style={{ top: "50%", left: "2%", width: 20, height: 20 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffd0e8" opacity="0.6"/>
       </svg>
     </div>
   );
@@ -108,7 +108,7 @@ export function Shell({ children }) {
                 href="https://forms.gle/7vFUs9qPqbgN1thq5"
                 target="_blank"
                 rel="noreferrer"
-                className="mt-1 inline-block underline underline-offset-4"
+                className="mt-1 inline-block min-h-[44px] px-2 py-2 underline underline-offset-4"
                 style={{ color: theme.textSoft }}
               >
                 의견 보내기

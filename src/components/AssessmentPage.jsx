@@ -114,7 +114,7 @@ export function AssessmentPage({
         )}
 
         <div
-          className="sticky bottom-2 z-10 rounded-[22px] border px-3 py-3.5 backdrop-blur sm:static sm:px-4 sm:py-4 md:rounded-[24px] md:px-5 md:py-4"
+          className="sticky bottom-2 z-10 rounded-[22px] border px-3 py-3.5 backdrop-blur sm:static sm:mx-auto sm:max-w-md sm:px-4 sm:py-4 md:rounded-[24px] md:px-5 md:py-4"
           style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}
         >
           {isLastStep ? (
