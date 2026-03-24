@@ -95,6 +95,23 @@ button {
 .animate-reveal-d2 { animation: reveal-fade-in 0.7s ease-out 0.3s both; }
 .animate-reveal-title { animation: reveal-title-in 1s ease-out 0.2s both; }
 
+.btn-spring {
+  transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1.2);
+}
+.btn-spring:active:not(:disabled) {
+  transform: scale(0.96);
+}
+@media (hover: hover) {
+  .btn-spring:hover:not(:disabled) {
+    transform: scale(1.02);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-spring { transition: none; }
+  .btn-spring:active:not(:disabled),
+  .btn-spring:hover:not(:disabled) { transform: none; }
+}
+
 @keyframes blossom-float {
   0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
   50% { transform: translateY(-18px) rotate(12deg); opacity: 1; }

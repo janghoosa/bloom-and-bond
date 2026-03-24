@@ -1,19 +1,15 @@
 import { useEffect, useRef } from "react";
 import { Card, Radio, RadioGroup } from "@heroui/react";
-import { motion } from "framer-motion";
 import { theme } from "../lib/theme";
 
 export function PrimaryActionButton({ children, onPress, fullWidth = true, disabled = false }) {
   return (
-    <motion.button
+    <button
       type="button"
       onClick={disabled ? undefined : onPress}
       disabled={disabled}
       aria-disabled={disabled}
-      whileTap={disabled ? {} : { scale: 0.96 }}
-      whileHover={disabled ? {} : { scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-      className={`${fullWidth ? "w-full" : ""} inline-flex min-h-[44px] items-center justify-center rounded-[20px] px-7 py-1.5 text-[15px] tracking-[0.01em] transition-opacity sm:px-8 ${
+      className={`btn-spring ${fullWidth ? "w-full" : ""} inline-flex min-h-[44px] items-center justify-center rounded-[20px] px-7 py-1.5 text-[15px] tracking-[0.01em] transition-opacity sm:px-8 ${
         disabled ? "opacity-55" : ""
       }`}
       style={{
@@ -26,7 +22,7 @@ export function PrimaryActionButton({ children, onPress, fullWidth = true, disab
         <span className="text-[18px] leading-none sm:text-[19px]">{children}</span>
         <span aria-hidden="true" className="text-[20px] leading-none sm:text-[21px]">→</span>
       </span>
-    </motion.button>
+    </button>
   );
 }
 
@@ -387,11 +383,6 @@ export function EmptyResultPage({ onStart }) {
   );
 }
 
-const revealItem = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export function RevealScreen({ mbtiType, attachmentTitle, onSkip }) {
   return (
     <div
@@ -403,46 +394,29 @@ export function RevealScreen({ mbtiType, attachmentTitle, onSkip }) {
         background: "linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%)",
       }}
     >
-      <motion.div
-        className="text-center"
-        initial="hidden"
-        animate="visible"
-        transition={{ staggerChildren: 0.25 }}
-      >
-        <motion.p
-          variants={revealItem}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-xs font-bold uppercase tracking-[0.28em]"
-          style={{ color: theme.textTint }}
-        >
+      <div className="text-center">
+        <p className="animate-reveal text-xs font-bold uppercase tracking-[0.28em]" style={{ color: theme.textTint }}>
           Your Result
-        </motion.p>
-        <motion.h1
-          variants={revealItem}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="font-title mt-4 text-5xl font-bold leading-tight sm:text-6xl"
+        </p>
+        <h1
+          className="font-title animate-reveal-title mt-4 text-5xl font-bold leading-tight sm:text-6xl"
           style={{ color: theme.text }}
         >
           {mbtiType}
-        </motion.h1>
-        <motion.p
-          variants={revealItem}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="font-title mt-2 text-xl font-bold sm:text-2xl"
+        </h1>
+        <p
+          className="font-title animate-reveal-d1 mt-2 text-xl font-bold sm:text-2xl"
           style={{ color: theme.textSoft }}
         >
           {attachmentTitle}
-        </motion.p>
-      </motion.div>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.5 }}
-        className="absolute bottom-8 text-xs"
+        </p>
+      </div>
+      <p
+        className="animate-reveal-d2 absolute bottom-8 text-xs"
         style={{ color: theme.textSoft }}
       >
         탭하면 바로 넘어가요
-      </motion.p>
+      </p>
     </div>
   );
 }
