@@ -97,10 +97,17 @@ export function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 }
 
 // --- Geometric Shape System ---
-// secure: 원 (안정, 조화)
-// anxious: 다이아몬드 (예민한 감도)
-// avoidant: 육각형 (보호벽, 구조)
-// fearful: 별 (복합적, 다면적)
+// MBTI 기질(temperament)이 도형을, 애착유형이 색상을 결정
+//
+// MBTI 기질 → 도형:
+//   NT (분석가: INTJ, INTP, ENTJ, ENTP) → 삼각형 (날카로운 사고)
+//   NF (외교관: INFJ, INFP, ENFJ, ENFP) → 둥근 다이아몬드 (감성, 공감)
+//   SJ (관리자: ISTJ, ISFJ, ESTJ, ESFJ) → 사각형 (구조적, 안정)
+//   SP (탐험가: ISTP, ISFP, ESTP, ESFP) → 원 (자유, 적응)
+//
+// 애착유형 → 색상:
+//   secure → 따뜻한 핑크, anxious → 진한 핑크
+//   avoidant → 차분한 모브, fearful → 비비드 핑크
 
 const SHAPE_COLORS = {
   secure: { fill: "rgba(255, 159, 194, 0.25)", stroke: "#ff9fc2" },
@@ -109,61 +116,80 @@ const SHAPE_COLORS = {
   fearful: { fill: "rgba(255, 94, 166, 0.25)", stroke: "#ff5ea6" },
 };
 
-function drawGeometricShape(ctx, key, cx, cy, size) {
-  const colors = SHAPE_COLORS[key] ?? SHAPE_COLORS.secure;
+function getTemperament(mbtiType) {
+  const n = mbtiType[1] === "N";
+  const t = mbtiType[2] === "T";
+  const j = mbtiType[3] === "J";
+  if (n && t) return "NT";
+  if (n && !t) return "NF";
+  if (!n && j) return "SJ";
+  return "SP";
+}
+
+function drawShapePath(ctx, temperament, cx, cy, size) {
+  ctx.beginPath();
+  switch (temperament) {
+    case "NT": {
+      // 삼각형 — 날카로운 사고
+      ctx.moveTo(cx, cy - size);
+      ctx.lineTo(cx + size * 0.87, cy + size * 0.5);
+      ctx.lineTo(cx - size * 0.87, cy + size * 0.5);
+      ctx.closePath();
+      break;
+    }
+    case "NF": {
+      // 둥근 다이아몬드 — 감성, 공감
+      const r = size;
+      ctx.moveTo(cx, cy - r);
+      ctx.quadraticCurveTo(cx + r * 0.55, cy - r * 0.55, cx + r * 0.75, cy);
+      ctx.quadraticCurveTo(cx + r * 0.55, cy + r * 0.55, cx, cy + r);
+      ctx.quadraticCurveTo(cx - r * 0.55, cy + r * 0.55, cx - r * 0.75, cy);
+      ctx.quadraticCurveTo(cx - r * 0.55, cy - r * 0.55, cx, cy - r);
+      ctx.closePath();
+      break;
+    }
+    case "SJ": {
+      // 둥근 사각형 — 구조적, 안정
+      const half = size * 0.82;
+      const radius = size * 0.18;
+      ctx.moveTo(cx - half + radius, cy - half);
+      ctx.lineTo(cx + half - radius, cy - half);
+      ctx.arcTo(cx + half, cy - half, cx + half, cy - half + radius, radius);
+      ctx.lineTo(cx + half, cy + half - radius);
+      ctx.arcTo(cx + half, cy + half, cx + half - radius, cy + half, radius);
+      ctx.lineTo(cx - half + radius, cy + half);
+      ctx.arcTo(cx - half, cy + half, cx - half, cy + half - radius, radius);
+      ctx.lineTo(cx - half, cy - half + radius);
+      ctx.arcTo(cx - half, cy - half, cx - half + radius, cy - half, radius);
+      ctx.closePath();
+      break;
+    }
+    case "SP":
+    default: {
+      // 원 — 자유, 적응
+      ctx.arc(cx, cy, size, 0, Math.PI * 2);
+      break;
+    }
+  }
+}
+
+function drawGeometricShape(ctx, attachmentKey, mbtiType, cx, cy, size) {
+  const colors = SHAPE_COLORS[attachmentKey] ?? SHAPE_COLORS.secure;
+  const temperament = mbtiType ? getTemperament(mbtiType) : "SP";
 
   ctx.save();
   ctx.fillStyle = colors.fill;
   ctx.strokeStyle = colors.stroke;
   ctx.lineWidth = 4;
 
-  ctx.beginPath();
-  switch (key) {
-    case "secure": {
-      ctx.arc(cx, cy, size, 0, Math.PI * 2);
-      break;
-    }
-    case "anxious": {
-      ctx.moveTo(cx, cy - size);
-      ctx.lineTo(cx + size * 0.75, cy);
-      ctx.lineTo(cx, cy + size);
-      ctx.lineTo(cx - size * 0.75, cy);
-      ctx.closePath();
-      break;
-    }
-    case "avoidant": {
-      for (let i = 0; i < 6; i++) {
-        const angle = (Math.PI / 3) * i - Math.PI / 2;
-        const px = cx + size * Math.cos(angle);
-        const py = cy + size * Math.sin(angle);
-        if (i === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.closePath();
-      break;
-    }
-    case "fearful": {
-      for (let i = 0; i < 8; i++) {
-        const angle = (Math.PI / 4) * i - Math.PI / 2;
-        const r = i % 2 === 0 ? size : size * 0.5;
-        const px = cx + r * Math.cos(angle);
-        const py = cy + r * Math.sin(angle);
-        if (i === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.closePath();
-      break;
-    }
-  }
+  drawShapePath(ctx, temperament, cx, cy, size);
   ctx.fill();
   ctx.stroke();
 
-  // inner decorative ring
+  // inner decorative shape (smaller, same temperament)
   ctx.globalAlpha = 0.3;
-  ctx.beginPath();
-  ctx.arc(cx, cy, size * 0.45, 0, Math.PI * 2);
-  ctx.strokeStyle = colors.stroke;
   ctx.lineWidth = 2;
+  drawShapePath(ctx, temperament, cx, cy, size * 0.45);
   ctx.stroke();
   ctx.globalAlpha = 1;
 
@@ -209,7 +235,7 @@ export async function drawResultCard(result) {
   ctx.fillText("BLOOM & BOND", PAD, PAD);
 
   // Geometric shape (center)
-  drawGeometricShape(ctx, result.attachment.key, W / 2, 360, 160);
+  drawGeometricShape(ctx, result.attachment.key, result.mbti.type, W / 2, 360, 160);
 
   // MBTI type (large, centered)
   ctx.fillStyle = "#251822";
@@ -302,8 +328,8 @@ export async function drawCoupleCard(result, partnerResult, insight) {
   ctx.fillText("MATCH VIEW", PAD + brandWidth + 20, PAD);
 
   // Two geometric shapes side by side
-  drawGeometricShape(ctx, result.attachment.key, W * 0.3, 280, 110);
-  drawGeometricShape(ctx, partnerResult.attachment.key, W * 0.7, 280, 110);
+  drawGeometricShape(ctx, result.attachment.key, result.mbti.type, W * 0.3, 280, 110);
+  drawGeometricShape(ctx, partnerResult.attachment.key, partnerResult.mbti.type, W * 0.7, 280, 110);
 
   // MBTI types
   ctx.fillStyle = "#251822";
