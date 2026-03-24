@@ -274,7 +274,7 @@ export function ScaleQuestion({ number, question, value, onChange }) {
             }
           >
             <Radio.Content className="w-full items-center justify-center gap-0.5 text-center whitespace-nowrap" style={{ margin: 0, padding: "0.125rem 0" }}>
-              <span className="inline-block min-w-[1rem] text-center text-lg font-bold sm:text-xl" style={{ color: theme.text }}>
+              <span className="inline-block min-w-[1rem] text-center text-base font-bold sm:text-lg" style={{ color: theme.text }}>
                 {label.score}
               </span>
               <span className="text-[10px] sm:text-xs" style={{ color: theme.textSoft }}>{label.text}</span>
