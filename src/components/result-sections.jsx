@@ -16,7 +16,7 @@ export function ResultHero({ combined, onRestart }) {
       <p className="text-xs font-bold uppercase tracking-[0.24em]" style={{ color: theme.textTint }}>
         Result
       </p>
-      <h1 className="font-title mt-3 text-3xl font-extrabold leading-none sm:text-5xl" style={{ color: theme.text }}>
+      <h1 className="font-title mt-3 text-3xl font-bold leading-none sm:text-5xl" style={{ color: theme.text }}>
         {combined.title}
       </h1>
       <p className="mt-4 max-w-3xl text-sm leading-7 sm:text-base" style={{ color: theme.textSoft }}>
@@ -243,7 +243,7 @@ export function PracticeGuideCard({ practice }) {
                 <div className="font-title text-lg font-bold" style={{ color: theme.text }}>
                   {item.title}
                 </div>
-                <div className="text-sm font-extrabold sm:text-base" style={{ color: theme.primaryStrong }}>
+                <div className="text-sm font-bold sm:text-base" style={{ color: theme.primaryStrong }}>
                   {item.priority}
                 </div>
               </div>

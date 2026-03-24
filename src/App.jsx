@@ -207,11 +207,15 @@ export default function App() {
     }
   };
 
+  const stepLockRef = useRef(false);
   const handleNextStep = (force = false) => {
+    if (stepLockRef.current) return;
     if (!force && !isCurrentStepComplete) {
       toast.warning("아직 선택하지 않은 선택지를 선택해주세요.");
       return;
     }
+    stepLockRef.current = true;
+    setTimeout(() => { stepLockRef.current = false; }, 300);
     trackEvent("step_complete", { step: currentStep + 1, total_steps: assessmentSteps.length });
     setCurrentStep((current) => Math.min(current + 1, assessmentSteps.length - 1));
     if (window.innerWidth >= 640) {
@@ -301,7 +305,8 @@ export default function App() {
   if (revealData) {
     return (
       <RevealScreen
-        title={`${revealData.mbti.type} · ${revealData.attachment.title}`}
+        mbtiType={revealData.mbti.type}
+        attachmentTitle={revealData.attachment.title}
         onSkip={handleRevealSkip}
       />
     );

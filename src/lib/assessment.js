@@ -43,8 +43,8 @@ const mbtiSections = [
         axis: ["E", "I"],
         prompt: "긴 하루를 보낸 뒤에도 사람을 만나면 오히려 살아나는 편이다.",
         options: [
-          { value: "E", title: "가깝다", description: "교류가 회복의 일부다." },
-          { value: "I", title: "덜 가깝다", description: "혼자 쉬는 시간이 먼저 필요하다." },
+          { value: "E", title: "그렇다", description: "교류가 회복의 일부다." },
+          { value: "I", title: "아니다", description: "혼자 쉬는 시간이 먼저 필요하다." },
         ],
       },
       {
@@ -61,8 +61,8 @@ const mbtiSections = [
         axis: ["E", "I"],
         prompt: "재미있는 일이 생기면 혼자 정리하기보다 바로 나누고 싶어진다.",
         options: [
-          { value: "E", title: "가깝다", description: "반응을 주고받을 때 더 생생하다." },
-          { value: "I", title: "덜 가깝다", description: "내 안에서 한 번 정리한 뒤 나눈다." },
+          { value: "E", title: "그렇다", description: "반응을 주고받을 때 더 생생하다." },
+          { value: "I", title: "아니다", description: "내 안에서 한 번 정리한 뒤 나눈다." },
         ],
       },
     ],
@@ -95,8 +95,8 @@ const mbtiSections = [
         axis: ["S", "N"],
         prompt: "기억할 때 대체로 실제 장면과 디테일이 오래 남는 편이다.",
         options: [
-          { value: "S", title: "가깝다", description: "사실과 디테일이 선명하다." },
-          { value: "N", title: "덜 가깝다", description: "의미와 인상 위주로 남는다." },
+          { value: "S", title: "그렇다", description: "사실과 디테일이 선명하다." },
+          { value: "N", title: "아니다", description: "의미와 인상 위주로 남는다." },
         ],
       },
       {
@@ -138,8 +138,8 @@ const mbtiSections = [
         axis: ["T", "F"],
         prompt: "누군가 서운해해도 판단이 맞다고 생각하면 그대로 말하는 편이다.",
         options: [
-          { value: "T", title: "가깝다", description: "정확성이 우선이다." },
-          { value: "F", title: "덜 가깝다", description: "전달 방식도 판단의 일부다." },
+          { value: "T", title: "그렇다", description: "정확성이 우선이다." },
+          { value: "F", title: "아니다", description: "전달 방식도 판단의 일부다." },
         ],
       },
       {
@@ -190,8 +190,8 @@ const mbtiSections = [
         axis: ["J", "P"],
         prompt: "변수 때문에 계획이 바뀌면 스트레스를 크게 느끼는 편이다.",
         options: [
-          { value: "J", title: "가깝다", description: "흐트러짐이 에너지를 뺀다." },
-          { value: "P", title: "덜 가깝다", description: "바뀌면 다시 맞추면 된다." },
+          { value: "J", title: "그렇다", description: "흐트러짐이 에너지를 뺀다." },
+          { value: "P", title: "아니다", description: "바뀌면 다시 맞추면 된다." },
         ],
       },
       {
@@ -217,8 +217,8 @@ const mbtiSections = [
         axis: ["J", "P"],
         prompt: "주말 약속도 대략적인 틀은 정해져 있어야 마음이 편하다.",
         options: [
-          { value: "J", title: "가깝다", description: "비어 있으면 오히려 신경이 쓰인다." },
-          { value: "P", title: "덜 가깝다", description: "상황 따라 흘러가도 괜찮다." },
+          { value: "J", title: "그렇다", description: "비어 있으면 오히려 신경이 쓰인다." },
+          { value: "P", title: "아니다", description: "상황 따라 흘러가도 괜찮다." },
         ],
       },
       {
@@ -1187,6 +1187,7 @@ function rebuildMbtiFromCompact(mode, type, strengths) {
 }
 
 export function trackEvent(name, params = {}) {
+  if (location.hostname === "localhost") return;
   if (typeof window.gtag === "function") {
     window.gtag("event", name, params);
   }

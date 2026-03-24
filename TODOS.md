@@ -1,6 +1,12 @@
 # TODOS
 
-모든 항목 완료됨.
+## Active
+
+### 6. Framer Motion 질문 카드 전환 애니메이션
+- `AnimatePresence` slide+fade로 1문제씩 넘기는 UX
+- 1문제씩 UX 완료 후 + 스레드 반응 확인 후 진행
+- Priority: P2 / Effort: S (CC ~15분)
+- Depends on: 1문제씩 UX 완료
 
 ## Completed
 

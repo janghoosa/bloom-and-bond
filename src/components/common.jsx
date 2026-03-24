@@ -1,14 +1,18 @@
 import { useEffect, useRef } from "react";
 import { Card, Radio, RadioGroup } from "@heroui/react";
+import { motion } from "framer-motion";
 import { theme } from "../lib/theme";
 
 export function PrimaryActionButton({ children, onPress, fullWidth = true, disabled = false }) {
   return (
-    <button
+    <motion.button
       type="button"
       onClick={disabled ? undefined : onPress}
       disabled={disabled}
       aria-disabled={disabled}
+      whileTap={disabled ? {} : { scale: 0.96 }}
+      whileHover={disabled ? {} : { scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
       className={`${fullWidth ? "w-full" : ""} inline-flex min-h-[44px] items-center justify-center rounded-[20px] px-7 py-1.5 text-[15px] tracking-[0.01em] transition-opacity sm:px-8 ${
         disabled ? "opacity-55" : ""
       }`}
@@ -22,7 +26,7 @@ export function PrimaryActionButton({ children, onPress, fullWidth = true, disab
         <span className="text-[18px] leading-none sm:text-[19px]">{children}</span>
         <span aria-hidden="true" className="text-[20px] leading-none sm:text-[21px]">→</span>
       </span>
-    </button>
+    </motion.button>
   );
 }
 
@@ -70,10 +74,33 @@ export function ModeChoiceCard({ title, description, meta, selected, onSelect })
   );
 }
 
+function BlossomPetals() {
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+      <svg className="blossom-petal" style={{ top: "8%", left: "5%", width: 28, height: 28 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffb8d9" opacity="0.6"/>
+      </svg>
+      <svg className="blossom-petal" style={{ top: "22%", right: "8%", width: 22, height: 22 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffa0cc" opacity="0.5"/>
+      </svg>
+      <svg className="blossom-petal" style={{ bottom: "30%", left: "10%", width: 18, height: 18 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffc8e2" opacity="0.45"/>
+      </svg>
+      <svg className="blossom-petal" style={{ bottom: "15%", right: "12%", width: 24, height: 24 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffb8d9" opacity="0.5"/>
+      </svg>
+      <svg className="blossom-petal" style={{ top: "55%", left: "3%", width: 16, height: 16 }} viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 8 6 8 10C8 14 12 16 12 16C12 16 16 14 16 10C16 6 12 2 12 2Z" fill="#ffd0e8" opacity="0.4"/>
+      </svg>
+    </div>
+  );
+}
+
 export function Shell({ children }) {
   return (
-    <div className="min-h-screen" style={{ color: theme.text }}>
-      <div className="mx-auto w-full max-w-[1400px] px-4 pt-3 pb-3 sm:px-6 sm:pt-8 sm:pb-8 lg:px-8 lg:pt-10 lg:pb-10">
+    <div className="relative min-h-screen" style={{ color: theme.text }}>
+      <BlossomPetals />
+      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 pt-3 pb-3 sm:px-6 sm:pt-8 sm:pb-8 lg:px-8 lg:pt-10 lg:pb-10">
         <div className="grid grid-cols-1 xl:grid-cols-[180px_minmax(0,960px)_180px] xl:gap-6">
           <aside className="hidden xl:block" aria-hidden="true" />
           <div className="flex min-w-0 flex-col gap-3 sm:gap-6">
@@ -114,7 +141,7 @@ export function Hero({ progress, totalQuestions }) {
           <p className="text-xs font-bold uppercase tracking-[0.26em]" style={{ color: theme.textTint }}>
             Bloom & Bond
           </p>
-          <h1 className="font-title max-w-3xl text-3xl font-extrabold leading-[1.02] sm:text-5xl lg:text-6xl" style={{ color: theme.text }}>
+          <h1 className="font-title max-w-3xl text-3xl font-bold leading-[1.02] sm:text-5xl lg:text-6xl" style={{ color: theme.text }}>
             <span className="block">답변은 자연스럽게,</span>
             <span className="mt-1 block sm:mt-2">결과는 분리해서 읽습니다</span>
           </h1>
@@ -342,7 +369,7 @@ export function EmptyResultPage({ onStart }) {
           <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: theme.textTint }}>
             Bloom & Bond
           </p>
-          <h1 className="font-title text-3xl font-extrabold leading-snug sm:text-4xl" style={{ color: theme.text }}>
+          <h1 className="font-title text-3xl font-bold leading-snug sm:text-4xl" style={{ color: theme.text }}>
             이 결과를 볼 수 없어요
           </h1>
           <p className="text-sm leading-7 sm:text-base" style={{ color: theme.textSoft }}>
@@ -360,7 +387,12 @@ export function EmptyResultPage({ onStart }) {
   );
 }
 
-export function RevealScreen({ title, onSkip }) {
+const revealItem = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+export function RevealScreen({ mbtiType, attachmentTitle, onSkip }) {
   return (
     <div
       role="status"
@@ -371,23 +403,46 @@ export function RevealScreen({ title, onSkip }) {
         background: "linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%)",
       }}
     >
-      <div className="text-center">
-        <p className="animate-reveal text-xs font-bold uppercase tracking-[0.28em]" style={{ color: theme.textTint }}>
+      <motion.div
+        className="text-center"
+        initial="hidden"
+        animate="visible"
+        transition={{ staggerChildren: 0.25 }}
+      >
+        <motion.p
+          variants={revealItem}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-xs font-bold uppercase tracking-[0.28em]"
+          style={{ color: theme.textTint }}
+        >
           Your Result
-        </p>
-        <h1
-          className="font-title animate-reveal-title mt-4 text-4xl font-extrabold leading-tight sm:text-5xl"
+        </motion.p>
+        <motion.h1
+          variants={revealItem}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="font-title mt-4 text-5xl font-bold leading-tight sm:text-6xl"
           style={{ color: theme.text }}
         >
-          {title}
-        </h1>
-      </div>
-      <p
-        className="animate-reveal-d2 absolute bottom-8 text-xs"
+          {mbtiType}
+        </motion.h1>
+        <motion.p
+          variants={revealItem}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="font-title mt-2 text-xl font-bold sm:text-2xl"
+          style={{ color: theme.textSoft }}
+        >
+          {attachmentTitle}
+        </motion.p>
+      </motion.div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.5 }}
+        className="absolute bottom-8 text-xs"
         style={{ color: theme.textSoft }}
       >
         탭하면 바로 넘어가요
-      </p>
+      </motion.p>
     </div>
   );
 }

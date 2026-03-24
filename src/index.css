@@ -2,7 +2,7 @@
 @import "@heroui/styles";
 
 :root {
-  font-family: "Jua", "Pretendard", sans-serif;
+  font-family: "Pretendard", sans-serif;
   color-scheme: light;
   --bg-top: #fef3f9;
   --bg-mid: #f8e5f0;
@@ -94,3 +94,32 @@ button {
 .animate-reveal-d1 { animation: reveal-fade-in 0.7s ease-out 0.15s both; }
 .animate-reveal-d2 { animation: reveal-fade-in 0.7s ease-out 0.3s both; }
 .animate-reveal-title { animation: reveal-title-in 1s ease-out 0.2s both; }
+
+@keyframes blossom-float {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+  50% { transform: translateY(-18px) rotate(12deg); opacity: 1; }
+  100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+}
+
+@keyframes blossom-drift {
+  0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.5; }
+  33% { transform: translateX(8px) translateY(-12px) rotate(8deg); opacity: 0.8; }
+  66% { transform: translateX(-4px) translateY(-6px) rotate(-4deg); opacity: 0.6; }
+  100% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.5; }
+}
+
+.blossom-petal {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  animation: blossom-float 6s ease-in-out infinite;
+}
+
+.blossom-petal:nth-child(2) { animation: blossom-drift 8s ease-in-out infinite; }
+.blossom-petal:nth-child(3) { animation: blossom-float 7s ease-in-out 1s infinite; }
+.blossom-petal:nth-child(4) { animation: blossom-drift 9s ease-in-out 2s infinite; }
+.blossom-petal:nth-child(5) { animation: blossom-float 5s ease-in-out 0.5s infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .blossom-petal { animation: none; opacity: 0.4; }
+}

@@ -54,7 +54,7 @@ export function IntroPage({
             <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: theme.textTint }}>
               Bloom & Bond - Cherry Blossom Edition
             </p>
-            <h1 className="font-title max-w-3xl text-4xl font-extrabold leading-snug sm:text-5xl lg:text-6xl" style={{ color: theme.text }}>
+            <h1 className="font-title max-w-3xl text-4xl font-bold leading-snug sm:text-5xl lg:text-6xl" style={{ color: theme.text }}>
               나를 읽고 관계를
               <br />
               이해하는 검사

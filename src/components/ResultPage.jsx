@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Card, toast } from "@heroui/react";
-import { buildCombinedInsight } from "../lib/assessment";
+import { buildCombinedInsight, trackEvent } from "../lib/assessment";
 import { theme } from "../lib/theme";
+import { drawResultCard, shareProfiles, getMbtiVisual } from "../lib/card-drawing";
 import {
   CompatibilityCard,
   DetailInsightsCard,
@@ -12,166 +13,6 @@ import {
 } from "./result-sections";
 import { Modal, PrimaryActionButton, Shell } from "./common";
 
-const shareProfiles = {
-  secure: {
-    label: "편안하게 스며드는 타입",
-    quote: "가까워지는 속도가 과하지 않아\n함께 있으면 마음이 놓이는 사람",
-    publicAttachmentLabel: "안정적으로 연결되는 타입",
-    gradient: ["#fff7fb", "#ffe3ee", "#ff9fc2"],
-  },
-  anxious: {
-    label: "마음을 오래 들여다보는 타입",
-    quote: "작은 온도 차이도 그냥 넘기지 않고\n관계를 세심하게 살피는 사람",
-    publicAttachmentLabel: "마음을 세심하게 읽는 타입",
-    gradient: ["#fff1f8", "#ffcde4", "#ff6fb2"],
-  },
-  avoidant: {
-    label: "천천히 가까워지는 타입",
-    quote: "마음이 열리는 순간은 느릴 수 있지만\n한 번 닿으면 깊게 이어지는 사람",
-    publicAttachmentLabel: "천천히 가까워지는 타입",
-    gradient: ["#fff8fc", "#f5deeb", "#d48ab2"],
-  },
-  fearful: {
-    label: "조심스럽게 마음을 여는 타입",
-    quote: "가까워지는 일에 신중하지만\n그래서 더 진심이 오래 남는 사람",
-    publicAttachmentLabel: "신중하게 마음을 여는 타입",
-    gradient: ["#fff0f7", "#ffcadf", "#ff5ea6"],
-  },
-};
-
-function getMbtiVisual(type) {
-  const intuitive = type[1] === "N";
-  const thinking = type[2] === "T";
-
-  return {
-    accent: intuitive ? "#d94f98" : "#cc5d98",
-    accentSoft: thinking ? "rgba(182, 93, 138, 0.18)" : "rgba(255, 134, 184, 0.2)",
-  };
-}
-
-function normalizeAttachmentScore(value) {
-  return Math.max(0, Math.min(1, ((value ?? 3) - 1) / 4));
-}
-
-function getGradientGeometry(attachment, width, height) {
-  const anxiety = normalizeAttachmentScore(attachment.anxietyValue ?? Number(attachment.anxiety));
-  const avoidance = normalizeAttachmentScore(attachment.avoidanceValue ?? Number(attachment.avoidance));
-
-  switch (attachment.key) {
-    case "anxious":
-      return {
-        start: [width * (0.5 - avoidance * 0.12), height * (0.24 - anxiety * 0.2)],
-        end: [width * (0.48 + avoidance * 0.4), height * (0.72 + avoidance * 0.24)],
-      };
-    case "avoidant":
-      return {
-        start: [width * (0.06 + anxiety * 0.18), height * (0.18 + anxiety * 0.2)],
-        end: [width * (0.72 + avoidance * 0.24), height * (0.52 + avoidance * 0.28)],
-      };
-    case "fearful":
-      return {
-        start: [width * (0.48 - anxiety * 0.1), height * (0.2 - anxiety * 0.12)],
-        end: [width * (0.38 + avoidance * 0.3), height * (0.76 + avoidance * 0.2)],
-      };
-    default:
-      return {
-        start: [width * (0.14 + anxiety * 0.08), height * (0.1 + anxiety * 0.08)],
-        end: [width * (0.74 + avoidance * 0.14), height * (0.78 + avoidance * 0.12)],
-      };
-  }
-}
-
-async function drawResultCard(result) {
-  const profile = shareProfiles[result.attachment.key] ?? shareProfiles.secure;
-  const combined = result.combined?.points ? result.combined : buildCombinedInsight(result.mbti, result.attachment);
-  const highlightPoints = combined.points.slice(0, 3);
-  const visual = getMbtiVisual(result.mbti.type);
-  const displayHost = typeof window !== "undefined" ? window.location.host : "bloom-and-bond.pages.dev";
-  const W = 1080;
-  const H = 1440;
-  const PAD = 84;
-
-  await document.fonts.ready;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = W;
-  canvas.height = H;
-  const ctx = canvas.getContext("2d");
-
-  const geometry = getGradientGeometry(result.attachment, W, H);
-  const [x0, y0] = geometry.start;
-  const [x1, y1] = geometry.end;
-  const grad = ctx.createLinearGradient(x0, y0, x1, y1);
-  grad.addColorStop(0, profile.gradient[0]);
-  grad.addColorStop(0.58, profile.gradient[1]);
-  grad.addColorStop(1, profile.gradient[2]);
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.fillStyle = visual.accent;
-  ctx.font = "700 32px Jua";
-  ctx.textBaseline = "top";
-  ctx.fillText("BLOOM & BOND", PAD, PAD);
-
-  ctx.fillStyle = "#251822";
-  ctx.font = "900 210px Jua";
-  ctx.fillText(result.mbti.type, PAD, PAD + 62);
-
-  ctx.fillStyle = "#251822";
-  ctx.font = "700 52px Jua";
-  ctx.fillText(profile.label, PAD, PAD + 332);
-
-  ctx.fillStyle = "#6f5564";
-  ctx.font = "400 44px Jua";
-  const lines = profile.quote.split("\n");
-  ctx.fillText(`\u201C${lines[0]}`, PAD, 560);
-  if (lines[1]) {
-    ctx.fillText(`${lines[1]}\u201D`, PAD, 618);
-  }
-
-  ctx.fillStyle = visual.accent;
-  ctx.font = "700 28px Jua";
-  ctx.fillText("핵심 포인트", PAD, 760);
-
-  ctx.fillStyle = "#251822";
-  ctx.font = "700 36px Jua";
-  highlightPoints.forEach((point, index) => {
-    const y = 840 + index * 148;
-    ctx.fillStyle = visual.accent;
-    ctx.fillText(`${index + 1}.`, PAD, y);
-    ctx.fillStyle = "#251822";
-    wrapText(ctx, point, PAD + 56, y, W - PAD * 2 - 56, 50);
-  });
-
-  ctx.fillStyle = visual.accent;
-  ctx.font = "600 28px Jua";
-  ctx.fillText(displayHost, PAD, H - PAD - 8);
-
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => resolve(blob), "image/png");
-  });
-}
-
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = text.split(" ");
-  let line = "";
-  let lineY = y;
-
-  for (let i = 0; i < words.length; i += 1) {
-    const testLine = line ? `${line} ${words[i]}` : words[i];
-    if (ctx.measureText(testLine).width > maxWidth && line) {
-      ctx.fillText(line, x, lineY);
-      line = words[i];
-      lineY += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-
-  if (line) {
-    ctx.fillText(line, x, lineY);
-  }
-}
 
 function copyToClipboard(text) {
   if (navigator.clipboard?.writeText) {
@@ -190,6 +31,12 @@ function copyToClipboard(text) {
 function QuickShareBar({ result }) {
   const [saving, setSaving] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [previewBlob, setPreviewBlob] = useState(null);
+
+  useEffect(() => {
+    return () => { if (previewUrl) URL.revokeObjectURL(previewUrl); };
+  }, [previewUrl]);
 
   const handleQuickCard = async () => {
     if (saving) return;
@@ -197,25 +44,40 @@ function QuickShareBar({ result }) {
     try {
       const blob = await drawResultCard(result);
       if (!blob) { toast.warning("이미지 생성에 실패했습니다."); return; }
-      const filename = result.code ? `${result.code}.png` : "result.png";
-      const file = new File([blob], filename, { type: "image/png" });
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file] });
-      } else {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.download = filename;
-        link.href = url;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        toast.success("카드가 저장되었습니다.");
-      }
+      trackEvent("card_generated", { type: "result", mbti: result.mbti.type, attachment: result.attachment.key });
+      setPreviewBlob(blob);
+      setPreviewUrl(URL.createObjectURL(blob));
     } catch (err) {
       if (err.name !== "AbortError") toast.warning("이미지 생성에 실패했습니다.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDownload = () => {
+    if (!previewUrl) return;
+    const link = document.createElement("a");
+    link.download = result.code ? `${result.code}.png` : "result.png";
+    link.href = previewUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleShare = async () => {
+    if (!previewBlob) return;
+    try {
+      const filename = result.code ? `${result.code}.png` : "result.png";
+      const file = new File([previewBlob], filename, { type: "image/png" });
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        trackEvent("card_shared", { type: "result", method: "native_share" });
+        await navigator.share({ files: [file] });
+      } else {
+        handleDownload();
+        toast.success("카드가 저장되었습니다.");
+      }
+    } catch (err) {
+      if (err.name !== "AbortError") toast.warning("공유에 실패했습니다.");
     }
   };
 
@@ -232,35 +94,73 @@ function QuickShareBar({ result }) {
   };
 
   return (
-    <div
-      className="flex gap-2 rounded-[22px] border px-3 py-3"
-      style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}
-    >
-      <button
-        type="button"
-        onClick={handleQuickCard}
-        disabled={saving}
-        className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
-        style={{
-          backgroundColor: theme.primaryStrong,
-          color: theme.primaryContrast,
-          border: `1px solid ${theme.primaryEdge}`,
-        }}
+    <div className="space-y-3">
+      <div
+        className="flex gap-2 rounded-[22px] border px-3 py-3"
+        style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}
       >
-        {saving ? "만드는 중..." : "카드 만들기"}
-      </button>
-      <button
-        type="button"
-        onClick={handleCopyLink}
-        className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
-        style={{
-          backgroundColor: theme.panelHighlight,
-          color: theme.text,
-          border: `1px solid ${theme.line}`,
-        }}
-      >
-        {linkCopied ? "복사됨!" : "링크 복사"}
-      </button>
+        <button
+          type="button"
+          onClick={handleQuickCard}
+          disabled={saving}
+          className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
+          style={{
+            backgroundColor: theme.primaryStrong,
+            color: theme.primaryContrast,
+            border: `1px solid ${theme.primaryEdge}`,
+          }}
+        >
+          {saving ? "만드는 중..." : "카드 만들기"}
+        </button>
+        <button
+          type="button"
+          onClick={handleCopyLink}
+          className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
+          style={{
+            backgroundColor: theme.panelHighlight,
+            color: theme.text,
+            border: `1px solid ${theme.line}`,
+          }}
+        >
+          {linkCopied ? "복사됨!" : "링크 복사"}
+        </button>
+      </div>
+
+      {previewUrl && (
+        <div className="space-y-2 rounded-[22px] border p-3" style={{ borderColor: theme.line, backgroundColor: theme.panelDeep }}>
+          <img
+            src={previewUrl}
+            alt="공유 카드 미리보기"
+            className="w-full rounded-[16px]"
+          />
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleShare}
+              className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
+              style={{
+                backgroundColor: theme.primaryStrong,
+                color: theme.primaryContrast,
+                border: `1px solid ${theme.primaryEdge}`,
+              }}
+            >
+              공유하기
+            </button>
+            <button
+              type="button"
+              onClick={handleDownload}
+              className="flex-1 rounded-[18px] px-4 py-2.5 text-sm font-bold"
+              style={{
+                backgroundColor: theme.panelHighlight,
+                color: theme.text,
+                border: `1px solid ${theme.line}`,
+              }}
+            >
+              저장하기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

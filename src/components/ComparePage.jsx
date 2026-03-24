@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Card, toast } from "@heroui/react";
-import { buildCompareInsight } from "../lib/assessment";
+import { buildCompareInsight, trackEvent } from "../lib/assessment";
 import { theme } from "../lib/theme";
+import { drawCoupleCard } from "../lib/card-drawing";
 import { Modal, PrimaryActionButton, ResultMeter, Shell } from "./common";
 
 const compareCardEmoji = {
@@ -17,124 +18,6 @@ function formatCompareText(text) {
   return text
     .replaceAll(". ", ".\n")
     .replaceAll("? ", "?\n");
-}
-
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = text.split(" ");
-  let line = "";
-  let lineY = y;
-  for (let i = 0; i < words.length; i += 1) {
-    const testLine = line ? `${line} ${words[i]}` : words[i];
-    if (ctx.measureText(testLine).width > maxWidth && line) {
-      ctx.fillText(line, x, lineY);
-      line = words[i];
-      lineY += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-  if (line) ctx.fillText(line, x, lineY);
-}
-
-const coupleGradientColors = {
-  secure: { start: "#fff7fb", mid: "#ffe3ee", end: "#ff9fc2" },
-  anxious: { start: "#fff1f8", mid: "#ffcde4", end: "#ff6fb2" },
-  avoidant: { start: "#fff8fc", mid: "#f5deeb", end: "#d48ab2" },
-  fearful: { start: "#fff0f7", mid: "#ffcadf", end: "#ff5ea6" },
-};
-
-async function drawCoupleCard(result, partnerResult, insight) {
-  const displayHost = typeof window !== "undefined" ? window.location.host : "bloom-and-bond.pages.dev";
-  const W = 1080;
-  const H = 1440;
-  const PAD = 84;
-
-  await document.fonts.ready;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = W;
-  canvas.height = H;
-  const ctx = canvas.getContext("2d");
-
-  const myColors = coupleGradientColors[result.attachment.key] ?? coupleGradientColors.secure;
-  const partnerColors = coupleGradientColors[partnerResult.attachment.key] ?? coupleGradientColors.secure;
-  const grad = ctx.createLinearGradient(0, 0, W, H);
-  grad.addColorStop(0, myColors.start);
-  grad.addColorStop(0.3, myColors.mid);
-  grad.addColorStop(0.7, partnerColors.mid);
-  grad.addColorStop(1, partnerColors.end);
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.textBaseline = "top";
-  ctx.shadowColor = "rgba(80, 20, 50, 0.08)";
-  ctx.shadowBlur = 12;
-  ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = 2;
-
-  ctx.fillStyle = "#d94f98";
-  ctx.font = "700 32px Jua";
-  const brandText = "BLOOM & BOND";
-  const brandWidth = ctx.measureText(brandText).width;
-  ctx.fillText(brandText, PAD, PAD);
-
-  ctx.font = "500 32px Jua";
-  ctx.fillText("MATCH VIEW", PAD + brandWidth + 20, PAD);
-
-  // 두 사람 MBTI
-  ctx.fillStyle = "#251822";
-  ctx.font = "900 160px Jua";
-  ctx.fillText(result.mbti.type, PAD, 160);
-
-  ctx.fillStyle = "#d94f98";
-  ctx.font = "700 52px Jua";
-  const ampWidth = ctx.measureText("&").width;
-  ctx.fillText("&", (W - ampWidth) / 2, 280);
-
-  ctx.fillStyle = "#251822";
-  ctx.font = "900 160px Jua";
-  const partnerTypeWidth = ctx.measureText(partnerResult.mbti.type).width;
-  ctx.fillText(partnerResult.mbti.type, W - PAD - partnerTypeWidth, 330);
-
-  // 키워드
-  ctx.fillStyle = "#251822";
-  ctx.font = "700 44px Jua";
-  ctx.fillText(insight.matchKeyword, PAD, 550);
-
-  // 잘 맞는 점
-  ctx.fillStyle = "#d94f98";
-  ctx.font = "700 26px Jua";
-  ctx.fillText("잘 맞는 점", PAD, 640);
-
-  ctx.fillStyle = "#251822";
-  ctx.font = "400 32px Jua";
-  wrapText(ctx, insight.sections[0].body, PAD, 678, W - PAD * 2, 42);
-
-  // 엇갈리기 쉬운 점
-  ctx.fillStyle = "#d94f98";
-  ctx.font = "700 26px Jua";
-  ctx.fillText("엇갈리기 쉬운 점", PAD, 860);
-
-  ctx.fillStyle = "#251822";
-  ctx.font = "400 32px Jua";
-  wrapText(ctx, insight.sections[1].body, PAD, 898, W - PAD * 2, 42);
-
-  // 대화 팁
-  ctx.fillStyle = "#d94f98";
-  ctx.font = "700 26px Jua";
-  ctx.fillText("대화 팁", PAD, 1080);
-
-  ctx.fillStyle = "#251822";
-  ctx.font = "400 32px Jua";
-  wrapText(ctx, insight.sections[2].body, PAD, 1118, W - PAD * 2, 42);
-
-  ctx.fillStyle = "#d94f98";
-  ctx.font = "600 28px Jua";
-  ctx.fillText(displayHost, PAD, H - PAD - 8);
-
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => resolve(blob), "image/png");
-  });
 }
 
 function CoupleCardSection({ result, partnerResult, insight }) {
@@ -157,6 +40,7 @@ function CoupleCardSection({ result, partnerResult, insight }) {
         toast.warning("이미지 생성에 실패했습니다.");
         return;
       }
+      trackEvent("card_generated", { type: "couple" });
       setCardBlob(blob);
       setCardImageUrl(URL.createObjectURL(blob));
     } catch {
