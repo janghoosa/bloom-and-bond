@@ -187,13 +187,9 @@ function drawGeometricShape(ctx, attachmentKey, mbtiType, cx, cy, size) {
   ctx.fill();
   ctx.shadowBlur = 0;
 
-  // Gradient fill overlay
-  const grad = ctx.createRadialGradient(cx, cy - size * 0.3, 0, cx, cy, size);
-  grad.addColorStop(0, colors.stroke.replace(")", ", 0.35)").replace("rgb", "rgba").replace("#", ""));
-  grad.addColorStop(1, "rgba(255, 255, 255, 0)");
-  // Use hex-to-rgba for gradient
-  ctx.globalAlpha = 0.5;
-  drawShapePath(ctx, temperament, cx, cy, size);
+  // Second layer fill
+  ctx.globalAlpha = 0.4;
+  drawShapePath(ctx, temperament, cx, cy, size * 0.85);
   ctx.fillStyle = colors.fill;
   ctx.fill();
   ctx.globalAlpha = 1;
